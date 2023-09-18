@@ -109,7 +109,7 @@
         app:layout_constraintTop_toBottomOf="@+id/levelText" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/profilePictureBackground"
         android:layout_width="221dp"
         android:layout_height="240dp"
         app:layout_constraintBottom_toTopOf="@+id/usernameText"
@@ -119,13 +119,13 @@
         app:srcCompat="@drawable/profilepicture" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/profilePicture"
         android:layout_width="157dp"
         android:layout_height="176dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintBottom_toBottomOf="@+id/profilePictureBackground"
+        app:layout_constraintEnd_toEndOf="@+id/profilePictureBackground"
+        app:layout_constraintStart_toStartOf="@+id/profilePictureBackground"
+        app:layout_constraintTop_toTopOf="@+id/profilePictureBackground"
         app:srcCompat="@drawable/fox" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
