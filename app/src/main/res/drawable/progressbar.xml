@@ -1,31 +1,18 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="254dp"
-    android:height="68dp"
-    android:viewportWidth="254"
-    android:viewportHeight="68">
-  <path
-      android:pathData="M1,24C1,19.03 5.03,15 10,15H199V50H10C5.03,50 1,45.97 1,41V24Z"
-      android:strokeWidth="2"
-      android:fillColor="#E3B1B5"
-      android:strokeColor="#B48787"/>
-  <path
-      android:pathData="M10,24H190V41H10V24Z"
-      android:fillColor="#DBDBDB"/>
-  <group>
-    <clip-path
-        android:pathData="M10,24H190V41H10V24Z"/>
-    <path
-        android:pathData="M10,24V22H8V24H10ZM10,41H8V43H10V41ZM10,26H190V22H10V26ZM190,39H10V43H190V39ZM12,41V24H8V41H12Z"
-        android:fillColor="#B48787"/>
-  </group>
-  <path
-      android:pathData="M220.5,32.5m-31.5,0a31.5,31.5 0,1 1,63 0a31.5,31.5 0,1 1,-63 0"
-      android:strokeWidth="2"
-      android:fillColor="#E3B1B5"
-      android:strokeColor="#B48787"/>
-  <path
-      android:pathData="M220.5,32.5m-20.5,0a20.5,20.5 0,1 1,41 0a20.5,20.5 0,1 1,-41 0"
-      android:strokeWidth="2"
-      android:fillColor="#FFDEE1"
-      android:strokeColor="#B48787"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFDEE1"/>
+        </shape>
+    </item>
+
+    <item android:id="@android:id/progress">
+        <scale android:scaleWidth="100%">
+            <shape android:shape="rectangle">
+                <solid android:color="#1F0404"/>
+            </shape>
+        </scale>
+    </item>
+
+</layer-list>
