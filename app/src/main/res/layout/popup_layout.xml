@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="450dp"
+    android:layout_height="450dp"
+    android:background="#FFFFFF">
+
+    <!-- Add your popup content here, e.g., TextViews, Buttons, etc. -->
+    <TextView
+        android:id="@+id/textViewPopupTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Popup Title"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textViewPopupContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewPopupTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="YOLO." />
+
+
+</RelativeLayout>
