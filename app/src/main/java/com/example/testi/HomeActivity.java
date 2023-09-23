@@ -22,12 +22,14 @@ public class HomeActivity extends AppCompatActivity {
             // Siirrytään profiiliaktiviteettiin
             Intent profile = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(profile);
+            overridePendingTransition(0, 0);
         });
 
         settingsIcon.setOnClickListener(v -> {
             // Siirrytään asetukset-aktiviteettiin
             Intent settings = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(settings);
+            overridePendingTransition(0, 0);
         });
 
     }
