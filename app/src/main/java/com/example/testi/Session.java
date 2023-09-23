@@ -5,7 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Session {
 
-    // Määritellään jokaisen sessionin ominaisuudet/nodet (Node on siis ominaisuus/entity joka "sisältää" lisää ominaisuuksia)
+    // Määritellään jokaisen sessionin ominaisuudet/nodet (Node on siis ominaisuus/entity joka voi "sisältää" lisää ominaisuuksia)
     // Tässä tapauksessa meidän pelit ovat nodeja.
     public int SessionID;
     public int Age;
