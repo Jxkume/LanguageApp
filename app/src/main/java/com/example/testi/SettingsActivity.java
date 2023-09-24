@@ -21,12 +21,14 @@ public class SettingsActivity extends AppCompatActivity{
             // Siirrytään profiiliaktiviteettiin
             Intent home = new Intent(SettingsActivity.this, HomeActivity.class);
             startActivity(home);
+            overridePendingTransition(0, 0);
         });
 
         profileIcon.setOnClickListener(v -> {
             // Siirrytään profiiliaktiviteettiin
             Intent profile = new Intent(SettingsActivity.this, ProfileActivity.class);
             startActivity(profile);
+            overridePendingTransition(0, 0);
         });
 
     }
