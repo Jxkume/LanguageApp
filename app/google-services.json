@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "145554657778",
+    "firebase_url": "https://kieliappi-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "kieliappi",
+    "storage_bucket": "kieliappi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145554657778:android:48741e4e5013ce63df5b6b",
+        "android_client_info": {
+          "package_name": "com.example.ekayritys"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145554657778-aufmvm3tp789bplrnr2b6cfu08f6504d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBjuiteXNLHtoi9Y1Rdf_MMDJXozKN1oo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145554657778-aufmvm3tp789bplrnr2b6cfu08f6504d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145554657778:android:97f9ef21c32adae0df5b6b",
+        "android_client_info": {
+          "package_name": "com.example.testi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145554657778-aufmvm3tp789bplrnr2b6cfu08f6504d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBjuiteXNLHtoi9Y1Rdf_MMDJXozKN1oo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145554657778-aufmvm3tp789bplrnr2b6cfu08f6504d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

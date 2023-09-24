@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/secondaryProgress">
+        <shape android:shape="rectangle">
+            <solid android:color="#E3B1B5"/>
+            <corners android:radius="12dp"/>
+            <stroke android:width="2dp" android:color="#B48787"/>
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <clip android:drawable="@drawable/custom_seekbar_progress"/>
+    </item>
+</layer-list>

@@ -13,5 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-/app/google-services.json
 /.idea/vcs.xml
+/app/google-services.json
