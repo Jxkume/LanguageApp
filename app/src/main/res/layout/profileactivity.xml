@@ -14,6 +14,7 @@
         android:gravity="center"
         android:text="Nimi"
         android:textSize="32dp"
+        android:textColor="@color/font"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,6 +28,7 @@
         android:gravity="center"
         android:text="Taso"
         android:textSize="32dp"
+        android:textColor="@color/font"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/usernameText" />
@@ -41,6 +43,7 @@
         android:gravity="center"
         android:text="/"
         android:textSize="20dp"
+        android:textColor="@color/font"
         app:layout_constraintEnd_toStartOf="@+id/xpGoalText"
         app:layout_constraintTop_toBottomOf="@+id/levelText" />
 
@@ -54,6 +57,7 @@
         android:gravity="center"
         android:text="0"
         android:textSize="20dp"
+        android:textColor="@color/font"
         app:layout_constraintEnd_toStartOf="@+id/xpSlashText"
         app:layout_constraintHorizontal_bias="0.994"
         app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +73,7 @@
         android:gravity="center"
         android:text="0 xp"
         android:textSize="20dp"
+        android:textColor="@color/font"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/levelText" />
 

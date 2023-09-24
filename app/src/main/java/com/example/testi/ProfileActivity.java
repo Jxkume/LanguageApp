@@ -70,12 +70,14 @@ public class ProfileActivity extends AppCompatActivity{
             // Siirrytään kotiaktiviteettiin
             Intent home = new Intent(ProfileActivity.this, HomeActivity.class);
             startActivity(home);
+            overridePendingTransition(0, 0);
         });
 
         settingsIcon.setOnClickListener(v -> {
             // Siirrytään asetukset-aktiviteettiin
             Intent settings = new Intent(ProfileActivity.this, SettingsActivity.class);
             startActivity(settings);
+            overridePendingTransition(0, 0);
         });
 
 
