@@ -1,6 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/animalgame_background">
+
+    <include layout="@layout/animalgame_layout" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOptionBackground1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="212dp"
+        app:layout_constraintEnd_toStartOf="@+id/animalGameFirstOptionBackground2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/animalgameoption" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOptionBackground3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="234dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/animalGameFirstOptionBackground4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animalGameFirstOptionBackground1"
+        app:srcCompat="@drawable/animalgameoption" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOptionBackground4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="234dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/animalGameFirstOptionBackground3"
+        app:layout_constraintTop_toBottomOf="@+id/animalGameFirstOptionBackground2"
+        app:srcCompat="@drawable/animalgameoption" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOptionBackground2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="212dp"
+        android:layout_marginEnd="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/animalGameFirstOptionBackground1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/animalgameoption" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstTextBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="121dp"
+        android:layout_marginEnd="121dp"
+        android:layout_marginBottom="119dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/animalgametext" />
+
+    <TextView
+        android:id="@+id/animalGameSecondText2"
+        android:layout_width="169dp"
+        android:layout_height="69dp"
+        android:fontFamily="@font/baloo2_extra"
+        android:gravity="center"
+        android:textColor="@color/font"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/animalGameFirstTextBackground"
+        app:layout_constraintEnd_toEndOf="@+id/animalGameFirstTextBackground"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/animalGameFirstTextBackground"
+        app:layout_constraintTop_toTopOf="@+id/animalGameFirstTextBackground"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOption1"
+        android:layout_width="125dp"
+        android:layout_height="126dp"
+        app:layout_constraintBottom_toBottomOf="@+id/animalGameFirstOptionBackground1"
+        app:layout_constraintEnd_toEndOf="@+id/animalGameFirstOptionBackground1"
+        app:layout_constraintStart_toStartOf="@+id/animalGameFirstOptionBackground1"
+        app:layout_constraintTop_toTopOf="@+id/animalGameFirstOptionBackground1" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOption2"
+        android:layout_width="125dp"
+        android:layout_height="126dp"
+        app:layout_constraintBottom_toBottomOf="@+id/animalGameFirstOptionBackground2"
+        app:layout_constraintEnd_toEndOf="@+id/animalGameFirstOptionBackground2"
+        app:layout_constraintStart_toStartOf="@+id/animalGameFirstOptionBackground2"
+        app:layout_constraintTop_toTopOf="@+id/animalGameFirstOptionBackground2" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOption3"
+        android:layout_width="125dp"
+        android:layout_height="126dp"
+        app:layout_constraintBottom_toBottomOf="@+id/animalGameFirstOptionBackground3"
+        app:layout_constraintEnd_toEndOf="@+id/animalGameFirstOptionBackground3"
+        app:layout_constraintStart_toStartOf="@+id/animalGameFirstOptionBackground3"
+        app:layout_constraintTop_toTopOf="@+id/animalGameFirstOptionBackground3" />
+
+    <ImageView
+        android:id="@+id/animalGameFirstOption4"
+        android:layout_width="125dp"
+        android:layout_height="126dp"
+        app:layout_constraintBottom_toBottomOf="@+id/animalGameFirstOptionBackground4"
+        app:layout_constraintEnd_toEndOf="@+id/animalGameFirstOptionBackground4"
+        app:layout_constraintStart_toStartOf="@+id/animalGameFirstOptionBackground4"
+        app:layout_constraintTop_toTopOf="@+id/animalGameFirstOptionBackground4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
