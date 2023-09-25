@@ -5,7 +5,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Session {
 
-    // Määritellään jokaisen sessionin ominaisuudet/nodet (Node on siis ominaisuus/entity joka "sisältää" lisää ominaisuuksia)
+    // Määritellään jokaisen sessionin ominaisuudet/nodet (Node on siis ominaisuus/entity joka voi "sisältää" lisää ominaisuuksia)
     // Tässä tapauksessa meidän pelit ovat nodeja.
     public int SessionID;
     public int Age;
@@ -21,8 +21,16 @@ public class Session {
         public int ColourGameID;
     }
 
-    // Alustetaan/luodaan pelin olio
+    public static class AnimalGame{
+        public int Attempts;
+        public int CorrectAnswers;
+        public int WrongAnswers;
+        public int AnimalGameID;
+    }
+
+    // Alustetaan/luodaan pelien oliot
     public ColourGame ColourGame = new ColourGame();
+    public AnimalGame AnimalGame = new AnimalGame();
 
     // Tehdään Sessionin konstruktori JA alustetaan pelin ominaisuudet (Vähän niinku tehtäis Hash-Map)
     public Session(int sessionID, int age, String username, int XP, int level) {
@@ -32,11 +40,16 @@ public class Session {
         this.XP = XP;
         this.Level = level;
 
-        // Täällä alustetaan ColourGamen ominaisuudet
+        // Täällä alustetaan pelien ominaisuudet
         ColourGame.Attempts = 0;
         ColourGame.CorrectAnswers = 0;
         ColourGame.WrongAnswers = 0;
         ColourGame.ColourGameID = 0;
+
+        AnimalGame.Attempts = 0;
+        AnimalGame.CorrectAnswers = 0;
+        AnimalGame.WrongAnswers = 0;
+        AnimalGame.AnimalGameID = 0;
 
         // Lopuksi kutsutaan pushToFirebase että muutokset menevät tietokantaan asti aina kun luodaan uuden sessionin
         // Tämä tietenkin tule muuttumaan nyt tää on "kovakoodattu" että testataan toimivuuden
@@ -77,5 +90,8 @@ public class Session {
 
         // Asetetaan ColourGame ominaisuuteen arvon
         newSessionRef.child("ColourGame").setValue(ColourGame);
+
+        // Asetetaan AnimalGame ominaisuuteen arvon
+        newSessionRef.child("AnimalGame").setValue(AnimalGame);
     }
 }
