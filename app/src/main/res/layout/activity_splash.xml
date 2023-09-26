@@ -8,15 +8,82 @@
     tools:context=".SplashActivity">
 
     <ImageView
-        android:id="@+id/bubbles"
-        android:layout_width="396dp"
-        android:layout_height="715dp"
+        android:id="@+id/bubble1"
+        android:layout_width="239dp"
+        android:layout_height="157dp"
         android:alpha="1"
-        android:src="@drawable/bubbles"
+        android:src="@drawable/bubble1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.041" />
+
+    <ImageView
+        android:id="@+id/bubble2"
+        android:layout_width="84dp"
+        android:layout_height="83dp"
+        android:alpha="1"
+        android:src="@drawable/bubble2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.172" />
+
+    <ImageView
+        android:id="@+id/bubble3"
+        android:layout_width="155dp"
+        android:layout_height="84dp"
+        android:alpha="1"
+        android:src="@drawable/bubble3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.589" />
+
+    <ImageView
+        android:id="@+id/bubble4"
+        android:layout_width="221dp"
+        android:layout_height="153dp"
+        android:alpha="1"
+        android:src="@drawable/bubble4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.889"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.683" />
+
+    <ImageView
+        android:id="@+id/bubble5"
+        android:layout_width="103dp"
+        android:layout_height="72dp"
+        android:alpha="1"
+        android:src="@drawable/bubble5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.848" />
+
+    <ImageView
+        android:id="@+id/bubble6"
+        android:layout_width="174dp"
+        android:layout_height="135dp"
+        android:alpha="1"
+        android:src="@drawable/bubble6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.946" />
 
     <ImageView
         android:id="@+id/logo"
