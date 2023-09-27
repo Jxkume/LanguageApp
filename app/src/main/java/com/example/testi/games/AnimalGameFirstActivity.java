@@ -25,15 +25,14 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
 
     List<Word> wordList;
     ImageView picPlace1;
+    ImageView picPlace2;
+    ImageView picPlace3;
+    ImageView picPlace4;
     Resources res;
     Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        picPlace1 = findViewById(R.id.animalGameFirstOption1);
-        ImageView picPlace2 = findViewById(R.id.animalGameFirstOption2);
-        ImageView picPlace3 = findViewById(R.id.animalGameFirstOption3);
-        ImageView picPlace4 = findViewById(R.id.animalGameFirstOption4);
         activity = this;
         res = this.getResources();
         wordList = new ArrayList<>();
@@ -82,24 +81,26 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                     word.setIncorrectAnswers(randomWords);
                 }
 
-                /*String path1 = "R.drawable." + wordList.get(0).getPhotoID();
-                String path2 = "R.drawable." + wordList.get(0).getIcorrectAnswers()[0].getPhotoID();
-                String path3 = "R.drawable." + wordList.get(0).getIcorrectAnswers()[1].getPhotoID();
-                String path4 = "R.drawable." + wordList.get(0).getIcorrectAnswers()[2].getPhotoID();*/
+                picPlace1 = findViewById(R.id.animalGameFirstOption1);
+                picPlace2 = findViewById(R.id.animalGameFirstOption2);
+                picPlace3 = findViewById(R.id.animalGameFirstOption3);
+                picPlace4 = findViewById(R.id.animalGameFirstOption4);
 
-                //int img1ID = res.getIdentifier(wordList.get(0).getPhotoID(), "drawable", activity.getPackageName());
-                //System.out.println("id: " + img1ID);
+                while(wordList.size() >= 5) {
+                    int img1ID = res.getIdentifier(wordList.get(0).getPhotoID(), "drawable", getPackageName());
+                    int img2ID = res.getIdentifier(wordList.get(0).getIcorrectAnswers()[0].getPhotoID(), "drawable", getPackageName());
+                    int img3ID = res.getIdentifier(wordList.get(0).getIcorrectAnswers()[1].getPhotoID(), "drawable", getPackageName());
+                    int img4ID = res.getIdentifier(wordList.get(0).getIcorrectAnswers()[2].getPhotoID(), "drawable", getPackageName());
 
+                    System.out.println("Picname: " + wordList.get(0).getPhotoID());
+                    System.out.println("id: " + img1ID);
+                    picPlace1.setImageResource(img1ID);
+                    picPlace2.setImageResource(img2ID);
+                    picPlace3.setImageResource(img3ID);
+                    picPlace4.setImageResource(img4ID);
 
-
-                // Now, wordList contains the data from Firebase
-                // You can access and use it as needed
-                /*for (Word word : wordList) {
-                    System.out.println("English: " + word.getEnglish());
-                    System.out.println("Level: " + word.getLevel());
-                    System.out.println("PhotoID: " + word.getPhotoID());
-                    System.out.println("WordID: " + word.getWordID());
-                }*/
+                    wordList.remove(0);
+                }
             }
 
             @Override
