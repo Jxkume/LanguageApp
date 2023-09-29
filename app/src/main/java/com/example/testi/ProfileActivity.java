@@ -23,7 +23,7 @@ public class ProfileActivity extends AppCompatActivity{
         ImageView homeIcon = findViewById(R.id.homeIcon);
         ImageView settingsIcon = findViewById(R.id.settingsIcon);
         ImageView profilePictureBackground = findViewById(R.id.profilePictureBackground);
-        ImageView profilePicture = findViewById(R.id.profilePicture);
+        ImageView profilePicture = findViewById(R.id.newProfilePicture1);
 
         // Luodaan popUp olio
         popupWindow = createPopupWindow(this);
