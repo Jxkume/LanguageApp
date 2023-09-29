@@ -140,7 +140,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             // End of the game
             // Remove the question image
             questionImageView.setImageResource(0);
-            Toast.makeText(this, "Game Over! Your Score: " + score, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
             if (currentQuestionIndex >= 10) {
                 // Mennään seuraavaan aktiviteettiin
@@ -183,7 +183,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
                 score++;
                 Toast.makeText(this, "Oikein!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Väärin! Valitsemasi kuvalla on " + optionTextViews[selectedOptionIndex].getText(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Väärin! Kuvalla on " + words.get(currentQuestionIndex).toString(), Toast.LENGTH_SHORT).show();
             }
 
             // Move to the next question
