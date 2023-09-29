@@ -1,10 +1,16 @@
 package com.example.testi.games;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testi.R;
@@ -18,117 +24,177 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class AnimalGameFirstActivity extends AppCompatActivity {
 
-    List<Word> wordList;
-    ImageView picPlace1;
-    ImageView picPlace2;
-    ImageView picPlace3;
-    ImageView picPlace4;
-    Resources res;
-    Activity activity;
+    private DatabaseReference databaseReference;
+    private List<String> words;
+    private ImageView questionImageView;
+    private ImageView[] optionImageViews;
+    private TextView questionTextView;
+    private String correctAnswer;
+    private int score = 0;
+    private int currentQuestionIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        activity = this;
-        res = this.getResources();
-        wordList = new ArrayList<>();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animalgamefirstactivity);
-        retrieveWords();
-        //pickWrongAnswers();
+
+        // Initialize Firebase Database reference
+        databaseReference = FirebaseDatabase.getInstance().getReference("Words/Animalgame");
+
+        // Initialize UI elements
+        questionImageView = findViewById(R.id.animalGameFirstTextBackground);
+        questionTextView = findViewById(R.id.animalGameSecondText2);
+        optionImageViews = new ImageView[4];
+        optionImageViews[0] = findViewById(R.id.animalGameFirstOption1);
+        optionImageViews[1] = findViewById(R.id.animalGameFirstOption2);
+        optionImageViews[2] = findViewById(R.id.animalGameFirstOption3);
+        optionImageViews[3] = findViewById(R.id.animalGameFirstOption4);
+
+        // Initialize word list
+        words = new ArrayList<>();
+
+        // Load words from Firebase and set up the game
+        loadWordsAndSetUpGame();
+
+        // Set click listeners for option ImageViews
+        for (int i = 0; i < 4; i++) {
+            final int optionIndex = i;
+            optionImageViews[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkAnswer(optionIndex);
+                }
+            });
+        }
     }
 
-    // Create a method to retrieve data and save it to a List
-    public void retrieveWords() {
-        DatabaseReference wordsRef = FirebaseDatabase.getInstance().getReference("Words/Animalgame");
-
-        wordsRef.addValueEventListener(new ValueEventListener() {
+    private void loadWordsAndSetUpGame() {
+        // Add a ValueEventListener to retrieve only the keys (names) of the words
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Word word = snapshot.getValue(Word.class);
-                    if (word != null) {
-                        wordList.add(word);
-                    }
-                }
-                for (Word word : wordList){
-                    Word [] randomWords = new Word[3];
-                    int randomIndex1 = new Random().nextInt(wordList.size());
-                    int randomIndex2 = new Random().nextInt(wordList.size());
-                    int randomIndex3 = new Random().nextInt(wordList.size());
-
-                    while(randomIndex1 == wordList.indexOf(word)) {
-                        randomIndex1 = new Random().nextInt(wordList.size());
-                    }
-
-                    while(randomIndex2 == randomIndex1 || randomIndex2 == wordList.indexOf(word)){
-                        randomIndex2 = new Random().nextInt(wordList.size());
-                    }
-
-                    while(randomIndex3 == randomIndex1 || randomIndex3 == randomIndex2 || randomIndex3 == wordList.indexOf(word)){
-                        randomIndex3 = new Random().nextInt(wordList.size());
-                    }
-
-                    randomWords[0] = wordList.get(randomIndex1);
-                    randomWords[1] = wordList.get(randomIndex2);
-                    randomWords[2] = wordList.get(randomIndex3);
-
-                    word.setIncorrectAnswers(randomWords);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Iterate through the children of "Animalgame" and add word names to the list
+                for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
+                    String word = wordSnapshot.getKey();
+                    words.add(word);
                 }
 
-                picPlace1 = findViewById(R.id.animalGameFirstOption1);
-                picPlace2 = findViewById(R.id.animalGameFirstOption2);
-                picPlace3 = findViewById(R.id.animalGameFirstOption3);
-                picPlace4 = findViewById(R.id.animalGameFirstOption4);
+                // Shuffle the word list to randomize the order of questions
+                Collections.shuffle(words);
 
-                while(wordList.size() >= 5) {
-                    int img1ID = res.getIdentifier(wordList.get(0).getPhotoID(), "drawable", getPackageName());
-                    int img2ID = res.getIdentifier(wordList.get(0).getIcorrectAnswers()[0].getPhotoID(), "drawable", getPackageName());
-                    int img3ID = res.getIdentifier(wordList.get(0).getIcorrectAnswers()[1].getPhotoID(), "drawable", getPackageName());
-                    int img4ID = res.getIdentifier(wordList.get(0).getIcorrectAnswers()[2].getPhotoID(), "drawable", getPackageName());
-
-                    System.out.println("Picname: " + wordList.get(0).getPhotoID());
-                    System.out.println("id: " + img1ID);
-                    picPlace1.setImageResource(img1ID);
-                    picPlace2.setImageResource(img2ID);
-                    picPlace3.setImageResource(img3ID);
-                    picPlace4.setImageResource(img4ID);
-
-                    wordList.remove(0);
-                }
+                // Start the game
+                showNextQuestion();
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors that occur
-                System.out.println("Error: " + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle errors if data retrieval fails
+                System.err.println("Error: " + databaseError.getMessage());
             }
         });
     }
 
-    public void pickWrongAnswers() {
-        System.out.println("This metod has been called");
-        System.out.println("size: " + wordList.size());
-        for (Word word : wordList){
-            System.out.println("Does it work?");
-            Word [] randomWords = new Word[3];
-            int randomIndex1 = new Random().nextInt(wordList.size());
-            int randomIndex2;
-            int randomIndex3;
-            System.out.println("Word: " + wordList.indexOf(word));
-            System.out.println("First: " + randomIndex1);
+    private void showNextQuestion() {
+        if (currentQuestionIndex < words.size()) {
+            // Get the correct answer (word) for the current question
+            correctAnswer = words.get(currentQuestionIndex);
 
-            while(randomIndex1 == wordList.indexOf(word)) {
-                randomIndex1 = new Random().nextInt(wordList.size());
+            // Set the question image based on the correct answer (e.g., "bear" -> R.drawable.bearanimalgame)
+            int questionImageResource = getResources().getIdentifier(correctAnswer.toLowerCase() + "animalgame", "drawable", getPackageName());
+
+            // Set the text of questionTextView to the correct word
+            questionTextView.setText(correctAnswer);
+
+
+            // Generate random incorrect answers and place their images in the other positions
+            List<Integer> incorrectAnswerIndices = getRandomIncorrectAnswerIndices(3); // Generate 3 incorrect answers
+
+
+            // Ensure that the correct answer is placed on one of the options
+            int correctAnswerPosition = new Random().nextInt(4);
+
+            // Create an array to keep track of whether each option has been assigned
+            boolean[] assignedOptions = new boolean[4];
+            for (int i = 0; i < 4; i++) {
+                assignedOptions[i] = false;
             }
-            System.out.println("Word: " + wordList.indexOf(word));
-            System.out.println("First: " + randomIndex1);
+
+            // Assign the correct answer to a random unassigned position
+            assignedOptions[correctAnswerPosition] = true;
+            optionImageViews[correctAnswerPosition].setContentDescription(correctAnswer.toLowerCase());
+            optionImageViews[correctAnswerPosition].setImageResource(questionImageResource);
+
+            // Assign incorrect answers to the remaining positions
+            for (int i = 0; i < 4; i++) {
+                if (!assignedOptions[i]) {
+                    int incorrectIndex = incorrectAnswerIndices.remove(0);
+                    String incorrectAnswer = words.get(incorrectIndex);
+                    int incorrectImageResource = getResources().getIdentifier(incorrectAnswer.toLowerCase() + "animalgame", "drawable", getPackageName());
+                    optionImageViews[i].setContentDescription(incorrectAnswer.toLowerCase());
+                    optionImageViews[i].setImageResource(incorrectImageResource);
+                }
+            }
+        } else {
+            // End of the game
+            questionImageView.setImageResource(0); // Remove the question image
+            questionTextView.setText(""); // Clear the questionTextView
+            //Toast.makeText(this, "Game Over! Your Score: " + score, Toast.LENGTH_SHORT).show();
+
+            if (currentQuestionIndex >= 10) {
+                // Mennään seuraavaan aktiviteettiin
+                Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
+                intent.putExtra("score", score);
+                startActivity(intent);
+            }
         }
     }
 
+
+    private List<Integer> getRandomIncorrectAnswerIndices(int count) {
+        // To keep it simple, we'll just randomly select indices from the word list
+        List<Integer> incorrectAnswerIndices = new ArrayList<>();
+        int correctAnswerIndex = words.indexOf(correctAnswer); // Get the index of the correct answer
+        while (incorrectAnswerIndices.size() < count) {
+            int randomIndex = new Random().nextInt(words.size());
+            // Check if the selected index is not the correct answer index and is not already in the list
+            if (randomIndex != correctAnswerIndex && !incorrectAnswerIndices.contains(randomIndex)) {
+                incorrectAnswerIndices.add(randomIndex);
+            }
+        }
+        return incorrectAnswerIndices;
+    }
+
+
+
+    private void checkAnswer(int selectedOptionIndex) {
+        if (currentQuestionIndex < words.size()) {
+            // Get the content description of the selected option
+            String selectedAnswer = optionImageViews[selectedOptionIndex].getContentDescription() != null
+                    ? optionImageViews[selectedOptionIndex].getContentDescription().toString()
+                    : "";
+
+            // Debug: Log the selected and correct answers to check for any issues
+            Log.d("Debug", "Selected Answer: " + selectedAnswer);
+            Log.d("Debug", "Correct Answer: " + correctAnswer);
+
+            // Check if the selected answer matches the correct answer
+            if (selectedAnswer.equalsIgnoreCase(correctAnswer)) { // Use equalsIgnoreCase for case-insensitive comparison
+                score++;
+                Toast.makeText(this, "Oikein!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Väärin! Valitsemasi kuvalla on " + optionImageViews[selectedOptionIndex].getContentDescription().toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            // Move to the next question
+            currentQuestionIndex++;
+            showNextQuestion();
+        }
+    }
 }
+
