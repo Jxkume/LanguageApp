@@ -28,8 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class AnimalGameFirstActivity extends AppCompatActivity {
-
+public class ColourGameFirstActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private List<String> words;
     private ImageView questionImageView;
@@ -42,19 +41,19 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.animalgamefirstactivity);
+        setContentView(R.layout.colourgamefirstactivity);
 
         // Initialize Firebase Database reference
-        databaseReference = FirebaseDatabase.getInstance().getReference("Words/Animalgame");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Words/Colourgame");
 
         // Initialize UI elements
-        questionImageView = findViewById(R.id.animalGameFirstTextBackground);
-        questionTextView = findViewById(R.id.animalGameSecondText2);
+        questionImageView = findViewById(R.id.colourGameFirstTextBackground);
+        questionTextView = findViewById(R.id.colourGameSecondText2);
         optionImageViews = new ImageView[4];
-        optionImageViews[0] = findViewById(R.id.animalGameFirstOption1);
-        optionImageViews[1] = findViewById(R.id.animalGameFirstOption2);
-        optionImageViews[2] = findViewById(R.id.animalGameFirstOption3);
-        optionImageViews[3] = findViewById(R.id.animalGameFirstOption4);
+        optionImageViews[0] = findViewById(R.id.colourGameFirstOption1);
+        optionImageViews[1] = findViewById(R.id.colourGameFirstOption2);
+        optionImageViews[2] = findViewById(R.id.colourGameFirstOption3);
+        optionImageViews[3] = findViewById(R.id.colourGameFirstOption4);
 
         // Initialize word list
         words = new ArrayList<>();
@@ -79,7 +78,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through the children of "Animalgame" and add word names to the list
+                // Iterate through the children of Colourgame and add word names to the list
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
                     String word = wordSnapshot.getKey();
                     words.add(word);
@@ -105,8 +104,8 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
             // Get the correct answer (word) for the current question
             correctAnswer = words.get(currentQuestionIndex);
 
-            // Set the question image based on the correct answer (e.g., "bear" -> R.drawable.bearanimalgame)
-            int questionImageResource = getResources().getIdentifier(correctAnswer.toLowerCase() + "animalgame", "drawable", getPackageName());
+            // Set the question image based on the correct answer (e.g., "red" -> R.drawable.redcolourgame)
+            int questionImageResource = getResources().getIdentifier(correctAnswer.toLowerCase() + "colourgame", "drawable", getPackageName());
 
             // Set the text of questionTextView to the correct word
             questionTextView.setText(correctAnswer);
@@ -135,25 +134,26 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 if (!assignedOptions[i]) {
                     int incorrectIndex = incorrectAnswerIndices.remove(0);
                     String incorrectAnswer = words.get(incorrectIndex);
-                    int incorrectImageResource = getResources().getIdentifier(incorrectAnswer.toLowerCase() + "animalgame", "drawable", getPackageName());
+                    int incorrectImageResource = getResources().getIdentifier(incorrectAnswer.toLowerCase() + "colourgame", "drawable", getPackageName());
                     optionImageViews[i].setContentDescription(incorrectAnswer.toLowerCase());
                     optionImageViews[i].setImageResource(incorrectImageResource);
                 }
             }
         } else {
             // End of the game
-            questionImageView.setImageResource(0); // Remove the question image
-            questionTextView.setText(""); // Clear the questionTextView
+            // Remove the question image
+            questionImageView.setImageResource(0);
+            // Clear the questionTextView
+            questionTextView.setText("");
 
             if (currentQuestionIndex >= 10) {
-                // Mennään seuraavaan aktiviteettiin
-                Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
+                // Moving to the second part of the game
+                Intent intent = new Intent(ColourGameFirstActivity.this, ColourGameSecondActivity.class);
                 intent.putExtra("score", score);
                 startActivity(intent);
             }
         }
     }
-
 
     private List<Integer> getRandomIncorrectAnswerIndices(int count) {
         // To keep it simple, we'll just randomly select indices from the word list
@@ -168,8 +168,6 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         }
         return incorrectAnswerIndices;
     }
-
-
 
     private void checkAnswer(int selectedOptionIndex) {
         if (currentQuestionIndex < words.size()) {
@@ -196,4 +194,3 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         }
     }
 }
-

@@ -4,5 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#FAF3EC</color>
     <color name="animalgame_background">#ECF3F6</color>
+    <color name="colourgame_background">#F5EDEE</color>
     <color name="font">#1F0404</color>
 </resources>

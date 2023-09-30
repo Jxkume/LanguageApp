@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import com.example.testi.games.AnimalGameFirstActivity;
+import com.example.testi.games.ColourGameFirstActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +21,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //Haetaan pelien ikonit
         ImageView animalGameIcon = findViewById(R.id.animalGameIcon);
+        ImageView colourGameIcon = findViewById(R.id.colorGameIcon);
 
         // Lisätään nappeihin klikkaustoiminnallisuus
         profileIcon.setOnClickListener(v -> {
@@ -42,6 +44,11 @@ public class HomeActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
+        colourGameIcon.setOnClickListener(v -> {
+            Intent colourGame = new Intent(HomeActivity.this, ColourGameFirstActivity.class);
+            startActivity(colourGame);
+            overridePendingTransition(0, 0);
+        });
     }
 
 
