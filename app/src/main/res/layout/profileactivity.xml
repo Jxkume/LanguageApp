@@ -88,14 +88,14 @@
         app:srcCompat="@drawable/profilepicture" />
 
     <ImageView
-        android:id="@+id/profilePicture"
+        android:id="@+id/newProfilePicture1"
         android:layout_width="157dp"
         android:layout_height="176dp"
         app:layout_constraintBottom_toBottomOf="@+id/profilePictureBackground"
         app:layout_constraintEnd_toEndOf="@+id/profilePictureBackground"
         app:layout_constraintStart_toStartOf="@+id/profilePictureBackground"
         app:layout_constraintTop_toTopOf="@+id/profilePictureBackground"
-        app:srcCompat="@drawable/fox" />
+        app:srcCompat="@drawable/foxprofilepicture" />
 
     <ImageView
         android:id="@+id/homeIcon"

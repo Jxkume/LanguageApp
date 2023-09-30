@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="289dp"
+    android:layout_height="469dp"
+    android:layout_gravity="center"
+    android:background="@drawable/popupbackground">
+
+    <ImageView
+        android:id="@+id/newProfilePictureBackground2"
+        android:layout_width="112dp"
+        android:layout_height="122dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/chooseprofilepicture" />
+
+    <ImageView
+        android:id="@+id/newProfilePicture2"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@+id/newProfilePictureBackground2"
+        app:layout_constraintEnd_toEndOf="@+id/newProfilePictureBackground2"
+        app:layout_constraintStart_toStartOf="@+id/newProfilePictureBackground2"
+        app:layout_constraintTop_toTopOf="@+id/newProfilePictureBackground2" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption1"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="22dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newProfilePictureBackground2"
+        app:srcCompat="@drawable/foxprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption2"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="22dp"
+        app:layout_constraintEnd_toStartOf="@+id/profilePictureOption3"
+        app:layout_constraintStart_toEndOf="@+id/profilePictureOption1"
+        app:layout_constraintTop_toBottomOf="@+id/newProfilePictureBackground2"
+        app:srcCompat="@drawable/wolfprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption3"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="19dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newProfilePictureBackground2"
+        app:srcCompat="@drawable/zebraprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption4"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePictureOption1"
+        app:srcCompat="@drawable/penguinprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption5"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintEnd_toStartOf="@+id/profilePictureOption6"
+        app:layout_constraintStart_toEndOf="@+id/profilePictureOption4"
+        app:layout_constraintTop_toBottomOf="@+id/profilePictureOption2"
+        app:srcCompat="@drawable/duckprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption6"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="19dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePictureOption3"
+        app:srcCompat="@drawable/tigerprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption7"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePictureOption4"
+        app:srcCompat="@drawable/crocodileprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption8"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="19dp"
+        app:layout_constraintEnd_toStartOf="@+id/profilePictureOption9"
+        app:layout_constraintStart_toEndOf="@+id/profilePictureOption7"
+        app:layout_constraintTop_toBottomOf="@+id/profilePictureOption5"
+        app:srcCompat="@drawable/slothprofilepicture" />
+
+    <ImageView
+        android:id="@+id/profilePictureOption9"
+        android:layout_width="71dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginEnd="19dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePictureOption6"
+        app:srcCompat="@drawable/catprofilepicture" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
