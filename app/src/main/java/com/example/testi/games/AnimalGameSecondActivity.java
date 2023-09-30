@@ -45,8 +45,8 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
         Intent intent = getIntent();
         score = intent.getIntExtra("score", score);
 
-        // Initialize UI elements
-
+        // Initializing UI elements
+        //Initializing the Image View where image will be showed
         questionImageView = findViewById(R.id.animalGameSecondOption);
         optionTextViews = new TextView[4];
         optionTextViews[0] = findViewById(R.id.animalGameSecondText1);

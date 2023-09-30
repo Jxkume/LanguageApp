@@ -1,8 +1,6 @@
 package com.example.testi.games;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.testi.HomeActivity;
 import com.example.testi.R;
-
-import com.example.testi.Word;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,44 +23,47 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-public class ColourGameFirstActivity extends AppCompatActivity {
+public class ColourGameSecondActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private List<String> words;
     private ImageView questionImageView;
-    private ImageView[] optionImageViews;
-    private TextView questionTextView;
+    private TextView[] optionTextViews;
     private String correctAnswer;
-    private int score = 0;
+    private int score;
     private int currentQuestionIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.colourgamefirstactivity);
+        setContentView(R.layout.colourgamesecondactivity);
 
         // Initialize Firebase Database reference
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/Colourgame");
 
-        // Initialize UI elements
-        questionImageView = findViewById(R.id.colourGameFirstTextBackground);
-        questionTextView = findViewById(R.id.colourGameSecondText2);
-        optionImageViews = new ImageView[4];
-        optionImageViews[0] = findViewById(R.id.colourGameFirstOption1);
-        optionImageViews[1] = findViewById(R.id.colourGameFirstOption2);
-        optionImageViews[2] = findViewById(R.id.colourGameFirstOption3);
-        optionImageViews[3] = findViewById(R.id.colourGameFirstOption4);
+        //Getting score from the first part of animal game
+        Intent intent = getIntent();
+        score = intent.getIntExtra("score", score);
 
-        // Initialize word list
+        // Initializing UI elements
+        //Initializing the Image View where image will be showed
+        questionImageView = findViewById(R.id.colourGameSecondOption);
+        optionTextViews = new TextView[4];
+        //Initializing four Text Views for each answer option
+        optionTextViews[0] = findViewById(R.id.colourGameSecondText1);
+        optionTextViews[1] = findViewById(R.id.colourGameSecondText2);
+        optionTextViews[2] = findViewById(R.id.colourGameSecondText3);
+        optionTextViews[3] = findViewById(R.id.colourGameSecondText4);
+
+        // Initializing word list
         words = new ArrayList<>();
 
         // Load words from Firebase and set up the game
         loadWordsAndSetUpGame();
 
-        // Set click listeners for option ImageViews
+        // Set click listeners for option TextViews
         for (int i = 0; i < 4; i++) {
             final int optionIndex = i;
-            optionImageViews[i].setOnClickListener(new View.OnClickListener() {
+            optionTextViews[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     checkAnswer(optionIndex);
@@ -78,7 +77,7 @@ public class ColourGameFirstActivity extends AppCompatActivity {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through the children of Colourgame and add word names to the list
+                // Iterate through the children of "Colourgame" and add word names to the list
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
                     String word = wordSnapshot.getKey();
                     words.add(word);
@@ -107,8 +106,9 @@ public class ColourGameFirstActivity extends AppCompatActivity {
             // Set the question image based on the correct answer (e.g., "red" -> R.drawable.redcolourgame)
             int questionImageResource = getResources().getIdentifier(correctAnswer.toLowerCase() + "colourgame", "drawable", getPackageName());
 
-            // Set the text of questionTextView to the correct word
-            questionTextView.setText(correctAnswer);
+            // Set the image of the correct word to questionImageView
+            questionImageView.setContentDescription(correctAnswer.toLowerCase());
+            questionImageView.setImageResource(questionImageResource);
 
 
             // Generate random incorrect answers and place their images in the other positions
@@ -125,31 +125,28 @@ public class ColourGameFirstActivity extends AppCompatActivity {
             }
 
             // Assign the correct answer to a random unassigned position
+            optionTextViews[correctAnswerPosition].setText(correctAnswer);
             assignedOptions[correctAnswerPosition] = true;
-            optionImageViews[correctAnswerPosition].setContentDescription(correctAnswer.toLowerCase());
-            optionImageViews[correctAnswerPosition].setImageResource(questionImageResource);
 
             // Assign incorrect answers to the remaining positions
             for (int i = 0; i < 4; i++) {
                 if (!assignedOptions[i]) {
                     int incorrectIndex = incorrectAnswerIndices.remove(0);
                     String incorrectAnswer = words.get(incorrectIndex);
-                    int incorrectImageResource = getResources().getIdentifier(incorrectAnswer.toLowerCase() + "colourgame", "drawable", getPackageName());
-                    optionImageViews[i].setContentDescription(incorrectAnswer.toLowerCase());
-                    optionImageViews[i].setImageResource(incorrectImageResource);
+                    optionTextViews[i].setText(incorrectAnswer);
                 }
             }
         } else {
             // End of the game
             // Remove the question image
             questionImageView.setImageResource(0);
-            // Clear the questionTextView
-            questionTextView.setText("");
+            Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
             if (currentQuestionIndex >= 10) {
-                // Moving to the second part of the game
-                Intent intent = new Intent(ColourGameFirstActivity.this, ColourGameSecondActivity.class);
-                intent.putExtra("score", score);
+                // Mennään seuraavaan aktiviteettiin
+                Intent intent = new Intent(ColourGameSecondActivity.this, HomeActivity.class);
+                //I'm not sure if we need this:
+                //intent.putExtra("score", score);
                 startActivity(intent);
             }
         }
@@ -158,7 +155,8 @@ public class ColourGameFirstActivity extends AppCompatActivity {
     private List<Integer> getRandomIncorrectAnswerIndices(int count) {
         // To keep it simple, we'll just randomly select indices from the word list
         List<Integer> incorrectAnswerIndices = new ArrayList<>();
-        int correctAnswerIndex = words.indexOf(correctAnswer); // Get the index of the correct answer
+        // Get the index of the correct answer
+        int correctAnswerIndex = words.indexOf(correctAnswer);
         while (incorrectAnswerIndices.size() < count) {
             int randomIndex = new Random().nextInt(words.size());
             // Check if the selected index is not the correct answer index and is not already in the list
@@ -172,8 +170,8 @@ public class ColourGameFirstActivity extends AppCompatActivity {
     private void checkAnswer(int selectedOptionIndex) {
         if (currentQuestionIndex < words.size()) {
             // Get the content description of the selected option
-            String selectedAnswer = optionImageViews[selectedOptionIndex].getContentDescription() != null
-                    ? optionImageViews[selectedOptionIndex].getContentDescription().toString()
+            String selectedAnswer = optionTextViews[selectedOptionIndex].getText() != null
+                    ? optionTextViews[selectedOptionIndex].getText().toString()
                     : "";
 
             // Debug: Log the selected and correct answers to check for any issues
@@ -185,7 +183,7 @@ public class ColourGameFirstActivity extends AppCompatActivity {
                 score++;
                 Toast.makeText(this, "Oikein!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Väärin! Valitsemasi kuvalla on " + optionImageViews[selectedOptionIndex].getContentDescription().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Väärin! Kuvalla on " + words.get(currentQuestionIndex).toString(), Toast.LENGTH_SHORT).show();
             }
 
             // Move to the next question
