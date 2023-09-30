@@ -1,8 +1,6 @@
 package com.example.testi.games;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testi.R;
 
-import com.example.testi.Word;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,10 +41,10 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animalgamefirstactivity);
 
-        // Initialize Firebase Database reference
+        // Etsitään ja tallennetaan Words/Animalgame path databaseReference muuttujaan
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/Animalgame");
 
-        // Initialize UI elements
+        // Alustetaan UI elementit
         questionImageView = findViewById(R.id.animalGameFirstTextBackground);
         questionTextView = findViewById(R.id.animalGameSecondText2);
         optionImageViews = new ImageView[4];
@@ -56,13 +53,13 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         optionImageViews[2] = findViewById(R.id.animalGameFirstOption3);
         optionImageViews[3] = findViewById(R.id.animalGameFirstOption4);
 
-        // Initialize word list
+        // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
         words = new ArrayList<>();
 
-        // Load words from Firebase and set up the game
+        // Ladataan sanat tietokannasta ja alustetaan pelin
         loadWordsAndSetUpGame();
 
-        // Set click listeners for option ImageViews
+        // Laitetaan clickListerenejä option ImageViewille (Eli siis eläimen kuville)
         for (int i = 0; i < 4; i++) {
             final int optionIndex = i;
             optionImageViews[i].setOnClickListener(new View.OnClickListener() {
@@ -75,26 +72,26 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     }
 
     private void loadWordsAndSetUpGame() {
-        // Add a ValueEventListener to retrieve only the keys (names) of the words
+        // Lisätään ValueEventListenerin että saadaan ladattua (tietokannasta) vain ja ainoastaan sanojen nimet (keys)!
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Iterate through the children of "Animalgame" and add word names to the list
+                // Iteroidaan AnimalGamen läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
                     String word = wordSnapshot.getKey();
                     words.add(word);
                 }
 
-                // Shuffle the word list to randomize the order of questions
+                // Shufflataan sanat arraynListin sisällä että randomisoidaan kysymyksien järjestys
                 Collections.shuffle(words);
 
-                // Start the game
+                // Seuraava kysymys
                 showNextQuestion();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle errors if data retrieval fails
+                // Printataan error jos sellainen tulee vastaan
                 System.err.println("Error: " + databaseError.getMessage());
             }
         });
@@ -102,35 +99,35 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
 
     private void showNextQuestion() {
         if (currentQuestionIndex < words.size()) {
-            // Get the correct answer (word) for the current question
+            // Otetaan oikean vastauksen nykyiseen kysymykseen
             correctAnswer = words.get(currentQuestionIndex);
 
-            // Set the question image based on the correct answer (e.g., "bear" -> R.drawable.bearanimalgame)
+            // Aseta kysymyskuva perustuen oikeaan vastauksen (esim., "bear" -> R.drawable.bearanimalgame)
             int questionImageResource = getResources().getIdentifier(correctAnswer.toLowerCase() + "animalgame", "drawable", getPackageName());
 
-            // Set the text of questionTextView to the correct word
+            // Aseta kysymysTextViewin tekstiin oikeaan sanaan.
             questionTextView.setText(correctAnswer);
 
 
-            // Generate random incorrect answers and place their images in the other positions
+            // Generoi satunnaisia virheellisiä vastauksia ja aseta niiden kuvat muihin paikkoihin.
             List<Integer> incorrectAnswerIndices = getRandomIncorrectAnswerIndices(3); // Generate 3 incorrect answers
 
 
-            // Ensure that the correct answer is placed on one of the options
+            // Varmistetaan, että oikea vastaus sijoitetaan yhteen vaihtoehtoon
             int correctAnswerPosition = new Random().nextInt(4);
 
-            // Create an array to keep track of whether each option has been assigned
+            // Luodaan taulukkon seuraamaan, onko jokainen option valittu ja asetettu arvon
             boolean[] assignedOptions = new boolean[4];
             for (int i = 0; i < 4; i++) {
                 assignedOptions[i] = false;
             }
 
-            // Assign the correct answer to a random unassigned position
+            // Sijoitetaan oikean vastauksen random paikkaan
             assignedOptions[correctAnswerPosition] = true;
             optionImageViews[correctAnswerPosition].setContentDescription(correctAnswer.toLowerCase());
             optionImageViews[correctAnswerPosition].setImageResource(questionImageResource);
 
-            // Assign incorrect answers to the remaining positions
+            // Laitetaan muut väärät vastaukset muille vapaille paikoille
             for (int i = 0; i < 4; i++) {
                 if (!assignedOptions[i]) {
                     int incorrectIndex = incorrectAnswerIndices.remove(0);
@@ -141,7 +138,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 }
             }
         } else {
-            // End of the game
+            // Peli päättyy
             questionImageView.setImageResource(0); // Remove the question image
             questionTextView.setText(""); // Clear the questionTextView
 
@@ -156,12 +153,12 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
 
 
     private List<Integer> getRandomIncorrectAnswerIndices(int count) {
-        // To keep it simple, we'll just randomly select indices from the word list
+        // Satunnaisesti valitaan indeksejä sanaluettelosta (words arrayLististä).
         List<Integer> incorrectAnswerIndices = new ArrayList<>();
-        int correctAnswerIndex = words.indexOf(correctAnswer); // Get the index of the correct answer
+        int correctAnswerIndex = words.indexOf(correctAnswer); // Saadaan oikean vastauksen indeksi
         while (incorrectAnswerIndices.size() < count) {
             int randomIndex = new Random().nextInt(words.size());
-            // Check if the selected index is not the correct answer index and is not already in the list
+            // Tarkistetaan, että valittu indeksi ei ole oikea vastausindeksissa eikä se ole jo väärien sanojen luettelossa.
             if (randomIndex != correctAnswerIndex && !incorrectAnswerIndices.contains(randomIndex)) {
                 incorrectAnswerIndices.add(randomIndex);
             }
@@ -173,24 +170,23 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
 
     private void checkAnswer(int selectedOptionIndex) {
         if (currentQuestionIndex < words.size()) {
-            // Get the content description of the selected option
+            // Haetaan valitun vaihtoehdon sisällön kuvaus
             String selectedAnswer = optionImageViews[selectedOptionIndex].getContentDescription() != null
                     ? optionImageViews[selectedOptionIndex].getContentDescription().toString()
                     : "";
 
-            // Debug: Log the selected and correct answers to check for any issues
             Log.d("Debug", "Selected Answer: " + selectedAnswer);
             Log.d("Debug", "Correct Answer: " + correctAnswer);
 
-            // Check if the selected answer matches the correct answer
-            if (selectedAnswer.equalsIgnoreCase(correctAnswer)) { // Use equalsIgnoreCase for case-insensitive comparison
+            // Tarkistetaan jos valittu vastaus matchaa oikeaan vastaukseen
+            if (selectedAnswer.equalsIgnoreCase(correctAnswer)) {
                 score++;
                 Toast.makeText(this, "Oikein!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Väärin! Valitsemasi kuvalla on " + optionImageViews[selectedOptionIndex].getContentDescription().toString(), Toast.LENGTH_SHORT).show();
             }
 
-            // Move to the next question
+            // Mennään seuraavaan kysymykseen/roudiin
             currentQuestionIndex++;
             showNextQuestion();
         }
