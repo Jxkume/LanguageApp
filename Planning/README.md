@@ -1,6 +1,6 @@
-##Projekti suunnitelma asia filu
+# Projekti suunnitelma asia filu
 
-#Pieni otsikko
+## Pieni otsikko
 
 tksetihjodsifbagflkadfsd
 gzdhrrs
@@ -9,7 +9,7 @@ sgh
 shf
 geg
 
-#Pieni otsikko
+## Pieni otsikko
 
 kghgd<
 egwg
