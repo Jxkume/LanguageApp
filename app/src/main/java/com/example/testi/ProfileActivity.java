@@ -1,19 +1,15 @@
 package com.example.testi;
 
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity{
-    // Asetetaan PopUpWindow muuttujan
-    private PopupWindow popupWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,48 +18,6 @@ public class ProfileActivity extends AppCompatActivity{
         // Haetaan aktiviteetin alanapit ja profiilikuva/profiilikuvanbackground
         ImageView homeIcon = findViewById(R.id.homeIcon);
         ImageView settingsIcon = findViewById(R.id.settingsIcon);
-        ImageView profilePictureBackground = findViewById(R.id.profilePictureBackground);
-        ImageView profilePicture = findViewById(R.id.newProfilePicture1);
-
-        // Luodaan popUp olio
-        popupWindow = createPopupWindow(this);
-
-        // Kun käyttäjä painaa profile iconista, se siirtyy popupiin
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!popupWindow.isShowing()){
-                    int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
-                    int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-                    int popupWidth = popupWindow.getWidth();
-                    int popupHeight = popupWindow.getHeight();
-
-                    int centerX = (screenWidth - popupWidth) / 2;
-                    int centerY = (screenHeight - popupHeight) / 2;
-
-                    // Laitetaan popUpin keskelle näyttöä esille
-                    popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, centerX, centerY);
-                }
-            }
-        });
-        // Tässä jos käyttäjä painaa iconin backgroundilta, popuppi aukee
-        profilePictureBackground.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!popupWindow.isShowing()){
-                    int screenWidth = getWindowManager().getDefaultDisplay().getWidth();
-                    int screenHeight = getWindowManager().getDefaultDisplay().getHeight();
-                    int popupWidth = popupWindow.getWidth();
-                    int popupHeight = popupWindow.getHeight();
-
-                    int centerX = (screenWidth - popupWidth) / 2;
-                    int centerY = (screenHeight - popupHeight) / 2;
-
-                    // Asetetaan popuppi keskellä näyttöä
-                    popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, centerX, centerY);
-                }
-            }
-        });
 
         // Lisätään nappeihin klikkaustoiminnallisuus
         homeIcon.setOnClickListener(v -> {
@@ -80,20 +34,23 @@ public class ProfileActivity extends AppCompatActivity{
             overridePendingTransition(0, 0);
         });
 
+        // Haetaan profiilikuvan tausta pop-uppia varten
+        ImageView profilePictureBackground = findViewById(R.id.profilePictureBackground);
 
+        // Tällä saadaan pop-up näkyville, kun klikataan profiilikuvan taustaa
+        profilePictureBackground.setOnClickListener(v -> {
 
-    }
-    // Luodaan popupwindowin ja asetetaan sen width ja heightin
-    private PopupWindow createPopupWindow(Context context) {
-        PopupWindow popupWindow = new PopupWindow(context);
-        View popupView = LayoutInflater.from(context).inflate(R.layout.popup_layout, null);
-        popupWindow.setContentView(popupView);
+            final Dialog popUp = new Dialog(ProfileActivity.this);
 
-        popupWindow.setWidth(950);
-        popupWindow.setHeight(2000);
-        popupWindow.setFocusable(true);
+            popUp.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            popUp.getWindow().setDimAmount(0.2f);
 
-        return popupWindow;
+            popUp.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            popUp.setContentView(R.layout.profilepicturepopup);
+            popUp.show();
+
+        });
+
     }
 
 }
