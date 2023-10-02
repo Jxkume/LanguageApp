@@ -12,6 +12,7 @@ public class Session {
     public int XP;
     public int Level;
     public String Username;
+    public int photoID;
 
     // Määritellään pelin/pelien ominaisuudet
     public static class ColourGame{
@@ -33,12 +34,13 @@ public class Session {
     public AnimalGame AnimalGame = new AnimalGame();
 
     // Tehdään Sessionin konstruktori JA alustetaan pelin ominaisuudet (Vähän niinku tehtäis Hash-Map)
-    public Session(int sessionID, int age, String username, int XP, int level) {
+    public Session(int sessionID, int age, String username, int XP, int level, int photoID) {
         this.SessionID = sessionID;
         this.Age = age;
         this.Username = username;
         this.XP = XP;
         this.Level = level;
+        this.photoID = photoID;
 
         // Täällä alustetaan pelien ominaisuudet
         ColourGame.Attempts = 0;
@@ -93,5 +95,8 @@ public class Session {
 
         // Asetetaan AnimalGame ominaisuuteen arvon
         newSessionRef.child("AnimalGame").setValue(AnimalGame);
+
+        // Asetetaan PhotoID ominaisuuteen arvon
+        newSessionRef.child("PhotoID").setValue(photoID);
     }
 }
