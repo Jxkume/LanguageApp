@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/chooseprofilepicture" />
+        app:srcCompat="@drawable/profilepicture" />
 
     <ImageView
         android:id="@+id/newProfilePicture2"
@@ -33,6 +33,8 @@
         android:layout_height="80dp"
         android:layout_marginStart="19dp"
         android:layout_marginTop="22dp"
+        android:contentDescription="Fox Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newProfilePictureBackground2"
         app:srcCompat="@drawable/foxprofilepicture" />
@@ -42,6 +44,8 @@
         android:layout_width="71dp"
         android:layout_height="80dp"
         android:layout_marginTop="22dp"
+        android:contentDescription="Wolf Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintEnd_toStartOf="@+id/profilePictureOption3"
         app:layout_constraintStart_toEndOf="@+id/profilePictureOption1"
         app:layout_constraintTop_toBottomOf="@+id/newProfilePictureBackground2"
@@ -53,6 +57,8 @@
         android:layout_height="80dp"
         android:layout_marginTop="22dp"
         android:layout_marginEnd="19dp"
+        android:contentDescription="Zebra Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newProfilePictureBackground2"
         app:srcCompat="@drawable/zebraprofilepicture" />
@@ -63,6 +69,8 @@
         android:layout_height="80dp"
         android:layout_marginStart="19dp"
         android:layout_marginTop="19dp"
+        android:contentDescription="Penguin Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureOption1"
         app:srcCompat="@drawable/penguinprofilepicture" />
@@ -72,6 +80,8 @@
         android:layout_width="71dp"
         android:layout_height="80dp"
         android:layout_marginTop="19dp"
+        android:contentDescription="Duck Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintEnd_toStartOf="@+id/profilePictureOption6"
         app:layout_constraintStart_toEndOf="@+id/profilePictureOption4"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureOption2"
@@ -83,6 +93,8 @@
         android:layout_height="80dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="19dp"
+        android:contentDescription="Tiger Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureOption3"
         app:srcCompat="@drawable/tigerprofilepicture" />
@@ -93,6 +105,8 @@
         android:layout_height="80dp"
         android:layout_marginStart="19dp"
         android:layout_marginTop="19dp"
+        android:contentDescription="Crocodile Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureOption4"
         app:srcCompat="@drawable/crocodileprofilepicture" />
@@ -102,6 +116,8 @@
         android:layout_width="71dp"
         android:layout_height="80dp"
         android:layout_marginTop="19dp"
+        android:contentDescription="Sloth Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintEnd_toStartOf="@+id/profilePictureOption9"
         app:layout_constraintStart_toEndOf="@+id/profilePictureOption7"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureOption5"
@@ -113,6 +129,8 @@
         android:layout_height="80dp"
         android:layout_marginTop="19dp"
         android:layout_marginEnd="19dp"
+        android:contentDescription="Cat Profile Picture Option"
+        android:onClick="onProfilePictureOptionClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profilePictureOption6"
         app:srcCompat="@drawable/catprofilepicture" />
