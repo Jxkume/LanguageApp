@@ -32,6 +32,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
     private String correctAnswer;
     private int score;
     private int currentQuestionIndex = 0;
+    private ImageView exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
         score = intent.getIntExtra("score", score);
 
         // Initializing UI elements
+        exitButton = findViewById(R.id.animalGameExitButton);
         //Initializing the Image View where image will be showed
         questionImageView = findViewById(R.id.animalGameSecondOption);
         optionTextViews = new TextView[4];
@@ -53,6 +55,12 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
         optionTextViews[1] = findViewById(R.id.animalGameSecondText2);
         optionTextViews[2] = findViewById(R.id.animalGameSecondText3);
         optionTextViews[3] = findViewById(R.id.animalGameSecondText4);
+
+        exitButton.setOnClickListener(v -> {
+            Intent home = new Intent(AnimalGameSecondActivity.this, HomeActivity.class);
+            startActivity(home);
+            overridePendingTransition(0, 0);
+        });
 
         // Initialize word list
         words = new ArrayList<>();

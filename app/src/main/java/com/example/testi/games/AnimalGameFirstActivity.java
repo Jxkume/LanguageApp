@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.testi.HomeActivity;
 import com.example.testi.R;
 
 import com.example.testi.Word;
@@ -38,6 +39,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     private String correctAnswer;
     private int score = 0;
     private int currentQuestionIndex = 0;
+    private ImageView exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/Animalgame");
 
         // Initialize UI elements
+        exitButton = findViewById(R.id.animalGameExitButton);
         questionImageView = findViewById(R.id.animalGameFirstTextBackground);
         questionTextView = findViewById(R.id.animalGameSecondText2);
         optionImageViews = new ImageView[4];
@@ -55,6 +58,12 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         optionImageViews[1] = findViewById(R.id.animalGameFirstOption2);
         optionImageViews[2] = findViewById(R.id.animalGameFirstOption3);
         optionImageViews[3] = findViewById(R.id.animalGameFirstOption4);
+
+        exitButton.setOnClickListener(v -> {
+            Intent home = new Intent(AnimalGameFirstActivity.this, HomeActivity.class);
+            startActivity(home);
+            overridePendingTransition(0, 0);
+        });
 
         // Initialize word list
         words = new ArrayList<>();

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.testi.HomeActivity;
 import com.example.testi.R;
 
 import com.example.testi.Word;
@@ -37,6 +38,7 @@ public class ColourGameFirstActivity extends AppCompatActivity {
     private String correctAnswer;
     private int score = 0;
     private int currentQuestionIndex = 0;
+    private ImageView exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class ColourGameFirstActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/Colourgame");
 
         // Initialize UI elements
+        exitButton = findViewById(R.id.colourGameExitButton);
         questionImageView = findViewById(R.id.colourGameFirstTextBackground);
         questionTextView = findViewById(R.id.colourGameSecondText2);
         optionImageViews = new ImageView[4];
@@ -55,11 +58,19 @@ public class ColourGameFirstActivity extends AppCompatActivity {
         optionImageViews[2] = findViewById(R.id.colourGameFirstOption3);
         optionImageViews[3] = findViewById(R.id.colourGameFirstOption4);
 
+        exitButton.setOnClickListener(v -> {
+            Intent home = new Intent(ColourGameFirstActivity.this, HomeActivity.class);
+            startActivity(home);
+            overridePendingTransition(0, 0);
+        });
+
         // Initialize word list
         words = new ArrayList<>();
 
         // Load words from Firebase and set up the game
         loadWordsAndSetUpGame();
+
+
 
         // Set click listeners for option ImageViews
         for (int i = 0; i < 4; i++) {

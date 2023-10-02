@@ -31,6 +31,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     private String correctAnswer;
     private int score;
     private int currentQuestionIndex = 0;
+    private ImageView exitButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class ColourGameSecondActivity extends AppCompatActivity {
         score = intent.getIntExtra("score", score);
 
         // Initializing UI elements
+        // Initializing button which closes the game
+        exitButton = findViewById(R.id.colourGameExitButton);
         //Initializing the Image View where image will be showed
         questionImageView = findViewById(R.id.colourGameSecondOption);
         optionTextViews = new TextView[4];
@@ -54,8 +57,17 @@ public class ColourGameSecondActivity extends AppCompatActivity {
         optionTextViews[2] = findViewById(R.id.colourGameSecondText3);
         optionTextViews[3] = findViewById(R.id.colourGameSecondText4);
 
+        exitButton.setOnClickListener(v -> {
+            Intent home = new Intent(ColourGameSecondActivity.this, HomeActivity.class);
+            startActivity(home);
+            overridePendingTransition(0, 0);
+        });
+
         // Initializing word list
         words = new ArrayList<>();
+
+        //Opening the Home activity, when exit button is pressed
+
 
         // Load words from Firebase and set up the game
         loadWordsAndSetUpGame();
