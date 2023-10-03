@@ -33,6 +33,10 @@ public class Session {
     public ColourGame ColourGame = new ColourGame();
     public AnimalGame AnimalGame = new AnimalGame();
 
+    public Session() {
+
+    }
+
     // Tehdään Sessionin konstruktori JA alustetaan pelin ominaisuudet (Vähän niinku tehtäis Hash-Map)
     public Session(int sessionID, int age, String username, int XP, int level, int photoID) {
         this.SessionID = sessionID;

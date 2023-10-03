@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF3EC"
+    android:padding="8dp"
+    android:id="@+id/toast_layout_incorrect">
+
+    <ImageView
+        android:id="@+id/toct_layout_correct_img"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/incorrect_icon_popup"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/toct_layout_correct_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Väärin"
+        android:fontFamily="@font/baloo2_extra"
+        android:textSize="45sp"/>
+
+</LinearLayout>
