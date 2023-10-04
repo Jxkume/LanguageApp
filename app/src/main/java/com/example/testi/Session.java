@@ -53,6 +53,7 @@ public class Session {
         AnimalGame.WrongAnswers = 0;
         AnimalGame.AnimalGameID = 0;
 
+
         // Lopuksi kutsutaan pushToFirebase että muutokset menevät tietokantaan asti aina kun luodaan uuden sessionin
         // Tämä tietenkin tule muuttumaan nyt tää on "kovakoodattu" että testataan toimivuuden
         pushToFirebase();
