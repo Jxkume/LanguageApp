@@ -27,7 +27,7 @@ public class NewSessionActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private int latestSessionKey;
     private boolean isProfilePictureSelected = false;
-
+    private int profilePictureID;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -37,7 +37,7 @@ public class NewSessionActivity extends AppCompatActivity {
 
         // Luodaan sharePreferences nimeltään MyPrefs SessionID:tä varten
         sharedPreferences = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
-        latestSessionKey = sharedPreferences.getInt("latestSessionID", 1);
+        latestSessionKey = sharedPreferences.getInt("latestSessionKey", 1);
 
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
@@ -104,14 +104,13 @@ public class NewSessionActivity extends AppCompatActivity {
 
                 int age = Integer.parseInt(ageStr);
 
-                Session session = new Session(latestSessionKey, age, username, 0, 1, selectedProfilePicture); // TÄHÄN KOHTAAN MUUTOS
+                Session session = new Session(latestSessionKey, age, username, 0, 1, profilePictureID);
 
                 latestSessionKey++;
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("latestSessionID", latestSessionKey);
+                editor.putInt("latestSessionKey", latestSessionKey);
                 editor.apply();
-
 
                 Intent intent = new Intent(NewSessionActivity.this, HomeActivity.class);
                 startActivity(intent);
@@ -140,37 +139,39 @@ public class NewSessionActivity extends AppCompatActivity {
         if (profilePictureId == R.id.profilePictureOption1) {
             selectedProfilePicture = R.drawable.foxprofilepicture;
             isProfilePictureSelected = true;
-            // Ei ole fox tietokannassa
+            profilePictureID = 1;
         } else if (profilePictureId == R.id.profilePictureOption2) {
             selectedProfilePicture = R.drawable.wolfprofilepicture;
             isProfilePictureSelected = true;
+            profilePictureID = 2;
         } else if (profilePictureId == R.id.profilePictureOption3) {
             selectedProfilePicture = R.drawable.zebraprofilepicture;
             isProfilePictureSelected = true;
-            // Ei ole zebra tietokannassa
+            profilePictureID = 3;
         } else if (profilePictureId == R.id.profilePictureOption4) {
             selectedProfilePicture = R.drawable.penguinprofilepicture;
             isProfilePictureSelected = true;
-            // Ei ole penguin tietokannassa
+            profilePictureID = 4;
         } else if (profilePictureId == R.id.profilePictureOption5) {
             selectedProfilePicture = R.drawable.duckprofilepicture;
             isProfilePictureSelected = true;
-            // Ei ole duck tietokannassa
+            profilePictureID = 5;
         } else if (profilePictureId == R.id.profilePictureOption6) {
             selectedProfilePicture = R.drawable.tigerprofilepicture;
             isProfilePictureSelected = true;
-            // Ei ole tiger tietokannassa
+            profilePictureID = 6;
         } else if (profilePictureId == R.id.profilePictureOption7) {
             selectedProfilePicture = R.drawable.crocodileprofilepicture;
             isProfilePictureSelected = true;
-            // Ei ole crocodile tietokannassa
+            profilePictureID = 7;
         } else if (profilePictureId == R.id.profilePictureOption8) {
             selectedProfilePicture = R.drawable.slothprofilepicture;
             isProfilePictureSelected = true;
-            // Ei ole sloth tietokannassa
+            profilePictureID = 8;
         } else if (profilePictureId == R.id.profilePictureOption9) {
             selectedProfilePicture = R.drawable.catprofilepicture;
             isProfilePictureSelected = true;
+            profilePictureID = 9;
         }
 
         // Päivitetään aktiviteetissa oleva profiilikuva valitulla kuvalla
