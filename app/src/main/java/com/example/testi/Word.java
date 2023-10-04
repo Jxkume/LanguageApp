@@ -4,11 +4,11 @@ package com.example.testi;
 public class Word {
     private String English;
     private int Level;
-    private String PhotoID;
+    private int PhotoID;
     private int WordID;
     private Word[] incorrectAnswers;
 
-    public Word(String desc, int lvl, String pic, int id, Word[] incorrect) {
+    public Word(String desc, int lvl, int pic, int id, Word[] incorrect) {
         English = desc;
         Level = lvl;
         PhotoID = pic;
@@ -18,7 +18,7 @@ public class Word {
 
     public Word(){}
 
-    public void setPhotoID(String id){
+    public void setPhotoID(int id){
         PhotoID = id;
     }
 
@@ -50,7 +50,7 @@ public class Word {
         return Level;
     }
 
-    public String getPhotoID() {
+    public int getPhotoID() {
         return PhotoID;
     }
 

@@ -13,8 +13,5 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Luodaan uusi session :D
-        // Tämä riivin pitää olla siellä missä Sessionit luodaankaan. T.Jhon
-        Session session = new Session(2, 6, "Pedro" , 0, 1, 1);
-    }
+        }
 }
