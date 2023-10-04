@@ -27,6 +27,8 @@ public class NewSessionActivity extends AppCompatActivity {
     private EditText ageEditText;
     private SharedPreferences sharedPreferences;
     private int latestSessionID;
+    private boolean isProfilePictureSelected = false;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,45 +51,74 @@ public class NewSessionActivity extends AppCompatActivity {
         imageViewValmis.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Muutetaan käyttäjän asettamia tietoja stringiks ja intiksi
+
                 String username = usernameEditText.getText().toString();
-                int age = Integer.parseInt(ageEditText.getText().toString());
                 String ageStr = ageEditText.getText().toString();
+
+                // Jos kaikki kentät on tyhjiä heitetään alert
+                if (username.trim().isEmpty() && ageStr.trim().isEmpty() && !isProfilePictureSelected) {
+                    showAlert("Täytä kaikki kentät", "Täytä kaikki tiedot");
+                    return;
+                }
+
+                // Jos nimi ja ikä kentät ovat tyhjiä heitetään alert
+                if (username.trim().isEmpty() && ageStr.trim().isEmpty()){
+                    showAlert("Täytä kaikki kentät", "Täytä nimi ja ikä kenttä jatkakseen");
+                    return;
+                }
+
+                // Jos nimi kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
+                if (username.trim().isEmpty() && !isProfilePictureSelected){
+                    showAlert("Täytä kaikki kentät", "Täytä nimi ja valitse profiilikuva jatkakseen");
+                    return;
+                }
+
+                // Jos ikä kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
+                if (ageStr.trim().isEmpty() && !isProfilePictureSelected){
+                    showAlert("Täytä kaikki kentät", "Täytä ikä ja valitse profiilikuva jatkakseen");
+                    return;
+                }
+
+                // Jos ainoastaan nimi kenttä on tyhjä heitetään alert
+                if (username.trim().isEmpty()){
+                    showAlert("Täytä nimi kenttä", "Täytä nimi kenttä jatkakseen");
+                    return;
+                }
+
+                // Jos ainoastaan ikä kenttä on tyhjä heitetään alert
+                if (ageStr.trim().isEmpty()) {
+                    showAlert("Täytä ikä kenttä", "Täytä ikä kenttä jatkakseen");
+                    return;
+                }
+
+                // Jos ainoastaa profiilikuva ei ole valittu heitetään alert
+                if (!isProfilePictureSelected){
+                    showAlert("Valitse profiilikuva", "Valitse profiilikuva jatkakseen");
+                    return;
+                }
 
                 // Validoidaan käyttäjän kirjoittama käyttäjätunnuksen
                 if (!validUsername(username)) {
                     showAlert("Virheellinen käyttäjätunnus"," Syötä käyttäjänimeen ainoastaan kirjaimia.");
-                    // Tällä returnilla estetään sen että tiedot eivät pushautuu tietokantaan. Eli toisinsanoen estää onClickin toiminnallisuuden.
                     return;
                 }
 
-                // Validoidaan käyttäjän kirjoittama ikä
-                if (!validIka(ageStr)){
-                    showAlert("Virheellinen ikä"," Syötä ikään ainoastaan numeroita.");
-                    // Tällä returnilla estetään sen että tiedot eivät pushautuu tietokantaan. Eli toisinsanoen estää onClickin toiminnallisuuden.
-                    return;
-                }
+                int age = Integer.parseInt(ageStr);
 
-
-                // Luodaan Session joka tallennetaan tietokantaan johon tulee käyttäjän asettamia tietoja
                 Session session = new Session(latestSessionID, age, username, 0, 1, selectedProfilePicture);
 
                 latestSessionID++;
 
-                // Editoidaan meidän äsken luomamme MyPrefs sharedPreferences ja lisätään 1 siellä olevan arvon
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("latestSessionID", latestSessionID);
                 editor.apply();
 
-                // Siirrytään seuraavaan aktiviteettiin (Päänäkymälle)
                 Intent intent = new Intent(NewSessionActivity.this, HomeActivity.class);
                 startActivity(intent);
 
-                // Finish() sulkee dialogit, näppäimistö, cursorit
                 finish();
             }
         });
-
 
         // Profiilikuvan valitseminen
         ImageView profilePictureBackground = findViewById(R.id.newProfilePictureBackground1);
@@ -95,8 +126,6 @@ public class NewSessionActivity extends AppCompatActivity {
             // Kutsutaan metodia, jolla saadaan profiilikuvien pop-up näkyville
             showProfilePicturePopup();
         });
-
-
     }
 
     // Pop-upin sisällä tapahtuva profiilikuvan onClick-metodi
@@ -110,30 +139,39 @@ public class NewSessionActivity extends AppCompatActivity {
         // Valitaan oikea profiilikuva id:n perusteella
         if (profilePictureId == R.id.profilePictureOption1) {
             selectedProfilePicture = R.drawable.foxprofilepicture;
+            isProfilePictureSelected = true;
             // Ei ole fox tietokannassa
         } else if (profilePictureId == R.id.profilePictureOption2) {
             selectedProfilePicture = R.drawable.wolfprofilepicture;
+            isProfilePictureSelected = true;
             wordsRef.child("Wolf").child("PhotoID").setValue(selectedProfilePicture);
         } else if (profilePictureId == R.id.profilePictureOption3) {
             selectedProfilePicture = R.drawable.zebraprofilepicture;
+            isProfilePictureSelected = true;
             // Ei ole zebra tietokannassa
         } else if (profilePictureId == R.id.profilePictureOption4) {
             selectedProfilePicture = R.drawable.penguinprofilepicture;
+            isProfilePictureSelected = true;
             // Ei ole penguin tietokannassa
         } else if (profilePictureId == R.id.profilePictureOption5) {
             selectedProfilePicture = R.drawable.duckprofilepicture;
+            isProfilePictureSelected = true;
             // Ei ole duck tietokannassa
         } else if (profilePictureId == R.id.profilePictureOption6) {
             selectedProfilePicture = R.drawable.tigerprofilepicture;
+            isProfilePictureSelected = true;
             // Ei ole tiger tietokannassa
         } else if (profilePictureId == R.id.profilePictureOption7) {
             selectedProfilePicture = R.drawable.crocodileprofilepicture;
+            isProfilePictureSelected = true;
             // Ei ole crocodile tietokannassa
         } else if (profilePictureId == R.id.profilePictureOption8) {
             selectedProfilePicture = R.drawable.slothprofilepicture;
+            isProfilePictureSelected = true;
             // Ei ole sloth tietokannassa
         } else if (profilePictureId == R.id.profilePictureOption9) {
             selectedProfilePicture = R.drawable.catprofilepicture;
+            isProfilePictureSelected = true;
             wordsRef.child("Cat").child("PhotoID").setValue(selectedProfilePicture);
         }
 
@@ -182,19 +220,9 @@ public class NewSessionActivity extends AppCompatActivity {
         return username.matches(regex);
     }
 
-    // Validoidaan ikä (Vain numerot)
-    private boolean validIka(String ageStr) {
-        String regex = "[0-9]+";
-        return ageStr.matches(regex);
-    }
-
     // Luodaan alertti ja laitetaan viestin siihen
     private void showAlert(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(NewSessionActivity.this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .show();
+        builder.setTitle(title).setMessage(message).setPositiveButton("OK", null).show();
     }
-
 }
