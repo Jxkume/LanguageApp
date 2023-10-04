@@ -1,6 +1,5 @@
 package com.example.testi;
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -26,7 +25,7 @@ public class NewSessionActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText ageEditText;
     private SharedPreferences sharedPreferences;
-    private int latestSessionID;
+    private int latestSessionKey;
     private boolean isProfilePictureSelected = false;
 
 
@@ -38,7 +37,7 @@ public class NewSessionActivity extends AppCompatActivity {
 
         // Luodaan sharePreferences nimeltään MyPrefs SessionID:tä varten
         sharedPreferences = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
-        latestSessionID = sharedPreferences.getInt("latestSessionID", 1);
+        latestSessionKey = sharedPreferences.getInt("latestSessionID", 1);
 
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
@@ -105,13 +104,14 @@ public class NewSessionActivity extends AppCompatActivity {
 
                 int age = Integer.parseInt(ageStr);
 
-                Session session = new Session(latestSessionID, age, username, 0, 1, selectedProfilePicture);
+                Session session = new Session(latestSessionKey, age, username, 0, 1, selectedProfilePicture); // TÄHÄN KOHTAAN MUUTOS
 
-                latestSessionID++;
+                latestSessionKey++;
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("latestSessionID", latestSessionID);
+                editor.putInt("latestSessionID", latestSessionKey);
                 editor.apply();
+
 
                 Intent intent = new Intent(NewSessionActivity.this, HomeActivity.class);
                 startActivity(intent);
@@ -144,7 +144,6 @@ public class NewSessionActivity extends AppCompatActivity {
         } else if (profilePictureId == R.id.profilePictureOption2) {
             selectedProfilePicture = R.drawable.wolfprofilepicture;
             isProfilePictureSelected = true;
-            wordsRef.child("Wolf").child("PhotoID").setValue(selectedProfilePicture);
         } else if (profilePictureId == R.id.profilePictureOption3) {
             selectedProfilePicture = R.drawable.zebraprofilepicture;
             isProfilePictureSelected = true;
@@ -172,7 +171,6 @@ public class NewSessionActivity extends AppCompatActivity {
         } else if (profilePictureId == R.id.profilePictureOption9) {
             selectedProfilePicture = R.drawable.catprofilepicture;
             isProfilePictureSelected = true;
-            wordsRef.child("Cat").child("PhotoID").setValue(selectedProfilePicture);
         }
 
         // Päivitetään aktiviteetissa oleva profiilikuva valitulla kuvalla

@@ -7,7 +7,7 @@ public class Session {
 
     // Määritellään jokaisen sessionin ominaisuudet/nodet (Node on siis ominaisuus/entity joka voi "sisältää" lisää ominaisuuksia)
     // Tässä tapauksessa meidän pelit ovat nodeja.
-    public int SessionID;
+
     public int Age;
     public int XP;
     public int Level;
@@ -34,8 +34,7 @@ public class Session {
     public AnimalGame AnimalGame = new AnimalGame();
 
     // Tehdään Sessionin konstruktori JA alustetaan pelin ominaisuudet (Vähän niinku tehtäis Hash-Map)
-    public Session(int sessionID, int age, String username, int XP, int level, int photoID) {
-        this.SessionID = sessionID;
+    public Session(int key, int age, String username, int XP, int level, int photoID) { // Konstruktori saa parametrina keyn
         this.Age = age;
         this.Username = username;
         this.XP = XP;
@@ -53,13 +52,16 @@ public class Session {
         AnimalGame.WrongAnswers = 0;
         AnimalGame.AnimalGameID = 0;
 
+        // Key muutetaan stringiksi
+        String keyString = "" + key;
 
         // Lopuksi kutsutaan pushToFirebase että muutokset menevät tietokantaan asti aina kun luodaan uuden sessionin
         // Tämä tietenkin tule muuttumaan nyt tää on "kovakoodattu" että testataan toimivuuden
-        pushToFirebase();
+        pushToFirebase(keyString);
+
     }
 
-    public void pushToFirebase() {
+    public void pushToFirebase(String keyString) {
         // Haetaan firebasen instanssi ja tallennetaan sen muuttujaan
         FirebaseDatabase FirebaseDatabase = com.google.firebase.database.FirebaseDatabase.getInstance();
 
@@ -69,21 +71,14 @@ public class Session {
         // Mennään Sessions nodeen ja tallennetaan se referenssi muuttujaan
         DatabaseReference sessionsRef = rootRef.child("Sessions");
 
-        // .push tekee sen että aina kun luodaan uusi session, se laittaa ylimmäksi nodeksi uniikki key (random numeroita ja kirjaimia)
-        // joilla voidaan erotella sessionit JA tärkeimpänä sessionit eivät overwrittaa toisiaan vaan joka kertaa kun luodaan uusi session
-        // se luo vaan uuden uniikki key eli noden ja sitten samat ominaisuudet kuin muissa sessionissa
-
-        // Toivottavasti saatte edes jotain selvää tästä selityksestä, jos ette ymmärrä kattokaa ihan firebasen sivuilta :D
-        DatabaseReference newSessionRef = sessionsRef.push();
+        // Luodaan sessionille key, joka on arvoltaan 1 tai enemmän (riippuen mikä keyn arvo on konstruktorin parametrina)
+        DatabaseReference newSessionRef = sessionsRef.child(keyString);
 
         // Asetetaan Age ominaisuuteen arvon
         newSessionRef.child("Age").setValue(Age);
 
         // Asetetaan Username ominaisuuteen arvon
         newSessionRef.child("Username").setValue(Username);
-
-        // Asetetaan SessionID ominaisuuteen arvon
-        newSessionRef.child("SessionID").setValue(SessionID);
 
         // Asetetaan XP ominaisuuteen arvon
         newSessionRef.child("XP").setValue(XP);
