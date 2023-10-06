@@ -110,7 +110,11 @@ public class NewSessionActivity extends AppCompatActivity {
 
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putInt("latestSessionKey", latestSessionKey);
+
+                //tallennetaan nykyisen session avain, jotta ohjelma tietää, kuka sitä käyttää. sen avulla myöhemmin haetaan kaikki tiedot (username, avatar, edistminen) tietokannasta
+                editor.putString("currentSessionKey", session.getSessionUniqueKey());
                 editor.apply();
+
 
                 Intent intent = new Intent(NewSessionActivity.this, HomeActivity.class);
                 startActivity(intent);

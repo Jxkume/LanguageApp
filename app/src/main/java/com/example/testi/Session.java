@@ -12,7 +12,11 @@ public class Session {
     public int XP;
     public int Level;
     public String Username;
-    public int photoID;
+    //tän pitää olla PhotoID, koska tällä nimellä se kenttä löytyy firebasesta
+    public int PhotoID;
+
+    //TODO: comment this
+    private String sessionUniqueKey;
 
     // Määritellään pelin/pelien ominaisuudet
     public static class ColourGame{
@@ -43,7 +47,7 @@ public class Session {
         this.Username = username;
         this.XP = XP;
         this.Level = level;
-        this.photoID = photoID;
+        this.PhotoID = photoID;
 
         // Täällä alustetaan pelien ominaisuudet
         ColourGame.Attempts = 0;
@@ -78,6 +82,9 @@ public class Session {
         // Luodaan sessionille key, joka on arvoltaan 1 tai enemmän (riippuen mikä keyn arvo on konstruktorin parametrina)
         DatabaseReference newSessionRef = sessionsRef.child(keyString);
 
+        //Haetaan session avaimen firebasesta
+        sessionUniqueKey = newSessionRef.getKey();
+
         // Asetetaan Age ominaisuuteen arvon
         newSessionRef.child("Age").setValue(Age);
 
@@ -97,6 +104,11 @@ public class Session {
         newSessionRef.child("AnimalGame").setValue(AnimalGame);
 
         // Asetetaan PhotoID ominaisuuteen arvon
-        newSessionRef.child("PhotoID").setValue(photoID);
+        newSessionRef.child("PhotoID").setValue(PhotoID);
+    }
+
+    //Metodi palauttaa session uniikki avaimen
+    public String getSessionUniqueKey() {
+        return sessionUniqueKey;
     }
 }
