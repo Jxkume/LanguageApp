@@ -17,7 +17,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SessionsActivity extends AppCompatActivity {
 
-    private boolean saveslotTaken = false;
     private ImageView firstSessionButton, secondSessionButton, thirdSessionButton, fourthSessionButton, fifthSessionButton;
     private TextView firstSessionTextView, secondSessionTextView, thirdSessionTextView, fourthSessionTextView, fifthSessionTextView;
 
@@ -25,21 +24,33 @@ public class SessionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Kutsutaan tätä jo nyt, että nappien ulkonäköä voidaan muuttaa
         setContentView(R.layout.activity_sessions);
 
+        // Haetaan kaikki napit
         this.firstSessionButton = findViewById(R.id.session1_btn);
         this.secondSessionButton = findViewById(R.id.session2_btn);
         this.thirdSessionButton = findViewById(R.id.session3_btn);
         this.fourthSessionButton = findViewById(R.id.session4_btn);
         this.fifthSessionButton = findViewById(R.id.session5_btn);
 
+        // Haetaan kaikkien nappien tekstit
         this.firstSessionTextView = findViewById(R.id.firstSessionUsername);
         this.secondSessionTextView = findViewById(R.id.secondSessionUsername);
         this.thirdSessionTextView = findViewById(R.id.thirdSessionUsername);
         this.fourthSessionTextView = findViewById(R.id.fourthSessionUsername);
         this.fifthSessionTextView = findViewById(R.id.fifthSessionUsername);
 
+        // Asetetaan jokaiselle napille tägi, jotta voidaan myöhemmin tarkistaa napin ImageResource
+        this.firstSessionButton.setTag(R.drawable.newsession_btn);
+        this.secondSessionButton.setTag(R.drawable.newsession_btn);
+        this.thirdSessionButton.setTag(R.drawable.newsession_btn);
+        this.fourthSessionButton.setTag(R.drawable.newsession_btn);
+        this.fifthSessionButton.setTag(R.drawable.newsession_btn);
+
+        // Haetaan tietokannasta Sessions-node
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -49,23 +60,28 @@ public class SessionsActivity extends AppCompatActivity {
                         String sessionKey = sessionSnapshot.getKey();
                         // Haetaan avaimen sisällä oleva käyttäjän nimi
                         String username = sessionSnapshot.child("Username").getValue(String.class);
-
+                        // Jos avain löytyy, asetetaan nappi erilaiseksi ja laitetaan käyttäjän nimi sen sisälle, lisäksi muutetaan napin tägi
                         if (sessionKey != null) {
                             if (sessionKey.equals("1")) {
                                 firstSessionButton.setImageResource(R.drawable.oldsession);
                                 firstSessionTextView.setText(username);
+                                firstSessionButton.setTag(R.drawable.oldsession);
                             } else if (sessionKey.equals("2")) {
                                 secondSessionButton.setImageResource(R.drawable.oldsession);
                                 secondSessionTextView.setText(username);
+                                secondSessionButton.setTag(R.drawable.oldsession);
                             } else if (sessionKey.equals("3")) {
                                 thirdSessionButton.setImageResource(R.drawable.oldsession);
                                 thirdSessionTextView.setText(username);
+                                thirdSessionButton.setTag(R.drawable.oldsession);
                             } else if (sessionKey.equals("4")) {
                                 fourthSessionButton.setImageResource(R.drawable.oldsession);
                                 fourthSessionTextView.setText(username);
+                                fourthSessionButton.setTag(R.drawable.oldsession);
                             } else if (sessionKey.equals("5")) {
                                 fifthSessionButton.setImageResource(R.drawable.oldsession);
                                 fifthSessionTextView.setText(username);
+                                fifthSessionButton.setTag(R.drawable.oldsession);
                             }
                         }
                     }
@@ -78,101 +94,75 @@ public class SessionsActivity extends AppCompatActivity {
             }
         });
 
-    }
+        // Tarkistetaan nappien tägit ja ohjataan käyttäjä oikeaan aktiviteettiin tägin perusteella
 
-    private void setupClickListener1() {
-        ImageView slot1 = findViewById(R.id.session1_btn);
-
-        slot1.setOnClickListener( v ->{
-            Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
-            startActivity(newSession);
-            overridePendingTransition(0, 0);
-            saveslotTaken = true;
-            updateButton1();
+        firstSessionButton.setOnClickListener(v -> {
+            if ((int) firstSessionButton.getTag() == R.drawable.newsession_btn) {
+                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                newSession.putExtra("buttonClicked", 1);
+                startActivity(newSession);
+                overridePendingTransition(0, 0);
+            } else {
+                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                startActivity(oldSession);
+                overridePendingTransition(0, 0);
+            }
         });
-    }
 
-    private void setupClickListener2() {
-        ImageView slot2 = findViewById(R.id.session2_btn);
-
-        slot2.setOnClickListener( v ->{
-            Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
-            startActivity(newSession);
-            overridePendingTransition(0, 0);
-            saveslotTaken = true;
-            updateButton2();
+        secondSessionButton.setOnClickListener(v -> {
+            if ((int) secondSessionButton.getTag() == R.drawable.newsession_btn) {
+                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                newSession.putExtra("buttonClicked", 2);
+                startActivity(newSession);
+                overridePendingTransition(0, 0);
+            } else {
+                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                startActivity(oldSession);
+                overridePendingTransition(0, 0);
+            }
         });
-    }
 
-    private void setupClickListener3() {
-        ImageView slot3 = findViewById(R.id.session3_btn);
-
-        slot3.setOnClickListener( v ->{
-            Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
-            startActivity(newSession);
-            overridePendingTransition(0, 0);
-            saveslotTaken = true;
-            updateButton3();
+        thirdSessionButton.setOnClickListener(v -> {
+            if ((int) thirdSessionButton.getTag() == R.drawable.newsession_btn) {
+                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                newSession.putExtra("buttonClicked", 3);
+                startActivity(newSession);
+                overridePendingTransition(0, 0);
+            } else {
+                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                startActivity(oldSession);
+                overridePendingTransition(0, 0);
+            }
         });
-    }
 
-    private void setupClickListener4() {
-        ImageView slot4 = findViewById(R.id.session4_btn);
-
-        slot4.setOnClickListener( v ->{
-            Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
-            startActivity(newSession);
-            overridePendingTransition(0, 0);
-            saveslotTaken = true;
-            updateButton4();
+        fourthSessionButton.setOnClickListener(v -> {
+            if ((int) fourthSessionButton.getTag() == R.drawable.newsession_btn) {
+                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                newSession.putExtra("buttonClicked", 4);
+                startActivity(newSession);
+                overridePendingTransition(0, 0);
+            } else {
+                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                startActivity(oldSession);
+                overridePendingTransition(0, 0);
+            }
         });
-    }
 
-
-    private void setupClickListener5() {
-        ImageView slot5 = findViewById(R.id.session5_btn);
-
-        slot5.setOnClickListener( v ->{
-            Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
-            startActivity(newSession);
-            overridePendingTransition(0, 0);
-            saveslotTaken = true;
-            updateButton5();
+        fifthSessionButton.setOnClickListener(v -> {
+            if ((int) fifthSessionButton.getTag() == R.drawable.newsession_btn) {
+                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                newSession.putExtra("buttonClicked", 5);
+                startActivity(newSession);
+                overridePendingTransition(0, 0);
+            } else {
+                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                startActivity(oldSession);
+                overridePendingTransition(0, 0);
+            }
         });
+
+
+
     }
 
-    private void updateButton1() {
-        if (saveslotTaken == true ) {
-            ImageView slot1 = findViewById(R.id.session1_btn);
-            slot1.setImageResource(R.drawable.oldsession);
-        }
-    }
-
-    private void updateButton2() {
-        if (saveslotTaken == true) {
-            ImageView slot2 = findViewById(R.id.session2_btn);
-            slot2.setImageResource(R.drawable.oldsession);
-        }
-    }
-
-    private void updateButton3() {
-        if (saveslotTaken == true) {
-            ImageView slot3 = findViewById(R.id.session3_btn);
-            slot3.setImageResource(R.drawable.oldsession);
-        }
-    }
-
-    private void updateButton4() {
-        if (saveslotTaken == true) {
-            ImageView slot4 = findViewById(R.id.session4_btn);
-            slot4.setImageResource(R.drawable.oldsession);
-        }
-    }
-
-    private void updateButton5() {
-        if (saveslotTaken == true) {
-            ImageView slot5 = findViewById(R.id.session5_btn);
-            slot5.setImageResource(R.drawable.oldsession);
-        }
-    }
 }
