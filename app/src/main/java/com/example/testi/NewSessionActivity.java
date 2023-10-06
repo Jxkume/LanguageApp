@@ -13,9 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 public class NewSessionActivity extends AppCompatActivity {
 
     private ImageView newProfilePicture;
@@ -43,6 +40,7 @@ public class NewSessionActivity extends AppCompatActivity {
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
         newProfilePictureInPopUp = findViewById(R.id.newProfilePicture2);
+
         usernameEditText = findViewById(R.id.usernameEditText);
         ageEditText = findViewById(R.id.ageEditText);
         ImageView imageViewValmis = findViewById(R.id.newSessionReadyButton);
@@ -130,8 +128,6 @@ public class NewSessionActivity extends AppCompatActivity {
 
         // Haetaan klikatun kuvan id
         int profilePictureId = view.getId();
-
-        DatabaseReference wordsRef = FirebaseDatabase.getInstance().getReference().child("Words").child("Animalgame");
 
         // Valitaan oikea profiilikuva id:n perusteella
         if (profilePictureId == R.id.profilePictureOption1) {

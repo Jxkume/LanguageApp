@@ -1,9 +1,13 @@
 package com.example.testi;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,7 +32,13 @@ public class ProfileActivity extends AppCompatActivity{
     private String sessionKey;
 
     private SharedPreferences sharedPrefs;
+    private ImageView newProfilePicture;
+    private ImageView newProfilePictureInPopUp;
+    private int selectedProfilePicture;
+    private Dialog popUp;
+    private int profilePictureID;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +48,6 @@ public class ProfileActivity extends AppCompatActivity{
         sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         sessionKey = sharedPrefs.getString("currentSessionKey", "1");
 
-
         // Haetaan aktiviteetin UI elementit
         levelText = findViewById(R.id.levelText);
         usernameTextView = findViewById(R.id.usernameText);
@@ -46,6 +55,10 @@ public class ProfileActivity extends AppCompatActivity{
         goalXPTextView = findViewById(R.id.xpGoalText);
         ImageView homeIcon = findViewById(R.id.homeIcon);
         ImageView settingsIcon = findViewById(R.id.settingsIcon);
+
+        // Alustetaan elementit, joihin käyttäjän valitsema uusi profiilikuva tulee
+        newProfilePicture = findViewById(R.id.newProfilePicture1);
+        newProfilePictureInPopUp = findViewById(R.id.newProfilePicture2);
 
         // Lisätään nappeihin klikkaustoiminnallisuus
         homeIcon.setOnClickListener(v -> {
@@ -65,6 +78,12 @@ public class ProfileActivity extends AppCompatActivity{
         //Haetaan käyttäjän tiedot tietokannasta
         loadUserInformationFromDatabase();
 
+        // Profiilikuvan valitseminen
+        ImageView profilePictureBackground = findViewById(R.id.profilePictureBackground);
+        profilePictureBackground.setOnClickListener(v -> {
+            // Kutsutaan metodia, jolla saadaan profiilikuvien pop-up näkyville
+            showProfilePicturePopup();
+        });
     }
 
     private void loadUserInformationFromDatabase() {
@@ -78,11 +97,15 @@ public class ProfileActivity extends AppCompatActivity{
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Session session = snapshot.getValue(Session.class);
-                setProfilePicture(session.PhotoID);
-                usernameTextView.setText(session.Username);
-                levelText.setText("Taso: " + String.valueOf(session.Level));
-                currentXPTextView.setText(String.valueOf(session.XP));
 
+                if (session != null) {
+                    setProfilePicture(session.PhotoID);
+                    usernameTextView.setText(session.Username);
+                    levelText.setText("Taso: " + session.Level);
+                    currentXPTextView.setText(String.valueOf(session.XP));
+                } else {
+                    Log.d("Session", "Session tietojen asettamisessa virhe");
+                }
             }
 
             @Override
@@ -125,6 +148,87 @@ public class ProfileActivity extends AppCompatActivity{
             case 9:
                 profilePicImageView.setImageResource(R.drawable.catprofilepicture);
         }
+    }
+
+    // Pop-upin sisällä tapahtuva profiilikuvan onClick-metodi
+    public void onProfilePictureOptionClick(View view) {
+
+        // Haetaan klikatun kuvan id
+        int profilePictureId = view.getId();
+
+        // Valitaan oikea profiilikuva id:n perusteella
+        if (profilePictureId == R.id.profilePictureOption1) {
+            selectedProfilePicture = R.drawable.foxprofilepicture;
+            profilePictureID = 1;
+        } else if (profilePictureId == R.id.profilePictureOption2) {
+            selectedProfilePicture = R.drawable.wolfprofilepicture;
+            profilePictureID = 2;
+        } else if (profilePictureId == R.id.profilePictureOption3) {
+            selectedProfilePicture = R.drawable.zebraprofilepicture;
+            profilePictureID = 3;
+        } else if (profilePictureId == R.id.profilePictureOption4) {
+            selectedProfilePicture = R.drawable.penguinprofilepicture;
+            profilePictureID = 4;
+        } else if (profilePictureId == R.id.profilePictureOption5) {
+            selectedProfilePicture = R.drawable.duckprofilepicture;
+            profilePictureID = 5;
+        } else if (profilePictureId == R.id.profilePictureOption6) {
+            selectedProfilePicture = R.drawable.tigerprofilepicture;
+            profilePictureID = 6;
+        } else if (profilePictureId == R.id.profilePictureOption7) {
+            selectedProfilePicture = R.drawable.crocodileprofilepicture;
+            profilePictureID = 7;
+        } else if (profilePictureId == R.id.profilePictureOption8) {
+            selectedProfilePicture = R.drawable.slothprofilepicture;
+            profilePictureID = 8;
+        } else if (profilePictureId == R.id.profilePictureOption9) {
+            selectedProfilePicture = R.drawable.catprofilepicture;
+            profilePictureID = 9;
+        }
+
+        // Päivitetään aktiviteetissa oleva profiilikuva valitulla kuvalla
+        if (newProfilePicture != null) {
+            newProfilePicture.setImageResource(selectedProfilePicture);
+        }
+
+        // Päivitetään pop-upin sisällä oleva profiilikuva valitulla kuvalla
+        if (newProfilePictureInPopUp != null) {
+            newProfilePictureInPopUp.setImageResource(selectedProfilePicture);
+        }
+
+        // Suljetaan pop-up heti uuden profiilikuvan valitsemisen jälkeen
+        popUp.dismiss();
+
+        // Tallennetaan uusi profiilikuva tietokantaan
+        databaseReference.child("PhotoID").setValue(profilePictureID);
+    }
+
+    // Pop-up näkyville
+    private void showProfilePicturePopup() {
+
+        // Luodaan Dialog-olio, joka saa parametrina nykyisen aktiviteetin. Dialog = pop-up-ikkuna
+        popUp = new Dialog(ProfileActivity.this);
+
+        // Pop-upin taustan ulkonäön muokkaaminen, ilman näitä tausta olisi valkoinen ja pop-upin ulkopuolinen alue tummempi
+        if (popUp.getWindow() != null) {
+            popUp.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            popUp.getWindow().setDimAmount(0.2f);
+        } else {
+            Log.d("Popup", "Virhe pop-upin piirtämisessä");
+        }
+
+        // Haetaan pop-upin XML-tiedosto, joka kertoo miltä pop-upin ulkonäön tulee näyttää
+        popUp.setContentView(R.layout.profilepicturepopup);
+
+        // Haetaan pop-upin sisällä oleva ImageView, jossa on käyttäjän valitsema kuva
+        // Ilman tätä pop-up ei muista minkä kuvan käyttäjä on valinnut, jos käyttäjä sulkee pop-upin ja avaa sen uudestaan
+        ImageView popupProfilePicture = popUp.findViewById(R.id.newProfilePicture2);
+        if (popupProfilePicture != null) {
+            popupProfilePicture.setImageResource(selectedProfilePicture);
+        }
+
+        // Pop-upin asettaminen näkyviin
+        popUp.show();
     }
 
 }
