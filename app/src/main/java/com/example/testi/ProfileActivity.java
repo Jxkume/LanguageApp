@@ -57,17 +57,23 @@ public class ProfileActivity extends AppCompatActivity{
     }
 
     private void loadUserInformationFromDatabase() {
-        //Polku käynnissä olevan sessionin tietoihin
+        // Polku käynnissä olevan sessionin tietoihin
         String path = "Sessions/" + SessionKey.getSessionKey();
 
         // Haetaan sessionin tiedot tietokannasta kyseisen sessionin kohdasta ja asetetaan nämä tiedot UI elementteihin
         databaseReference = FirebaseDatabase.getInstance().getReference(path);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Session session = snapshot.getValue(Session.class);
-                usernameTextView.setText(session.Username);
-                currentXPTextView.setText(String.valueOf(session.XP));
+                if (session != null) {
+                    usernameTextView.setText(session.Username);
+                    currentXPTextView.setText(String.valueOf(session.XP));
+                } else {
+                    usernameTextView.setText("User not found");
+                    currentXPTextView.setText("0");
+                }
             }
 
             @Override
