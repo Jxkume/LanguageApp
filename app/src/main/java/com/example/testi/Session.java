@@ -3,6 +3,7 @@ package com.example.testi;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 public class Session {
 
     // Määritellään jokaisen sessionin ominaisuudet/nodet (Node on siis ominaisuus/entity joka voi "sisältää" lisää ominaisuuksia)
@@ -64,7 +65,6 @@ public class Session {
         String keyString = "" + key;
 
         // Lopuksi kutsutaan pushToFirebase että muutokset menevät tietokantaan asti aina kun luodaan uuden sessionin
-        // Tämä tietenkin tule muuttumaan nyt tää on "kovakoodattu" että testataan toimivuuden
         pushToFirebase(keyString);
 
     }
