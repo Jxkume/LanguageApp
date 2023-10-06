@@ -60,12 +60,11 @@ public class SessionsActivity extends AppCompatActivity {
                         String sessionKey = sessionSnapshot.getKey();
                         // Haetaan avaimen sisällä oleva käyttäjän nimi
                         String username = sessionSnapshot.child("Username").getValue(String.class);
-                        // Jos avain löytyy, asetetaan nappi erilaiseksi ja laitetaan käyttäjän nimi sen sisälle, lisäksi muutetaan napin tägi
+                        // Haetaan sessionID
+                        Long sessionID = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if (sessionKey != null) {
-                            Log.d("Session","jee");
-                            // Haetaan sessionin ID
-                            Long sessionID = sessionSnapshot.child("SessionID").getValue(Long.class);
                             if (sessionID != null) {
+                                // Jos avain ja sessionID löytyvät, asetetaan nappi erilaiseksi ja laitetaan käyttäjän nimi sen sisälle, lisäksi muutetaan napin tägi
                                 if (sessionID == 1) {
                                     firstSessionButton.setImageResource(R.drawable.oldsession);
                                     firstSessionTextView.setText(username);
@@ -100,6 +99,7 @@ public class SessionsActivity extends AppCompatActivity {
         });
 
         // Tarkistetaan nappien tägit ja ohjataan käyttäjä oikeaan aktiviteettiin tägin perusteella
+        // Lisäksi annetaan sessionID NewSession-aktiviteettiin, jossa sitä voidaan käyttää session luonnin yhteydessä
 
         firstSessionButton.setOnClickListener(v -> {
             if ((int) firstSessionButton.getTag() == R.drawable.newsession_btn) {
@@ -165,8 +165,6 @@ public class SessionsActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             }
         });
-
-
 
     }
 

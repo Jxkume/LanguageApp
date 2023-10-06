@@ -18,7 +18,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class NewSessionActivity extends AppCompatActivity {
 
-    // Alustetaan muuttujat
     private ImageView newProfilePicture;
     private ImageView newProfilePictureInPopUp;
     private int selectedProfilePicture;
@@ -37,6 +36,7 @@ public class NewSessionActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
+        // Haetaan edellisen aktiviteetin napin arvo (eli mitä nappia painettiin), jotta voidaan asettaa oikea sessionID
         Intent intent = getIntent();
         int sessionID = intent.getIntExtra("buttonClicked", -1);
 
@@ -61,52 +61,51 @@ public class NewSessionActivity extends AppCompatActivity {
 
             // Jos nimi ja ikä kentät ovat tyhjiä heitetään alert
             if (username.trim().isEmpty() && ageStr.trim().isEmpty()){
-                showAlert("Täytä kaikki kentät", "Täytä nimi ja ikä kenttä jatkakseen");
+                showAlert("Täytä kaikki kentät", "Ole hyvä ja täytä nimi- ja ikäkentät jatkaaksesi");
                 return;
             }
 
             // Jos nimi kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
             if (username.trim().isEmpty() && !isProfilePictureSelected){
-                showAlert("Täytä kaikki kentät", "Täytä nimi ja valitse profiilikuva jatkakseen");
+                showAlert("Täytä kaikki kentät", "Ole hyvä ja valitse profiilikuva sekä täytä nimikenttä jatkaaksesi");
                 return;
             }
 
             // Jos ikä kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
             if (ageStr.trim().isEmpty() && !isProfilePictureSelected){
-                showAlert("Täytä kaikki kentät", "Täytä ikä ja valitse profiilikuva jatkakseen");
+                showAlert("Täytä kaikki kentät", "Ole hyvä ja valitse profiilikuva sekä täytä ikäkenttä jatkaaksesi");
                 return;
             }
 
             // Jos ainoastaan nimi kenttä on tyhjä heitetään alert
             if (username.trim().isEmpty()){
-                showAlert("Täytä nimi kenttä", "Täytä nimi kenttä jatkakseen");
+                showAlert("Täytä nimikenttä", "Täytä nimikenttä jatkaaksesi");
                 return;
             }
 
             // Jos ainoastaan ikä kenttä on tyhjä heitetään alert
             if (ageStr.trim().isEmpty()) {
-                showAlert("Täytä ikä kenttä", "Täytä ikä kenttä jatkakseen");
+                showAlert("Täytä ikäkenttä", "Täytä ikäkenttä jatkaaksesi");
                 return;
             }
 
             // Jos ainoastaa profiilikuva ei ole valittu heitetään alert
             if (!isProfilePictureSelected){
-                showAlert("Valitse profiilikuva", "Valitse profiilikuva jatkakseen");
+                showAlert("Valitse profiilikuva", "Valitse profiilikuva jatkaaksesi");
                 return;
             }
 
             // Validoidaan käyttäjän kirjoittama käyttäjätunnuksen
             if (!validUsername(username)) {
-                showAlert("Virheellinen käyttäjätunnus"," Syötä käyttäjänimeen ainoastaan kirjaimia.");
+                showAlert("Virheellinen käyttäjätunnus","Syötä käyttäjänimeen ainoastaan kirjaimia.");
                 return;
             }
 
-            // Luodaan sessio, jos session arvo ollaan saatu edellisestä aktiviteetista (arvo on defaulttina -1)
+            // Luodaan sessio vain silloin, kun session arvo ollaan saatu edellisestä aktiviteetista (jos arvoa ei olla saatu, arvo on defaulttina -1)
             if (sessionID != -1) {
                 int age = Integer.parseInt(ageStr);
                 Session session = new Session(sessionID, age, username, 0, 1, profilePictureID);
-                Log.d("Session", session.getSessionUniqueKey());
-                //tallennetaan nykyisen session avain, jotta ohjelma tietää, kuka sitä käyttää. sen avulla myöhemmin haetaan kaikki tiedot (username, avatar, edistminen) tietokannasta
+                // Tallennetaan nykyisen session avain, jotta ohjelma tietää kuka sitä käyttää. Sen avulla myöhemmin haetaan kaikki tiedot (username, avatar, edistyminen) tietokannasta
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("currentSessionKey", session.getSessionUniqueKey());
                 editor.apply();
@@ -215,14 +214,14 @@ public class NewSessionActivity extends AppCompatActivity {
         popUp.show();
     }
 
-    // Validoidaan käyttäjätunnuksen (Vain kirjaimia)
+    // Validoidaan käyttäjätunnuksen (vain kirjaimia)
     private boolean validUsername(String username) {
         // regex tarkoittaa regularExpression
         String regex = "[a-zA-Z]+";
         return username.matches(regex);
     }
 
-    // Luodaan alertti ja laitetaan viestin siihen
+    // Luodaan alertti ja laitetaan siihen viesti
     private void showAlert(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(NewSessionActivity.this);
         builder.setTitle(title).setMessage(message).setPositiveButton("OK", null).show();
