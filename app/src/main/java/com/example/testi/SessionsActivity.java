@@ -62,26 +62,31 @@ public class SessionsActivity extends AppCompatActivity {
                         String username = sessionSnapshot.child("Username").getValue(String.class);
                         // Jos avain löytyy, asetetaan nappi erilaiseksi ja laitetaan käyttäjän nimi sen sisälle, lisäksi muutetaan napin tägi
                         if (sessionKey != null) {
-                            if (sessionKey.equals("1")) {
-                                firstSessionButton.setImageResource(R.drawable.oldsession);
-                                firstSessionTextView.setText(username);
-                                firstSessionButton.setTag(R.drawable.oldsession);
-                            } else if (sessionKey.equals("2")) {
-                                secondSessionButton.setImageResource(R.drawable.oldsession);
-                                secondSessionTextView.setText(username);
-                                secondSessionButton.setTag(R.drawable.oldsession);
-                            } else if (sessionKey.equals("3")) {
-                                thirdSessionButton.setImageResource(R.drawable.oldsession);
-                                thirdSessionTextView.setText(username);
-                                thirdSessionButton.setTag(R.drawable.oldsession);
-                            } else if (sessionKey.equals("4")) {
-                                fourthSessionButton.setImageResource(R.drawable.oldsession);
-                                fourthSessionTextView.setText(username);
-                                fourthSessionButton.setTag(R.drawable.oldsession);
-                            } else if (sessionKey.equals("5")) {
-                                fifthSessionButton.setImageResource(R.drawable.oldsession);
-                                fifthSessionTextView.setText(username);
-                                fifthSessionButton.setTag(R.drawable.oldsession);
+                            Log.d("Session","jee");
+                            // Haetaan sessionin ID
+                            Long sessionID = sessionSnapshot.child("SessionID").getValue(Long.class);
+                            if (sessionID != null) {
+                                if (sessionID == 1) {
+                                    firstSessionButton.setImageResource(R.drawable.oldsession);
+                                    firstSessionTextView.setText(username);
+                                    firstSessionButton.setTag(R.drawable.oldsession);
+                                } else if (sessionID == 2) {
+                                    secondSessionButton.setImageResource(R.drawable.oldsession);
+                                    secondSessionTextView.setText(username);
+                                    secondSessionButton.setTag(R.drawable.oldsession);
+                                } else if (sessionID == 3) {
+                                    thirdSessionButton.setImageResource(R.drawable.oldsession);
+                                    thirdSessionTextView.setText(username);
+                                    thirdSessionButton.setTag(R.drawable.oldsession);
+                                } else if (sessionID == 4) {
+                                    fourthSessionButton.setImageResource(R.drawable.oldsession);
+                                    fourthSessionTextView.setText(username);
+                                    fourthSessionButton.setTag(R.drawable.oldsession);
+                                } else if (sessionID == 5) {
+                                    fifthSessionButton.setImageResource(R.drawable.oldsession);
+                                    fifthSessionTextView.setText(username);
+                                    fifthSessionButton.setTag(R.drawable.oldsession);
+                                }
                             }
                         }
                     }

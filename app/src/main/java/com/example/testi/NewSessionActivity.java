@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,7 +26,6 @@ public class NewSessionActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText ageEditText;
     private SharedPreferences sharedPreferences;
-    private int latestSessionKey;
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
 
@@ -35,9 +35,10 @@ public class NewSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newsessionactivity);
 
-        // Luodaan sharePreferences nimeltään MyPrefs SessionID:tä varten
-        sharedPreferences = getSharedPreferences("MyPrefs",Context.MODE_PRIVATE);
-        latestSessionKey = sharedPreferences.getInt("latestSessionKey", 1);
+        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+        Intent intent = getIntent();
+        int sessionID = intent.getIntExtra("buttonClicked", -1);
 
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
@@ -47,80 +48,74 @@ public class NewSessionActivity extends AppCompatActivity {
         ImageView imageViewValmis = findViewById(R.id.newSessionReadyButton);
 
         // Kun painetaan Valmis nappulasta, tiedot tallentuvat tietokantaan ja siirrytään päänäkymälle
-        imageViewValmis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        imageViewValmis.setOnClickListener(v -> {
 
-                String username = usernameEditText.getText().toString();
-                String ageStr = ageEditText.getText().toString();
+            String username = usernameEditText.getText().toString();
+            String ageStr = ageEditText.getText().toString();
 
-                // Jos kaikki kentät on tyhjiä heitetään alert
-                if (username.trim().isEmpty() && ageStr.trim().isEmpty() && !isProfilePictureSelected) {
-                    showAlert("Täytä kaikki kentät", "Täytä kaikki tiedot");
-                    return;
-                }
+            // Jos kaikki kentät on tyhjiä heitetään alert
+            if (username.trim().isEmpty() && ageStr.trim().isEmpty() && !isProfilePictureSelected) {
+                showAlert("Täytä kaikki kentät", "Täytä kaikki tiedot");
+                return;
+            }
 
-                // Jos nimi ja ikä kentät ovat tyhjiä heitetään alert
-                if (username.trim().isEmpty() && ageStr.trim().isEmpty()){
-                    showAlert("Täytä kaikki kentät", "Täytä nimi ja ikä kenttä jatkakseen");
-                    return;
-                }
+            // Jos nimi ja ikä kentät ovat tyhjiä heitetään alert
+            if (username.trim().isEmpty() && ageStr.trim().isEmpty()){
+                showAlert("Täytä kaikki kentät", "Täytä nimi ja ikä kenttä jatkakseen");
+                return;
+            }
 
-                // Jos nimi kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
-                if (username.trim().isEmpty() && !isProfilePictureSelected){
-                    showAlert("Täytä kaikki kentät", "Täytä nimi ja valitse profiilikuva jatkakseen");
-                    return;
-                }
+            // Jos nimi kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
+            if (username.trim().isEmpty() && !isProfilePictureSelected){
+                showAlert("Täytä kaikki kentät", "Täytä nimi ja valitse profiilikuva jatkakseen");
+                return;
+            }
 
-                // Jos ikä kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
-                if (ageStr.trim().isEmpty() && !isProfilePictureSelected){
-                    showAlert("Täytä kaikki kentät", "Täytä ikä ja valitse profiilikuva jatkakseen");
-                    return;
-                }
+            // Jos ikä kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
+            if (ageStr.trim().isEmpty() && !isProfilePictureSelected){
+                showAlert("Täytä kaikki kentät", "Täytä ikä ja valitse profiilikuva jatkakseen");
+                return;
+            }
 
-                // Jos ainoastaan nimi kenttä on tyhjä heitetään alert
-                if (username.trim().isEmpty()){
-                    showAlert("Täytä nimi kenttä", "Täytä nimi kenttä jatkakseen");
-                    return;
-                }
+            // Jos ainoastaan nimi kenttä on tyhjä heitetään alert
+            if (username.trim().isEmpty()){
+                showAlert("Täytä nimi kenttä", "Täytä nimi kenttä jatkakseen");
+                return;
+            }
 
-                // Jos ainoastaan ikä kenttä on tyhjä heitetään alert
-                if (ageStr.trim().isEmpty()) {
-                    showAlert("Täytä ikä kenttä", "Täytä ikä kenttä jatkakseen");
-                    return;
-                }
+            // Jos ainoastaan ikä kenttä on tyhjä heitetään alert
+            if (ageStr.trim().isEmpty()) {
+                showAlert("Täytä ikä kenttä", "Täytä ikä kenttä jatkakseen");
+                return;
+            }
 
-                // Jos ainoastaa profiilikuva ei ole valittu heitetään alert
-                if (!isProfilePictureSelected){
-                    showAlert("Valitse profiilikuva", "Valitse profiilikuva jatkakseen");
-                    return;
-                }
+            // Jos ainoastaa profiilikuva ei ole valittu heitetään alert
+            if (!isProfilePictureSelected){
+                showAlert("Valitse profiilikuva", "Valitse profiilikuva jatkakseen");
+                return;
+            }
 
-                // Validoidaan käyttäjän kirjoittama käyttäjätunnuksen
-                if (!validUsername(username)) {
-                    showAlert("Virheellinen käyttäjätunnus"," Syötä käyttäjänimeen ainoastaan kirjaimia.");
-                    return;
-                }
+            // Validoidaan käyttäjän kirjoittama käyttäjätunnuksen
+            if (!validUsername(username)) {
+                showAlert("Virheellinen käyttäjätunnus"," Syötä käyttäjänimeen ainoastaan kirjaimia.");
+                return;
+            }
 
+            // Luodaan sessio, jos session arvo ollaan saatu edellisestä aktiviteetista (arvo on defaulttina -1)
+            if (sessionID != -1) {
                 int age = Integer.parseInt(ageStr);
-
-                Session session = new Session(latestSessionKey, age, username, 0, 1, profilePictureID);
-
-                latestSessionKey++;
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("latestSessionKey", latestSessionKey);
-
+                Session session = new Session(sessionID, age, username, 0, 1, profilePictureID);
+                Log.d("Session", session.getSessionUniqueKey());
                 //tallennetaan nykyisen session avain, jotta ohjelma tietää, kuka sitä käyttää. sen avulla myöhemmin haetaan kaikki tiedot (username, avatar, edistminen) tietokannasta
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("currentSessionKey", session.getSessionUniqueKey());
                 editor.apply();
-
-
-                Intent intent = new Intent(NewSessionActivity.this, HomeActivity.class);
-                startActivity(intent);
-
-                finish();
             }
+
+            Intent intent1 = new Intent(NewSessionActivity.this, HomeActivity.class);
+            startActivity(intent1);
+
+            finish();
         });
 
         // Profiilikuvan valitseminen
@@ -199,8 +194,12 @@ public class NewSessionActivity extends AppCompatActivity {
         popUp = new Dialog(NewSessionActivity.this);
 
         // Pop-upin taustan ulkonäön muokkaaminen, ilman näitä tausta olisi valkoinen ja pop-upin ulkopuolinen alue tummempi
-        popUp.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        popUp.getWindow().setDimAmount(0.2f);
+        if (popUp.getWindow() != null) {
+            popUp.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            popUp.getWindow().setDimAmount(0.2f);
+        } else {
+            Log.d("Popup", "Virhe pop-upin piirtämisessä");
+        }
 
         // Haetaan pop-upin XML-tiedosto, joka kertoo miltä pop-upin ulkonäön tulee näyttää
         popUp.setContentView(R.layout.profilepicturepopup);

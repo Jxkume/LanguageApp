@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import com.example.testi.games.AnimalGameFirstActivity;
 import com.example.testi.games.ColourGameFirstActivity;
@@ -73,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //polku tietokannassa oleviin käyttäjän tietoihin
         String path = "Sessions/" + sessionKey;
+        Log.d("Session", path);
 
         //luodaan yhteys tietokantaan ja haetaan käyttäjän profiilikuvan ID tietokannasta
         databaseReference = FirebaseDatabase.getInstance().getReference(path);
@@ -80,7 +82,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Session session = snapshot.getValue(Session.class);
-                setNavbarprofilePic(session.PhotoID);
+                if (session != null) {
+                    setNavbarprofilePic(session.PhotoID);
+                } else {
+                    Log.d("Session", "Virhe session profiilikuvassa");
+                }
             }
 
             @Override

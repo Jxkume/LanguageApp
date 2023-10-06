@@ -18,6 +18,7 @@ public class Session {
 
     //TODO: comment this
     private String sessionUniqueKey;
+    private int sessionID;
 
     // Määritellään pelin/pelien ominaisuudet
     public static class ColourGame{
@@ -43,7 +44,8 @@ public class Session {
     }
 
     // Tehdään Sessionin konstruktori JA alustetaan pelin ominaisuudet (Vähän niinku tehtäis Hash-Map)
-    public Session(int key, int age, String username, int XP, int level, int photoID) { // Konstruktori saa parametrina keyn
+    public Session(int sessionID, int age, String username, int XP, int level, int photoID) { // Konstruktori saa parametrina keyn
+        this.sessionID = sessionID;
         this.Age = age;
         this.Username = username;
         this.XP = XP;
@@ -61,15 +63,12 @@ public class Session {
         AnimalGame.WrongAnswers = 0;
         AnimalGame.AnimalGameID = 0;
 
-        // Key muutetaan stringiksi
-        String keyString = "" + key;
-
         // Lopuksi kutsutaan pushToFirebase että muutokset menevät tietokantaan asti aina kun luodaan uuden sessionin
-        pushToFirebase(keyString);
+        pushToFirebase();
 
     }
 
-    public void pushToFirebase(String keyString) {
+    public void pushToFirebase() {
         // Haetaan firebasen instanssi ja tallennetaan sen muuttujaan
         FirebaseDatabase FirebaseDatabase = com.google.firebase.database.FirebaseDatabase.getInstance();
 
@@ -79,11 +78,14 @@ public class Session {
         // Mennään Sessions nodeen ja tallennetaan se referenssi muuttujaan
         DatabaseReference sessionsRef = rootRef.child("Sessions");
 
-        // Luodaan sessionille key, joka on arvoltaan 1 tai enemmän (riippuen mikä keyn arvo on konstruktorin parametrina)
-        DatabaseReference newSessionRef = sessionsRef.child(keyString);
+        // Luodaan session, jolla on uniikki avain
+        DatabaseReference newSessionRef = sessionsRef.push();
 
         //Haetaan session avaimen firebasesta
         sessionUniqueKey = newSessionRef.getKey();
+
+        // Asetetaan sessionille ID
+        newSessionRef.child("SessionID").setValue(sessionID);
 
         // Asetetaan Age ominaisuuteen arvon
         newSessionRef.child("Age").setValue(Age);

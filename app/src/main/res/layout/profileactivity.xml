@@ -94,8 +94,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/profilePictureBackground"
         app:layout_constraintEnd_toEndOf="@+id/profilePictureBackground"
         app:layout_constraintStart_toStartOf="@+id/profilePictureBackground"
-        app:layout_constraintTop_toTopOf="@+id/profilePictureBackground"
-        app:srcCompat="@drawable/foxprofilepicture" />
+        app:layout_constraintTop_toTopOf="@+id/profilePictureBackground" />
 
     <ImageView
         android:id="@+id/homeIcon"

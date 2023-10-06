@@ -35,8 +35,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/profilePictureBackground"
         app:layout_constraintEnd_toEndOf="@+id/profilePictureBackground"
         app:layout_constraintStart_toStartOf="@+id/profilePictureBackground"
-        app:layout_constraintTop_toTopOf="@+id/profilePictureBackground"
-        app:srcCompat="@drawable/foxprofilepicture" />
+        app:layout_constraintTop_toTopOf="@+id/profilePictureBackground" />
 
     <ImageView
         android:id="@+id/progressBarBackground"
@@ -56,7 +55,6 @@
         android:layout_height="50dp"
         android:fontFamily="@font/baloo2_extra"
         android:gravity="center"
-        android:text="2"
         android:textColor="@color/font"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/progressBarBackground"
