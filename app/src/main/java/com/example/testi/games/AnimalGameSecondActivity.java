@@ -1,6 +1,8 @@
 package com.example.testi.games;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
+import com.example.testi.Session;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -148,6 +151,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             }
         } else {
             // Peli päättyy
+            sendXPtoDatabase();
             questionImageView.setImageResource(0);
             Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
@@ -220,5 +224,29 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
         toast.setView(incorr_toast);
 
         toast.show();
+    }
+
+    private void sendXPtoDatabase() {
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        String sessionKey = prefs.getString("currentSessionKey", "1");
+
+        String path = "Sessions/" + sessionKey;
+
+        DatabaseReference sessionRef = FirebaseDatabase.getInstance().getReference(path);
+
+        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Session session = snapshot.getValue(Session.class);
+                int xp = session.XP;
+                sessionRef.child("XP").setValue(score + xp);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Printataan error jos sellainen tulee vastaan
+                System.err.println("Error: " + error.getMessage());
+            }
+        });
     }
 }

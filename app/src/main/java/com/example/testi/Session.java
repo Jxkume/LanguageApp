@@ -16,7 +16,6 @@ public class Session {
     //tän pitää olla PhotoID, koska tällä nimellä se kenttä löytyy firebasesta
     public int PhotoID;
 
-    //TODO: comment this
     private String sessionUniqueKey;
     private int sessionID;
 
@@ -109,7 +108,7 @@ public class Session {
         newSessionRef.child("PhotoID").setValue(PhotoID);
     }
 
-    //Metodi palauttaa session uniikki avaimen
+    //Metodi palauttaa session uniikin avaimen
     public String getSessionUniqueKey() {
         return sessionUniqueKey;
     }

@@ -14,11 +14,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 
 public class SessionsActivity extends AppCompatActivity {
 
     private ImageView firstSessionButton, secondSessionButton, thirdSessionButton, fourthSessionButton, fifthSessionButton;
     private TextView firstSessionTextView, secondSessionTextView, thirdSessionTextView, fourthSessionTextView, fifthSessionTextView;
+    private HashMap<String, String> buttonSessionpairs = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

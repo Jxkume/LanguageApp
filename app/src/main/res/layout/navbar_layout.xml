@@ -70,7 +70,7 @@
         android:progressDrawable="@drawable/progressbar"
         android:layout_width="174dp"
         android:layout_height="11dp"
-        android:progress="90"
+        android:progress="0"
         app:layout_constraintBottom_toBottomOf="@+id/progressBarBackground"
         app:layout_constraintEnd_toEndOf="@+id/progressBarBackground"
         app:layout_constraintHorizontal_bias="0.162"

@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import com.example.testi.games.AnimalGameFirstActivity;
 import com.example.testi.games.ColourGameFirstActivity;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +25,8 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView profilePicNavbarImageView;
     private SharedPreferences prefs;
     private DatabaseReference databaseReference;
+    private ProgressBar progressBar;
+    private TextView levelNavbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         ImageView colourGameIcon = findViewById(R.id.colorGameIcon);
 
         //haetaan käyttäjän avatar tietokannasta
-        loadProfilePicFromDatabase();
+        loadInformationFromDatabase();
 
         // Lisätään nappeihin klikkaustoiminnallisuus
         profileIcon.setOnClickListener(v -> {
@@ -67,26 +72,27 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void loadProfilePicFromDatabase() {
+    private void loadInformationFromDatabase() {
         //haetaan ensin session ID preferensseistä
         prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String sessionKey = prefs.getString("currentSessionKey", "1");
+
+        levelNavbar = findViewById(R.id.userLevel);
+        progressBar = findViewById(R.id.progressBar);
 
         //polku tietokannassa oleviin käyttäjän tietoihin
         String path = "Sessions/" + sessionKey;
         Log.d("Session", path);
 
-        //luodaan yhteys tietokantaan ja haetaan käyttäjän profiilikuvan ID tietokannasta
+        //luodaan yhteys tietokantaan ja haetaan käyttäjän profiilikuvan ID, taso ja xp tietokannasta
         databaseReference = FirebaseDatabase.getInstance().getReference(path);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Session session = snapshot.getValue(Session.class);
-                if (session != null) {
-                    setNavbarprofilePic(session.PhotoID);
-                } else {
-                    Log.d("Session", "Virhe session profiilikuvassa");
-                }
+                progressBar.setProgress(session.XP);
+                levelNavbar.setText(String.valueOf(session.Level));
+                setNavbarprofilePic(session.PhotoID);
             }
 
             @Override

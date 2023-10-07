@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,8 @@ public class SettingsActivity extends AppCompatActivity{
     private ImageView profilePicNavbarImageView;
     private SharedPreferences prefs;
     private DatabaseReference databaseReference;
+    private ProgressBar progressBar;
+    private TextView levelNavbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity{
     });
 
         //haetaan käyttäjän avatar tietokannasta
-        loadProfilePicFromDatabase();
+        loadInformationFromDatabase();
 
         // Lisätään nappeihin klikkaustoiminnallisuus
         homeIcon.setOnClickListener(v -> {
@@ -80,20 +84,25 @@ public class SettingsActivity extends AppCompatActivity{
         });
     }
 
-    private void loadProfilePicFromDatabase() {
+    private void loadInformationFromDatabase() {
         //haetaan ensin session ID preferensseistä
         prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         String sessionKey = prefs.getString("currentSessionKey", "1");
 
+        levelNavbar = findViewById(R.id.userLevel);
+        progressBar = findViewById(R.id.progressBar);
+
         //polku tietokannassa oleviin käyttäjän tietoihin
         String path = "Sessions/" + sessionKey;
 
-        //luodaan yhteys tietokantaan ja haetaan käyttäjän profiilikuvan ID tietokannasta
+        //luodaan yhteys tietokantaan ja haetaan käyttäjän profiilikuvan ID, taso ja xp tietokannasta
         databaseReference = FirebaseDatabase.getInstance().getReference(path);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Session session = snapshot.getValue(Session.class);
+                progressBar.setProgress(session.XP);
+                levelNavbar.setText(String.valueOf(session.Level));
                 setNavbarprofilePic(session.PhotoID);
             }
 

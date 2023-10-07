@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.util.HashMap;
+
 public class NewSessionActivity extends AppCompatActivity {
 
     private ImageView newProfilePicture;
@@ -24,6 +26,7 @@ public class NewSessionActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
+    private HashMap buttonSessionPairs;
 
     @SuppressLint("MissingInflatedId")
     @Override
