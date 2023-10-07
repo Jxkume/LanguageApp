@@ -1,8 +1,6 @@
 package com.example.testi;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -20,13 +18,16 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private ImageView profilePicNavbarImageView;
-    private SharedPreferences prefs;
     private DatabaseReference databaseReference;
+    private int sessionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeactivity);
+
+        Intent intent = getIntent();
+        sessionID = intent.getIntExtra("sessionID", -1);
 
         // Haetaan aktiviteetin alanapit
         ImageView profileIcon = findViewById(R.id.profileIcon);
@@ -68,31 +69,30 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadProfilePicFromDatabase() {
-        //haetaan ensin session ID preferensseistä
-        prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        String sessionKey = prefs.getString("currentSessionKey", "1");
-
-        //polku tietokannassa oleviin käyttäjän tietoihin
-        String path = "Sessions/" + sessionKey;
-        Log.d("Session", path);
-
-        //luodaan yhteys tietokantaan ja haetaan käyttäjän profiilikuvan ID tietokannasta
-        databaseReference = FirebaseDatabase.getInstance().getReference(path);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        // Haetaan tietokannasta Sessions-node
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Session session = snapshot.getValue(Session.class);
-                if (session != null) {
-                    setNavbarprofilePic(session.PhotoID);
-                } else {
-                    Log.d("Session", "Virhe session profiilikuvassa");
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
+                        // Haetaan sessionin avain
+                        String sessionKey = sessionSnapshot.getKey();
+                        // Haetaan sessionID
+                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        if (sessionKey != null) {
+                            if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva navbariin
+                                setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
+                            }
+                        }
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Printataan error jos sellainen tulee vastaan
-                System.err.println("Error: " + error.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Session", "Sessionien latauksessa tuli virhe");
             }
         });
     }

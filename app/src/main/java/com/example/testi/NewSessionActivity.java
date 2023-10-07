@@ -109,8 +109,9 @@ public class NewSessionActivity extends AppCompatActivity {
                 editor.apply();
             }
 
-            Intent intent1 = new Intent(NewSessionActivity.this, HomeActivity.class);
-            startActivity(intent1);
+            Intent home = new Intent(NewSessionActivity.this, HomeActivity.class);
+            home.putExtra("sessionID", sessionID);
+            startActivity(home);
 
             finish();
         });
