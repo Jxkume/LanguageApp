@@ -2,7 +2,6 @@ package com.example.testi.games;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,8 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
-
-import com.example.testi.Word;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,11 +39,15 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     private int score = 0;
     private int currentQuestionIndex = 0;
     private ImageView exitButton;
+    private int sessionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animalgamefirstactivity);
+
+        Intent intent = getIntent();
+        sessionID = intent.getIntExtra("sessionID", -1);
 
         // Etsitään ja tallennetaan Words/Animalgame path databaseReference muuttujaan
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/Animalgame");
@@ -63,6 +64,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
 
         exitButton.setOnClickListener(v -> {
             Intent home = new Intent(AnimalGameFirstActivity.this, HomeActivity.class);
+            home.putExtra("sessionID", sessionID);
             startActivity(home);
             overridePendingTransition(0, 0);
         });
@@ -160,6 +162,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
                 intent.putExtra("score", score);
+                intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
             }
         }

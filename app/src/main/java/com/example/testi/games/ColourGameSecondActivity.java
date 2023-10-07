@@ -35,18 +35,22 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     private int score;
     private int currentQuestionIndex = 0;
     private ImageView exitButton;
+    private int sessionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.colourgamesecondactivity);
 
+        Intent intent = getIntent();
+        sessionID = intent.getIntExtra("sessionID", -1);
+
         // Etsitään ja tallennetaan Words/Colourgame path databaseReference muuttujaan
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/Colourgame");
 
         // Otetaan pisteet colourgamen ekasta osasta
-        Intent intent = getIntent();
-        score = intent.getIntExtra("score", score);
+        Intent intent2 = getIntent();
+        score = intent2.getIntExtra("score", score);
 
         // Alustetaan UI elementit
         exitButton = findViewById(R.id.colourGameExitButton);
@@ -59,6 +63,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
 
         exitButton.setOnClickListener(v -> {
             Intent home = new Intent(ColourGameSecondActivity.this, HomeActivity.class);
+            home.putExtra("sessionID", sessionID);
             startActivity(home);
             overridePendingTransition(0, 0);
         });
@@ -153,6 +158,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(ColourGameSecondActivity.this, HomeActivity.class);
                 //intent.putExtra("score", score); //wat is dis T.JHON
+                intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
             }
         }
