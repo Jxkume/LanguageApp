@@ -60,8 +60,8 @@ public class HomeActivity extends AppCompatActivity {
 
         animalGameIcon.setOnClickListener(v -> {
             Intent animalGame = new Intent(HomeActivity.this, AnimalGameFirstActivity.class);
-            startActivity(animalGame);
             animalGame.putExtra("sessionID", sessionID);
+            startActivity(animalGame);
             overridePendingTransition(0, 0);
         });
 
