@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+
 import com.example.testi.games.AnimalGameFirstActivity;
 import com.example.testi.games.ColourGameFirstActivity;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private ImageView profilePicNavbarImageView;
-    private DatabaseReference databaseReference;
     private int sessionID;
 
     @Override
