@@ -1,8 +1,6 @@
 package com.example.testi;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -21,7 +19,6 @@ public class NewSessionActivity extends AppCompatActivity {
     private Dialog popUp;
     private EditText usernameEditText;
     private EditText ageEditText;
-    private SharedPreferences sharedPreferences;
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
 
@@ -30,8 +27,6 @@ public class NewSessionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newsessionactivity);
-
-        sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
         // Haetaan edellisen aktiviteetin napin arvo (eli mitä nappia painettiin), jotta voidaan asettaa oikea sessionID
         Intent intent = getIntent();
@@ -103,10 +98,6 @@ public class NewSessionActivity extends AppCompatActivity {
             if (sessionID != -1) {
                 int age = Integer.parseInt(ageStr);
                 Session session = new Session(sessionID, age, username, 0, 1, profilePictureID);
-                // Tallennetaan nykyisen session avain, jotta ohjelma tietää kuka sitä käyttää. Sen avulla myöhemmin haetaan kaikki tiedot (username, avatar, edistyminen) tietokannasta
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("currentSessionKey", session.getSessionUniqueKey());
-                editor.apply();
             }
 
             Intent home = new Intent(NewSessionActivity.this, HomeActivity.class);
