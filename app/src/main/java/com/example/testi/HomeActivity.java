@@ -45,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         profileIcon.setOnClickListener(v -> {
             // Siirrytään profiiliaktiviteettiin
             Intent profile = new Intent(HomeActivity.this, ProfileActivity.class);
+            profile.putExtra("sessionID", sessionID);
             startActivity(profile);
             overridePendingTransition(0, 0);
         });
@@ -52,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         settingsIcon.setOnClickListener(v -> {
             // Siirrytään asetukset-aktiviteettiin
             Intent settings = new Intent(HomeActivity.this, SettingsActivity.class);
+            settings.putExtra("sessionID", sessionID);
             startActivity(settings);
             overridePendingTransition(0, 0);
         });
@@ -59,11 +61,13 @@ public class HomeActivity extends AppCompatActivity {
         animalGameIcon.setOnClickListener(v -> {
             Intent animalGame = new Intent(HomeActivity.this, AnimalGameFirstActivity.class);
             startActivity(animalGame);
+            animalGame.putExtra("sessionID", sessionID);
             overridePendingTransition(0, 0);
         });
 
         colourGameIcon.setOnClickListener(v -> {
             Intent colourGame = new Intent(HomeActivity.this, ColourGameFirstActivity.class);
+            colourGame.putExtra("sessionID", sessionID);
             startActivity(colourGame);
             overridePendingTransition(0, 0);
         });

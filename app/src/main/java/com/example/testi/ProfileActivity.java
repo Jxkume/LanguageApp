@@ -2,9 +2,7 @@ package com.example.testi;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,21 +20,17 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity{
 
-    private DatabaseReference databaseReference;
     private TextView usernameTextView;
     private TextView currentXPTextView;
     private TextView levelText;
     private TextView goalXPTextView;
-
     private ImageView profilePicImageView;
-    private String sessionKey;
-
-    private SharedPreferences sharedPrefs;
     private ImageView newProfilePicture;
     private ImageView newProfilePictureInPopUp;
     private int selectedProfilePicture;
     private Dialog popUp;
     private int profilePictureID;
+    private int sessionID;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -44,9 +38,8 @@ public class ProfileActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profileactivity);
 
-        //Haetaan session id, joka on tallennettu preferensseihin
-        sharedPrefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        sessionKey = sharedPrefs.getString("currentSessionKey", "1");
+        Intent intent = getIntent();
+        sessionID = intent.getIntExtra("sessionID", -1);
 
         // Haetaan aktiviteetin UI elementit
         levelText = findViewById(R.id.levelText);
@@ -64,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity{
         homeIcon.setOnClickListener(v -> {
             // Siirrytään kotiaktiviteettiin
             Intent home = new Intent(ProfileActivity.this, HomeActivity.class);
+            home.putExtra("sessionID", sessionID);
             startActivity(home);
             overridePendingTransition(0, 0);
         });
@@ -71,6 +65,7 @@ public class ProfileActivity extends AppCompatActivity{
         settingsIcon.setOnClickListener(v -> {
             // Siirrytään asetukset-aktiviteettiin
             Intent settings = new Intent(ProfileActivity.this, SettingsActivity.class);
+            settings.putExtra("sessionID", sessionID);
             startActivity(settings);
             overridePendingTransition(0, 0);
         });
@@ -87,33 +82,37 @@ public class ProfileActivity extends AppCompatActivity{
     }
 
     private void loadUserInformationFromDatabase() {
-        //polku sessionin tietoihin tietokannassa
-        String path = "Sessions/" + sessionKey;
-
-        // Haetaan sessionin tiedot tietokannasta kyseisen sessionin kohdasta ja asetetaan nämä tiedot UI elementteihin
-        databaseReference = FirebaseDatabase.getInstance().getReference(path);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-
+        // Haetaan tietokannasta Sessions-node
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Session session = snapshot.getValue(Session.class);
-
-                if (session != null) {
-                    setProfilePicture(session.PhotoID);
-                    usernameTextView.setText(session.Username);
-                    levelText.setText("Taso: " + session.Level);
-                    currentXPTextView.setText(String.valueOf(session.XP));
-                } else {
-                    Log.d("Session", "Session tietojen asettamisessa virhe");
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
+                        // Haetaan sessionin avain
+                        String sessionKey = sessionSnapshot.getKey();
+                        // Haetaan sessionID
+                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        if (sessionKey != null) {
+                            if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Jos avain ja sessionID löytyvät, asetetaan oikeat tiedot
+                                setProfilePicture(sessionSnapshot.child("PhotoID").getValue(Integer.class));
+                                usernameTextView.setText(sessionSnapshot.child("Username").getValue(String.class));
+                                levelText.setText("Taso: " + sessionSnapshot.child("Level").getValue(Long.class));
+                                currentXPTextView.setText(Long.toString(sessionSnapshot.child("XP").getValue(Long.class)));
+                            }
+                        }
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Printataan error jos sellainen tulee vastaan
-                System.err.println("Error: " + error.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Session", "Sessionien latauksessa tuli virhe");
             }
         });
+
     }
 
     //asetetaan profiilikuvaa tietokannassa olevan ID:n perusteella
@@ -196,11 +195,35 @@ public class ProfileActivity extends AppCompatActivity{
             newProfilePictureInPopUp.setImageResource(selectedProfilePicture);
         }
 
+        // Haetaan tietokannasta Sessions-node
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
+                        // Haetaan sessionin avain
+                        String sessionKey = sessionSnapshot.getKey();
+                        // Haetaan sessionID
+                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        if (sessionKey != null) {
+                            if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Jos avain ja sessionID löytyvät, asetetaan uusi profiilikuva
+                                sessionSnapshot.child("PhotoID").getRef().setValue(profilePictureID);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Session", "Sessionien latauksessa tuli virhe");
+            }
+        });
+
         // Suljetaan pop-up heti uuden profiilikuvan valitsemisen jälkeen
         popUp.dismiss();
-
-        // Tallennetaan uusi profiilikuva tietokantaan
-        databaseReference.child("PhotoID").setValue(profilePictureID);
     }
 
     // Pop-up näkyville

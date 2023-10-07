@@ -109,6 +109,7 @@ public class SessionsActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             } else {
                 Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                oldSession.putExtra("sessionID", 1);
                 startActivity(oldSession);
                 overridePendingTransition(0, 0);
             }
@@ -122,6 +123,7 @@ public class SessionsActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             } else {
                 Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                oldSession.putExtra("sessionID", 2);
                 startActivity(oldSession);
                 overridePendingTransition(0, 0);
             }
@@ -135,6 +137,7 @@ public class SessionsActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             } else {
                 Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                oldSession.putExtra("sessionID", 3);
                 startActivity(oldSession);
                 overridePendingTransition(0, 0);
             }
@@ -148,6 +151,7 @@ public class SessionsActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             } else {
                 Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                oldSession.putExtra("sessionID", 4);
                 startActivity(oldSession);
                 overridePendingTransition(0, 0);
             }
@@ -161,6 +165,7 @@ public class SessionsActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
             } else {
                 Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+                oldSession.putExtra("sessionID", 5);
                 startActivity(oldSession);
                 overridePendingTransition(0, 0);
             }
