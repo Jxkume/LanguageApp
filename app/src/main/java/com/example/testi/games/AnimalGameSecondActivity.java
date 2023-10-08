@@ -1,8 +1,6 @@
 package com.example.testi.games;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
-import com.example.testi.Session;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -163,6 +160,11 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
 
             if (currentQuestionIndex >= 10) {
                 // Mennään seuraavaan aktiviteettiin
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.getMessage();
+                }
                 Intent intent = new Intent(AnimalGameSecondActivity.this, HomeActivity.class);
                 finish();
                 intent.putExtra("sessionID", sessionID);
@@ -235,19 +237,26 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
     }
 
     private void sendXPtoDatabase() {
-        SharedPreferences prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        String sessionKey = prefs.getString("currentSessionKey", "1");
+        String path = "Sessions/" + sessionID;
+        Log.d("Path", path);
 
-        String path = "Sessions/" + sessionKey;
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
 
-        DatabaseReference sessionRef = FirebaseDatabase.getInstance().getReference(path);
-
-        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Session session = snapshot.getValue(Session.class);
-                int xp = session.XP;
-                sessionRef.child("XP").setValue(score + xp);
+                if(snapshot.exists()){
+                    for(DataSnapshot sessionSnapshot : snapshot.getChildren()) {
+                        String sessionKey = sessionSnapshot.getKey();
+                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        if(sessionKey != null) {
+                            if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                int xp = sessionSnapshot.child("XP").getValue(Integer.class);
+                                sessionSnapshot.child("XP").getRef().setValue(score + xp);
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
