@@ -1,8 +1,6 @@
 package com.example.testi.games;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
-import com.example.testi.Session;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -116,7 +113,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion() {
-        if (currentQuestionIndex < words.size()) {
+        if (currentQuestionIndex < 5) {
             // Otetaan oikean vastauksen nykyiseen kysymykseen
             correctAnswer = words.get(currentQuestionIndex);
 
@@ -156,9 +153,9 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             // Peli päättyy
             sendXPtoDatabase();
             questionImageView.setImageResource(0);
-            Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
-            if (currentQuestionIndex >= 10) {
+            if (currentQuestionIndex >= 5) {
                 try {
                     Thread.sleep(1500);
                 } catch (InterruptedException e) {

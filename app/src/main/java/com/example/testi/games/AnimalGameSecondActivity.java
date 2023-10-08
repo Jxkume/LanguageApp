@@ -115,7 +115,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion() {
-        if (currentQuestionIndex < words.size()) {
+        if (currentQuestionIndex < 5) {
             // Otetaan oikean vastauksen nykyiseen kysymykseen
             correctAnswer = words.get(currentQuestionIndex);
 
@@ -156,9 +156,9 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             // Peli päättyy
             sendXPtoDatabase();
             questionImageView.setImageResource(0);
-            Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
-            if (currentQuestionIndex >= 10) {
+            if (currentQuestionIndex >= 5) {
                 // Mennään seuraavaan aktiviteettiin
                 try {
                     Thread.sleep(1500);

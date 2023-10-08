@@ -114,7 +114,7 @@ public class ColourGameFirstActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion() {
-        if (currentQuestionIndex < words.size()) {
+        if (currentQuestionIndex < 5) {
             // Otetaan oikean vastauksen nykyiseen kysymykseen
             correctAnswer = words.get(currentQuestionIndex);
 
@@ -158,12 +158,13 @@ public class ColourGameFirstActivity extends AppCompatActivity {
             questionImageView.setImageResource(0);
             questionTextView.setText("");
 
-            if (currentQuestionIndex >= 10) {
+            if (currentQuestionIndex >= 5) {
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(ColourGameFirstActivity.this, ColourGameSecondActivity.class);
                 intent.putExtra("score", score);
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         }
     }
