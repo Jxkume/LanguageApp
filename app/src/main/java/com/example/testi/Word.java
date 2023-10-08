@@ -1,6 +1,5 @@
 package com.example.testi;
 
-//TODO: rename instance variable
 public class Word {
     private String English;
     private int Level;

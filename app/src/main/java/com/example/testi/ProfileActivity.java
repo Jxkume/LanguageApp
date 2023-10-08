@@ -23,8 +23,6 @@ public class ProfileActivity extends AppCompatActivity{
     private TextView usernameTextView;
     private TextView currentXPTextView;
     private TextView levelText;
-    private TextView goalXPTextView;
-    private ImageView profilePicImageView;
     private ImageView newProfilePicture;
     private ImageView newProfilePictureInPopUp;
     private int selectedProfilePicture;
@@ -45,7 +43,6 @@ public class ProfileActivity extends AppCompatActivity{
         levelText = findViewById(R.id.levelText);
         usernameTextView = findViewById(R.id.usernameText);
         currentXPTextView = findViewById(R.id.currentXpText);
-        goalXPTextView = findViewById(R.id.xpGoalText);
         ImageView homeIcon = findViewById(R.id.homeIcon);
         ImageView settingsIcon = findViewById(R.id.settingsIcon);
 
@@ -115,7 +112,7 @@ public class ProfileActivity extends AppCompatActivity{
 
     //asetetaan profiilikuvaa tietokannassa olevan ID:n perusteella
     public void setProfilePicture(int picID) {
-        profilePicImageView = findViewById(R.id.newProfilePicture1);
+        ImageView profilePicImageView = findViewById(R.id.newProfilePicture1);
 
         switch (picID) {
             case 1:

@@ -34,7 +34,6 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     private String correctAnswer;
     private int score;
     private int currentQuestionIndex = 0;
-    private ImageView exitButton;
     private int sessionID;
 
     @Override
@@ -53,7 +52,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
         score = intent2.getIntExtra("score", score);
 
         // Alustetaan UI elementit
-        exitButton = findViewById(R.id.colourGameExitButton);
+        ImageView exitButton = findViewById(R.id.colourGameExitButton);
         questionImageView = findViewById(R.id.colourGameSecondOption);
         optionTextViews = new TextView[4];
         optionTextViews[0] = findViewById(R.id.colourGameSecondText1);
@@ -77,12 +76,8 @@ public class ColourGameSecondActivity extends AppCompatActivity {
         // Laitetaan clickListerenejä option ImageViewille (Eli siis värien kuville)
         for (int i = 0; i < 4; i++) {
             final int optionIndex = i;
-            optionTextViews[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkAnswer(optionIndex);
-                }
-            });
+            //TÄTÄ ON VAIHDETTU
+            optionTextViews[i].setOnClickListener(v -> checkAnswer(optionIndex));
         }
     }
 
@@ -233,9 +228,6 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     }
 
     private void sendXPtoDatabase() {
-        String path = "Sessions/" + sessionID;
-        Log.d("Path", path);
-
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
 
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
