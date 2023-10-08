@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+
 import com.example.testi.games.AnimalGameFirstActivity;
 import com.example.testi.games.ColourGameFirstActivity;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,11 +29,15 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private ProgressBar progressBar;
     private TextView levelNavbar;
+    private int sessionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeactivity);
+
+        Intent intent = getIntent();
+        sessionID = intent.getIntExtra("sessionID", -1);
 
         // Haetaan aktiviteetin alanapit
         ImageView profileIcon = findViewById(R.id.profileIcon);
@@ -48,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
         profileIcon.setOnClickListener(v -> {
             // Siirrytään profiiliaktiviteettiin
             Intent profile = new Intent(HomeActivity.this, ProfileActivity.class);
+            profile.putExtra("sessionID", sessionID);
             startActivity(profile);
             overridePendingTransition(0, 0);
         });
@@ -55,50 +62,56 @@ public class HomeActivity extends AppCompatActivity {
         settingsIcon.setOnClickListener(v -> {
             // Siirrytään asetukset-aktiviteettiin
             Intent settings = new Intent(HomeActivity.this, SettingsActivity.class);
+            settings.putExtra("sessionID", sessionID);
             startActivity(settings);
             overridePendingTransition(0, 0);
         });
 
         animalGameIcon.setOnClickListener(v -> {
             Intent animalGame = new Intent(HomeActivity.this, AnimalGameFirstActivity.class);
+            animalGame.putExtra("sessionID", sessionID);
             startActivity(animalGame);
             overridePendingTransition(0, 0);
         });
 
         colourGameIcon.setOnClickListener(v -> {
             Intent colourGame = new Intent(HomeActivity.this, ColourGameFirstActivity.class);
+            colourGame.putExtra("sessionID", sessionID);
             startActivity(colourGame);
             overridePendingTransition(0, 0);
         });
     }
 
     private void loadInformationFromDatabase() {
-        //haetaan ensin session ID preferensseistä
-        prefs = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        String sessionKey = prefs.getString("currentSessionKey", "1");
-
         levelNavbar = findViewById(R.id.userLevel);
         progressBar = findViewById(R.id.progressBar);
 
-        //polku tietokannassa oleviin käyttäjän tietoihin
-        String path = "Sessions/" + sessionKey;
-        Log.d("Session", path);
-
-        //luodaan yhteys tietokantaan ja haetaan käyttäjän profiilikuvan ID, taso ja xp tietokannasta
-        databaseReference = FirebaseDatabase.getInstance().getReference(path);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        // Haetaan tietokannasta Sessions-node
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Session session = snapshot.getValue(Session.class);
-                progressBar.setProgress(session.XP);
-                levelNavbar.setText(String.valueOf(session.Level));
-                setNavbarprofilePic(session.PhotoID);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
+                        // Haetaan sessionin avain
+                        String sessionKey = sessionSnapshot.getKey();
+                        // Haetaan sessionID
+                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        if (sessionKey != null) {
+                            if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva navbariin
+                                setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
+                                progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class));
+                                levelNavbar.setText(String.valueOf(sessionSnapshot.child("Level").getValue(Integer.class)));
+                            }
+                        }
+                    }
+                }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Printataan error jos sellainen tulee vastaan
-                System.err.println("Error: " + error.getMessage());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Session", "Sessionien latauksessa tuli virhe");
             }
         });
     }
