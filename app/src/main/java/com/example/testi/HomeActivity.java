@@ -50,7 +50,6 @@ public class HomeActivity extends AppCompatActivity {
             Intent profile = new Intent(HomeActivity.this, ProfileActivity.class);
             profile.putExtra("sessionID", sessionID);
             startActivity(profile);
-            overridePendingTransition(0, 0);
         });
 
         settingsIcon.setOnClickListener(v -> {
@@ -58,7 +57,6 @@ public class HomeActivity extends AppCompatActivity {
             Intent settings = new Intent(HomeActivity.this, SettingsActivity.class);
             settings.putExtra("sessionID", sessionID);
             startActivity(settings);
-            overridePendingTransition(0, 0);
         });
 
         animalGameIcon.setOnClickListener(v -> {

@@ -59,7 +59,6 @@ public class ProfileActivity extends AppCompatActivity{
             Intent home = new Intent(ProfileActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);
-            overridePendingTransition(0, 0);
         });
 
         settingsIcon.setOnClickListener(v -> {
@@ -67,7 +66,6 @@ public class ProfileActivity extends AppCompatActivity{
             Intent settings = new Intent(ProfileActivity.this, SettingsActivity.class);
             settings.putExtra("sessionID", sessionID);
             startActivity(settings);
-            overridePendingTransition(0, 0);
         });
 
         //Haetaan käyttäjän tiedot tietokannasta

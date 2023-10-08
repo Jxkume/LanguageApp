@@ -52,7 +52,6 @@ public class SettingsActivity extends AppCompatActivity{
             Intent home = new Intent(SettingsActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);
-            overridePendingTransition(0, 0);
         });
 
         profileIcon.setOnClickListener(v -> {
@@ -60,7 +59,6 @@ public class SettingsActivity extends AppCompatActivity{
             Intent profile = new Intent(SettingsActivity.this, ProfileActivity.class);
             profile.putExtra("sessionID", sessionID);
             startActivity(profile);
-            overridePendingTransition(0, 0);
         });
 
     }
