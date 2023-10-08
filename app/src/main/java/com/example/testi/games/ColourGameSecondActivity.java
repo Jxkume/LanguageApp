@@ -164,6 +164,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
                 //intent.putExtra("score", score); //wat is dis T.JHON
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         }
     }

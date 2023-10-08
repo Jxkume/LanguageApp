@@ -164,9 +164,10 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             if (currentQuestionIndex >= 10) {
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(AnimalGameSecondActivity.this, HomeActivity.class);
-                //intent.putExtra("score", score); //wat is dis T.JHON
+                finish();
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
             }
         }
     }

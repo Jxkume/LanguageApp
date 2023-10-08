@@ -9,10 +9,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 import com.example.testi.games.AnimalGameFirstActivity;
 import com.example.testi.games.ColourGameFirstActivity;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         ImageView animalGameIcon = findViewById(R.id.animalGameIcon);
         ImageView colourGameIcon = findViewById(R.id.colorGameIcon);
 
-        //haetaan käyttäjän avatar tietokannasta
+        //haetaan käyttäjän avatar, taso ja xp tietokannasta
         loadInformationFromDatabase();
 
         // Lisätään nappeihin klikkaustoiminnallisuus
