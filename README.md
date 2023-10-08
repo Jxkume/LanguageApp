@@ -6,7 +6,7 @@
 ## Asennus ja konfigurointi
 
 ## Tiimi
-Vera Finogenova
-Valtteri Kuitula
-Jhon Rastrojo López
+Vera Finogenova  
+Valtteri Kuitula  
+Jhon Rastrojo López  
 Korpi Tolonen
