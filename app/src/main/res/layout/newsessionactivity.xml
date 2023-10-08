@@ -93,6 +93,7 @@
         android:fontFamily="@font/baloo2_medium"
         android:hint="Käyttäjänimi"
         android:inputType="text"
+        android:maxLength="10"
         android:paddingStart="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

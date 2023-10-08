@@ -11,8 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import java.util.HashMap;
-
 public class NewSessionActivity extends AppCompatActivity {
 
     private ImageView newProfilePicture;
@@ -23,7 +21,6 @@ public class NewSessionActivity extends AppCompatActivity {
     private EditText ageEditText;
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
-    private HashMap buttonSessionPairs;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -208,7 +205,7 @@ public class NewSessionActivity extends AppCompatActivity {
     // Validoidaan käyttäjätunnuksen (vain kirjaimia)
     private boolean validUsername(String username) {
         // regex tarkoittaa regularExpression
-        String regex = "[a-zA-Z]+";
+        String regex = "^[\\p{L}]+$";
         return username.matches(regex);
     }
 
