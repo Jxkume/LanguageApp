@@ -95,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity{
                                 setProfilePicture(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 usernameTextView.setText(sessionSnapshot.child("Username").getValue(String.class));
                                 levelText.setText("Taso: " + sessionSnapshot.child("Level").getValue(Long.class));
-                                currentXPTextView.setText(Long.toString(sessionSnapshot.child("XP").getValue(Long.class)));
+                                currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / 100 xp"); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
                             }
                         }
                     }
