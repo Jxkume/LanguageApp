@@ -93,7 +93,7 @@ public class HomeActivity extends AppCompatActivity {
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if (sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
-                                // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva navbariin
+                                // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva, xp ja taso navbariin
                                 setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class));
                                 levelNavbar.setText(String.valueOf(sessionSnapshot.child("Level").getValue(Integer.class)));

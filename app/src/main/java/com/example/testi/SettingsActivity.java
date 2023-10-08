@@ -17,7 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class SettingsActivity extends AppCompatActivity{
-    private ImageView profilePicNavbarImageView;
     private ProgressBar progressBar;
     private TextView levelNavbar;
     private int sessionID;
@@ -62,7 +61,6 @@ public class SettingsActivity extends AppCompatActivity{
             startActivity(profile);
             overridePendingTransition(0, 0);
         });
-
     }
 
     private void deleteSessionData() {
@@ -88,7 +86,7 @@ public class SettingsActivity extends AppCompatActivity{
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d("Session", "Sessionien latauksessa tuli virhe");
             }
         });
     }
@@ -115,7 +113,6 @@ public class SettingsActivity extends AppCompatActivity{
                                 setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class));
                                 levelNavbar.setText(String.valueOf(sessionSnapshot.child("Level").getValue(Integer.class)));
-
                             }
                         }
                     }
@@ -131,7 +128,7 @@ public class SettingsActivity extends AppCompatActivity{
 
     //haetaan käyttäjän profiilikuvan drawable-kansiosta sen id:n perusteella ja asetetaan sen yläpalkkiin
     private void setNavbarprofilePic(int picID) {
-        profilePicNavbarImageView = findViewById(R.id.newProfilePictureNavbar);
+        ImageView profilePicNavbarImageView = findViewById(R.id.newProfilePictureNavbar);
 
         switch (picID) {
             case 1:
