@@ -161,7 +161,6 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             if (currentQuestionIndex >= 10) {
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(ColourGameSecondActivity.this, HomeActivity.class);
-                //intent.putExtra("score", score); //wat is dis T.JHON
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
                 overridePendingTransition(0, 0);

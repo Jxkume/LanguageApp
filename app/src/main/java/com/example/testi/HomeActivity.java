@@ -1,8 +1,6 @@
 package com.example.testi;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,8 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private ImageView profilePicNavbarImageView;
-    private SharedPreferences prefs;
-    private DatabaseReference databaseReference;
     private ProgressBar progressBar;
     private TextView levelNavbar;
     private int sessionID;
