@@ -11,19 +11,16 @@ Mobiilisovellus eroaa muista kielisovelluksista siten, että se on suunnattu nim
 
 ## Kehitysympäristö
 
-Projekti on tehty Java kielellä. Projektissa käytetyt kirjastot ja frameworkit:
-- Android
-- Appcompat
-- Constraintlayout
-- Espresso-core
-- Firebase-auth
-- Firebase-core
-- Firebase-database
+Projektin kehitysympäristönä toimi Android Studio. Käyttöliittymän suunnittelu toteutettiin suunnittelutyökalu Figmassa. Projektin koodi kirjoitettiin Java-kielellä. Alla on lista kaikista projektissa käytetyistä kirjastoista ja ohjelmistokehyksistä:
+- AndroidX
+- Espresso Core
+- Firebase Authentication
+- Firebase Realtime Database
 - JUnit
-- Mockito-core
+- Mockito Core
 
-Projektissa käytettiin uusimmat versiot kaikista kirjastoista
-Seuraavassa on ohjeet projektin asentamiseen ja konfigurointiin paikalliseen kehitysympäristöön sekä tarvittavien riippuvuuksien asentamiseen.
+Projektissa käytettiin uusimpia versioita kaikista kirjastoista ja ohjelmistokehyksistä.
+Seuraavasta osiosta löytyy ohjeet projektin asentamiseen ja konfigurointiin paikalliseen kehitysympäristöön sekä tarvittavien riippuvuuksien asentamiseen.
 
 ## Asennus ja konfigurointi
 
@@ -32,7 +29,7 @@ Seuraavassa on ohjeet projektin asentamiseen ja konfigurointiin paikalliseen keh
 Varmista, että seuraavat asiat ovat asennettuna ja käytettävissäsi ennen projektin asentamista:
 -	[Android Studio](https://developer.android.com/studio) – Käytämme tätä kehitysympäristönä Android-sovelluksen rakentamiseen.
 -	Java Development Kit (JDK) – Asenna JDK, jos sitä ei ole jo asennettu.
--	[Jenkins](https://www.jenkins.io) – Käytämme jenkinsiä automatisoituihin testeihin.
+-	[Jenkins](https://www.jenkins.io) – Käytämme Jenkinsiä automatisoituihin testeihin.
 -	[Firebase](https://firebase.google.com) – Käytämme Firebasea tietokantana. Luo Firebase-projekti ja hanki tarvittavat asetukset ja avaimet.
 
 ### Asennusohjeet
@@ -50,7 +47,7 @@ git clone https://github.com/Jxkume/LanguageApp.git
 4.	Konfiguroi Jenkins-testaus:
    
     - Asenna Jenkins ja konfiguroi se tarvittaessa.
-    - Luo Jenkins-projekti ja määritä testaustyönkulku
+    - Luo Jenkins-projekti ja määritä testaustyönkulku.
     - Käytä tarvittaessa tämän projektin Jenkinsfilea automatisoidaksesi testaustyönkulku.
 5.	Käynnistä projekti Android Studiossa ja varmista, että se toimii ongelmitta paikallisesti.
    
