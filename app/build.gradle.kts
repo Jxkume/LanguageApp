@@ -28,8 +28,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     testOptions {
-        reportDir = "$project.buildDir/reports"
-        resultsDir = "$project.buildDir/test-results"
+
     }
 }
 
