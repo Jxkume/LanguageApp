@@ -20,8 +20,8 @@ Projekti on tehty Java kielellä. Projektissa käytetyt kirjastot ja frameworkit
 - Firebase-core
 - Firebase-database
 - JUnit
-- Mockito-core
-  
+- Mockito-core \n
+
 Projektissa käytettiin uusimmat versiot kaikista kirjastoista
 
 
