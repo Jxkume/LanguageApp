@@ -23,6 +23,36 @@ Projekti on tehty Java kielellä. Projektissa käytetyt kirjastot ja frameworkit
 - Mockito-core \n
 
 Projektissa käytettiin uusimmat versiot kaikista kirjastoista
+Seuraavassa on ohjeet projektin asentamiseen ja konfigurointiin paikalliseen kehitysympäristöön sekä tarvittavien riippuvuuksien asentamiseen.
+
+### Ennen aloittamista
+Varmista, että seuraavat asiat ovat asennettuna ja käytettävissäsi ennen projektin asentamista:
+-	[Android studio](https://developer.android.com/studio) – Käytämme tätä kehitysympäristönä Android-sovelluksen rakentamiseen.
+-	Java Development Kit (JDK) – Asenna JDK, jos sitä ei ole jo asennettu.
+-	[Jenkins](https://www.jenkins.io) – Käytämme jenkinsiä automatisoituihin testeihin.
+-	[Firebase](https://firebase.google.com) – Käytämme Firebasea tietokantana. Luo Firebase-projekti ja hanki tarvittavat asetukset ja avaimet.
+
+### Asennusohjeet
+
+1.	Kloona tämä projekti omalle tietokoneellesi: 
+```
+git clone https://github.com/Jxkume/LanguageApp.git
+
+```
+2.	Avaa projekti Android Studiossa.
+3.	Määritä projektin riippuvuudet:
+    -	Lisää Firebase-projektin asetustiedostot (`google-services.json`) projektiin.
+    - Tarvittaessa päivitä `build.gradle` -tiedostot määrittämään tarvittavat riippuvuudet.
+4.	Konfiguroi Jenkins-testaus:
+    - Asenna Jenkins ja konfiguroi se tarvittaessa.
+    - Luo Jenkins-projekti ja määritä testaustyönkulku
+    - Käytä tarvittaessa tämän projektin Jenkinsfilea automatisoidaksesi testaustyönkulku.
+5.	Käynnistä projekti Android Studiossa ja varmista, että se toimii ongelmitta paikallisesti.
+   
+### Lisätietoa
+
+Tässä vaiheessa projekti tulisi olla asennettuna ja konfiguroituna paikallisesti. Voit nyt alkaa kehittää ja testata sovellusta Android Studiossa ja käyttää Jenkinsiä automatisoitujen testien suorittamiseen.
+Lisätietoa projektiin liittyvistä toimista, kuten konfiguraatioista, ohjeista ja muista ressurseista, löytyy projektin dokumentaatiosta tai [linkki tietokannan hallintakonsoleihin](https://firebase.google.com/docs/database) Firebase-tietokantaa varten.
 
 
 ## Asennus ja konfigurointi
