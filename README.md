@@ -21,6 +21,7 @@ Projekti on tehty Java kielellä. Projektissa käytetyt kirjastot ja frameworkit
 - Firebase-database
 - JUnit
 - Mockito-core
+  
 Projektissa käytettiin uusimmat versiot kaikista kirjastoista
 
 
