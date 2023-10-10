@@ -34,22 +34,22 @@ Varmista, että seuraavat asiat ovat asennettuna ja käytettävissäsi ennen pro
 
 ### Asennusohjeet
 
-1.	Kloonaa tämä projekti omalle tietokoneellesi terminaalissa seuraavalla komennolla:
+**1.**	Kloonaa tämä projekti omalle tietokoneellesi terminaalissa seuraavalla komennolla:
 ```
 git clone https://github.com/Jxkume/LanguageApp.git
 
 ```
-2.	Avaa projekti Android Studiossa.
-3.	Määritä projektin riippuvuudet:
+**2.**	Avaa projekti Android Studiossa.
+**3.**	Määritä projektin riippuvuudet:
    
     - Lisää Firebase-projektin asetustiedostot (`google-services.json`) projektiin.
     - Tarvittaessa päivitä `build.gradle` -tiedostot määrittämään tarvittavat riippuvuudet.
-4.	Konfiguroi Jenkins-testaus:
+**4.**	Konfiguroi Jenkins-testaus:
    
     - Asenna Jenkins ja konfiguroi se tarvittaessa.
     - Luo Jenkins-projekti ja määritä testaustyönkulku.
     - Käytä tarvittaessa tämän projektin Jenkinsfilea automatisoidaksesi testaustyönkulku.
-5.	Käynnistä projekti Android Studiossa ja varmista, että se toimii ongelmitta paikallisesti.
+**5.**	Käynnistä projekti Android Studiossa ja varmista, että se toimii ongelmitta paikallisesti.
    
 ### Lisätietoa
 
