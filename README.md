@@ -11,6 +11,19 @@ Mobiilisovellus eroaa muista kielisovelluksista siten, että se on suunnattu nim
 
 ## Kehitysympäristö
 
+Projekti on tehty Java kielellä. Projektissa käytetyt kirjastot ja frameworkit:
+- Android
+- Appcompat
+- Constraintlayout
+- Espresso-core
+- Firebase-auth
+- Firebase-core
+- Firebase-database
+- JUnit
+- Mockito-core
+Projektissa käytettiin uusimmat versiot kaikista kirjastoista
+
+
 ## Asennus ja konfigurointi
 
 ## Tiimi
