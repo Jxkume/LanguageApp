@@ -32,6 +32,8 @@ Varmista, että seuraavat asiat ovat asennettuna ja käytettävissäsi ennen pro
 -	[Jenkins](https://www.jenkins.io) – Käytämme jenkinsiä automatisoituihin testeihin.
 -	[Firebase](https://firebase.google.com) – Käytämme Firebasea tietokantana. Luo Firebase-projekti ja hanki tarvittavat asetukset ja avaimet.
 
+## Asennus ja konfigurointi
+
 ### Asennusohjeet
 
 1.	Kloona tämä projekti omalle tietokoneellesi: 
@@ -53,9 +55,6 @@ git clone https://github.com/Jxkume/LanguageApp.git
 
 Tässä vaiheessa projekti tulisi olla asennettuna ja konfiguroituna paikallisesti. Voit nyt alkaa kehittää ja testata sovellusta Android Studiossa ja käyttää Jenkinsiä automatisoitujen testien suorittamiseen.
 Lisätietoa projektiin liittyvistä toimista, kuten konfiguraatioista, ohjeista ja muista ressurseista, löytyy projektin dokumentaatiosta tai [linkki tietokannan hallintakonsoleihin](https://firebase.google.com/docs/database) Firebase-tietokantaa varten.
-
-
-## Asennus ja konfigurointi
 
 ## Tiimi
 Vera Finogenova  
