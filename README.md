@@ -34,7 +34,7 @@ Varmista, että seuraavat asiat ovat asennettuna ja käytettävissäsi ennen pro
 
 ### Asennusohjeet
 
-1.	Kloona tämä projekti omalle tietokoneellesi: 
+1.	Kloonaa tämä projekti omalle tietokoneellesi terminaalissa seuraavalla komennolla:
 ```
 git clone https://github.com/Jxkume/LanguageApp.git
 
