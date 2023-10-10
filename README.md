@@ -20,7 +20,7 @@ Projekti on tehty Java kielellä. Projektissa käytetyt kirjastot ja frameworkit
 - Firebase-core
 - Firebase-database
 - JUnit
-- Mockito-core \n
+- Mockito-core
 
 Projektissa käytettiin uusimmat versiot kaikista kirjastoista
 Seuraavassa on ohjeet projektin asentamiseen ja konfigurointiin paikalliseen kehitysympäristöön sekä tarvittavien riippuvuuksien asentamiseen.
