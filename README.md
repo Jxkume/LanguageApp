@@ -30,7 +30,7 @@ Seuraavassa on ohjeet projektin asentamiseen ja konfigurointiin paikalliseen keh
 ### Ennen aloittamista
 
 Varmista, että seuraavat asiat ovat asennettuna ja käytettävissäsi ennen projektin asentamista:
--	[Android studio](https://developer.android.com/studio) – Käytämme tätä kehitysympäristönä Android-sovelluksen rakentamiseen.
+-	[Android Studio](https://developer.android.com/studio) – Käytämme tätä kehitysympäristönä Android-sovelluksen rakentamiseen.
 -	Java Development Kit (JDK) – Asenna JDK, jos sitä ei ole jo asennettu.
 -	[Jenkins](https://www.jenkins.io) – Käytämme jenkinsiä automatisoituihin testeihin.
 -	[Firebase](https://firebase.google.com) – Käytämme Firebasea tietokantana. Luo Firebase-projekti ja hanki tarvittavat asetukset ja avaimet.
