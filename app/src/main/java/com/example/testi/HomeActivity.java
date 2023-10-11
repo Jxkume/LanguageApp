@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void loadInformationFromDatabase() {
+    void loadInformationFromDatabase() {
         levelNavbar = findViewById(R.id.userLevel);
         progressBar = findViewById(R.id.progressBar);
 
