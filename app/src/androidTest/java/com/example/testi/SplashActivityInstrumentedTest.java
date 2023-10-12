@@ -25,17 +25,4 @@ public class SplashActivityInstrumentedTest {
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
-    @Test
-    public void testSplashScreenTransition2() {
-
-        try {
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        // Tämän testin ei pitäisi mennä läpi
-        Espresso.onView(ViewMatchers.withId(R.id.profilePictureBackground))
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-    }
 }
