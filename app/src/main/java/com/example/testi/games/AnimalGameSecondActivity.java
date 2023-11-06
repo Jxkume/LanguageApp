@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -156,23 +157,20 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             }
         } else {
             // Peli päättyy
+            // Päivitetään tietokantaan kokemuspisteet
             sendXPtoDatabase();
-            questionImageView.setImageResource(0);
-            //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
+            //
+            new Handler().postDelayed(() -> {
+                questionImageView.setImageResource(0);
+                //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
-            if (currentQuestionIndex >= 5) {
                 // Mennään seuraavaan aktiviteettiin
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.getMessage();
-                }
                 Intent intent = new Intent(AnimalGameSecondActivity.this, HomeActivity.class);
                 finish();
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
-            }
+            }, 1500);
         }
     }
 

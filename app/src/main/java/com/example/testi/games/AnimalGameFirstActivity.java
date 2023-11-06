@@ -162,18 +162,16 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 }
             }
         } else {
-            // Peli päättyy
+            // 5 kierrosta pelattu, mennään seuraavaan aktiviteettiin
             questionImageView.setImageResource(0); // Remove the question image
             questionTextView.setText(""); // Clear the questionTextView
 
-            if (currentQuestionIndex >= 5) {
-                // Mennään seuraavaan aktiviteettiin
-                Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
-                intent.putExtra("score", score);
-                intent.putExtra("sessionID", sessionID);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
+            // Mennään seuraavaan aktiviteettiin
+            Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
+            intent.putExtra("score", score);
+            intent.putExtra("sessionID", sessionID);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
         }
     }
 
