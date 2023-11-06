@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,8 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     private int currentQuestionIndex = 0;
     private ImageView exitButton;
     private int sessionID;
+    private ProgressBar progressBar;
+    private int progressBarProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,11 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 }
             });
         }
+
+        // Pelin edistymispalkki
+        progressBar = findViewById(R.id.animalGameProgressBar);
+        progressBarProgress = 0;
+        progressBar.setProgress(progressBarProgress);
     }
 
     private void loadWordsAndSetUpGame() {
@@ -208,6 +216,10 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
             // Mennään seuraavaan kysymykseen/roudiin
             currentQuestionIndex++;
             showNextQuestion();
+
+            // Lisätään edistymispalkkia
+            progressBarProgress += 10;
+            progressBar.setProgress(progressBarProgress);
         }
     }
 

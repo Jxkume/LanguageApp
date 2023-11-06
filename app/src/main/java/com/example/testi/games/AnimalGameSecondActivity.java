@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,8 +36,9 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
     private String correctAnswer;
     private int score;
     private int currentQuestionIndex = 0;
-
     private int sessionID;
+    private ProgressBar progressBar;
+    private int progressBarProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,11 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             //TÄTÄ ON VAIHDETTU
             optionTextViews[i].setOnClickListener(v -> checkAnswer(optionIndex));
         }
+
+        // Pelin edistymispalkki
+        progressBar = findViewById(R.id.animalGameProgressBar);
+        progressBarProgress = 50;
+        progressBar.setProgress(progressBarProgress);
     }
 
     private void loadWordsAndSetUpGame() {
@@ -204,6 +211,10 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             // Mennään seuraavaan kysymykseen/roudiin
             currentQuestionIndex++;
             showNextQuestion();
+
+            // Lisätään edistymispalkkia
+            progressBarProgress += 10;
+            progressBar.setProgress(progressBarProgress);
         }
     }
 
