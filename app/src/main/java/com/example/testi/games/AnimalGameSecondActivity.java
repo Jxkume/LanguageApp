@@ -157,9 +157,15 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             }
         } else {
             // Peli päättyy
+
             // Päivitetään tietokantaan kokemuspisteet
             sendXPtoDatabase();
-            //
+
+            // Käyttäjä ei voi enää klikata lisää vaihtoehtoja, koska peli päättyi
+            for (int i = 0; i < 4; i++) {
+                optionTextViews[i].setClickable(false);
+            }
+
             new Handler().postDelayed(() -> {
                 questionImageView.setImageResource(0);
                 //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
