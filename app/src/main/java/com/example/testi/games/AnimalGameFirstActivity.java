@@ -2,6 +2,7 @@ package com.example.testi.games;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,6 +44,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     private int sessionID;
     private ProgressBar progressBar;
     private int progressBarProgress;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,19 +164,28 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 }
             }
         } else {
-            // 5 kierrosta pelattu, mennään seuraavaan aktiviteettiin
-            questionImageView.setImageResource(0); // Remove the question image
-            questionTextView.setText(""); // Clear the questionTextView
+            // Käyttäjä ei voi enää klikata lisää vaihtoehtoja
+            for (int i = 0; i < 4; i++) {
+                optionImageViews[i].setClickable(false);
+            }
 
-            // Mennään seuraavaan aktiviteettiin
-            Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
-            intent.putExtra("score", score);
-            intent.putExtra("sessionID", sessionID);
-            startActivity(intent);
-            overridePendingTransition(0, 0);
+            // 5 kierrosta pelattu, mennään seuraavaan aktiviteettiin
+
+            // 0.5s viive, jotta viimeinen toast tulee näkyviin
+            new Handler().postDelayed(() -> {
+                questionImageView.setImageResource(0);
+                questionTextView.setText("");
+                //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
+
+                // Mennään seuraavaan aktiviteettiin
+                Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
+                intent.putExtra("score", score);
+                intent.putExtra("sessionID", sessionID);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+            }, 500);
         }
     }
-
 
     private List<Integer> getRandomIncorrectAnswerIndices(int count) {
         // Satunnaisesti valitaan indeksejä sanaluettelosta (words arrayLististä).
@@ -189,8 +200,6 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         }
         return incorrectAnswerIndices;
     }
-
-
 
     private void checkAnswer(int selectedOptionIndex) {
         if (currentQuestionIndex < words.size()) {
@@ -222,10 +231,14 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     }
 
     private void showCorrectToast() {
+        // Toast peruutetaan, jos se on jo olemassa (vältetään toastien kasautuminen jonoon)
+        if (toast != null) {
+            toast.cancel();
+        }
         LayoutInflater inflater = getLayoutInflater();
         View corr_toast = inflater.inflate(R.layout.toast_layout_correct, (ViewGroup) findViewById(R.id.toast_layout_correct));
 
-        Toast toast = new Toast(getApplicationContext());
+        toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(corr_toast);
@@ -234,10 +247,14 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
     }
 
     private void showIncorrectToast() {
+        // Toast peruutetaan, jos se on jo olemassa (vältetään toastien kasautuminen jonoon)
+        if (toast != null) {
+            toast.cancel();
+        }
         LayoutInflater inflater = getLayoutInflater();
         View incorr_toast = inflater.inflate(R.layout.toast_layout_incorrect, (ViewGroup) findViewById(R.id.toast_layout_incorrect));
 
-        Toast toast = new Toast(getApplicationContext());
+        toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(incorr_toast);
