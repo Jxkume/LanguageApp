@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     private int score;
     private int currentQuestionIndex = 0;
     private int sessionID;
+    private ProgressBar progressBar;
+    private int progressBarProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +82,11 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             //TÄTÄ ON VAIHDETTU
             optionTextViews[i].setOnClickListener(v -> checkAnswer(optionIndex));
         }
+
+        // Pelin edistymispalkki
+        progressBar = findViewById(R.id.colourGameProgressBar);
+        progressBarProgress = 50;
+        progressBar.setProgress(progressBarProgress);
     }
 
     private void loadWordsAndSetUpGame() {
@@ -200,6 +208,10 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             // Mennään seuraavaan kysymykseen/roudiin
             currentQuestionIndex++;
             showNextQuestion();
+
+            // Lisätään edistymispalkkia
+            progressBarProgress += 10;
+            progressBar.setProgress(progressBarProgress);
         }
     }
 
