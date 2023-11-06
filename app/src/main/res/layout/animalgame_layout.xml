@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -24,14 +25,26 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/animalgameexit" />
 
+    <ImageView
+        android:id="@+id/animalGameProgressBarBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/animalgameprogressbarbackground" />
+
     <ProgressBar
         android:id="@+id/animalGameProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="323dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="50dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:progressDrawable="@drawable/animalgameprogressbar"
+        android:layout_width="319dp"
+        android:layout_height="15dp"
+        android:progress="0"
+        app:layout_constraintBottom_toBottomOf="@+id/animalGameProgressBarBackground"
+        app:layout_constraintEnd_toEndOf="@+id/animalGameProgressBarBackground"
+        app:layout_constraintStart_toStartOf="@+id/animalGameProgressBarBackground"
+        app:layout_constraintTop_toTopOf="@+id/animalGameProgressBarBackground" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
