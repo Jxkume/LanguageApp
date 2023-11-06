@@ -167,14 +167,12 @@ public class ColourGameFirstActivity extends AppCompatActivity {
             questionImageView.setImageResource(0);
             questionTextView.setText("");
 
-            if (currentQuestionIndex >= 5) {
-                // Mennään seuraavaan aktiviteettiin
-                Intent intent = new Intent(ColourGameFirstActivity.this, ColourGameSecondActivity.class);
-                intent.putExtra("score", score);
-                intent.putExtra("sessionID", sessionID);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-            }
+            // Mennään seuraavaan aktiviteettiin
+            Intent intent = new Intent(ColourGameFirstActivity.this, ColourGameSecondActivity.class);
+            intent.putExtra("score", score);
+            intent.putExtra("sessionID", sessionID);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
         }
     }
 

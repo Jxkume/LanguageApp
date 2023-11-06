@@ -2,6 +2,7 @@ package com.example.testi.games;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -154,22 +155,20 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             }
         } else {
             // Peli päättyy
+            // Päivitetään tietokantaan kokemuspisteet
             sendXPtoDatabase();
-            questionImageView.setImageResource(0);
-            //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
+            //
+            new Handler().postDelayed(() -> {
+                questionImageView.setImageResource(0);
+                //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
-            if (currentQuestionIndex >= 5) {
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.getMessage();
-                }
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(ColourGameSecondActivity.this, HomeActivity.class);
+                finish();
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
-            }
+            }, 1500);
         }
     }
 
