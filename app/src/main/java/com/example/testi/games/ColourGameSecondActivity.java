@@ -39,6 +39,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     private int sessionID;
     private ProgressBar progressBar;
     private int progressBarProgress;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +175,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
-            }, 1500);
+            }, 2500);
         }
     }
 
@@ -221,10 +222,14 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     }
 
     private void showCorrectToast() {
+        // Toast peruutetaan, jos se on jo olemassa (vältetään toastien kasautuminen jonoon)
+        if (toast != null) {
+            toast.cancel();
+        }
         LayoutInflater inflater = getLayoutInflater();
         View corr_toast = inflater.inflate(R.layout.toast_layout_correct, (ViewGroup) findViewById(R.id.toast_layout_correct));
 
-        Toast toast = new Toast(getApplicationContext());
+        toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(corr_toast);
@@ -233,10 +238,14 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     }
 
     private void showIncorrectToast() {
+        // Toast peruutetaan, jos se on jo olemassa (vältetään toastien kasautuminen jonoon)
+        if (toast != null) {
+            toast.cancel();
+        }
         LayoutInflater inflater = getLayoutInflater();
         View incorr_toast = inflater.inflate(R.layout.toast_layout_incorrect, (ViewGroup) findViewById(R.id.toast_layout_incorrect));
 
-        Toast toast = new Toast(getApplicationContext());
+        toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(incorr_toast);
