@@ -21,6 +21,7 @@ public class NewSessionActivity extends AppCompatActivity {
     private EditText ageEditText;
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
+    private int chosenLanguage;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -31,6 +32,7 @@ public class NewSessionActivity extends AppCompatActivity {
         // Haetaan sessionID
         Intent intent = getIntent();
         int sessionID = intent.getIntExtra("buttonClicked", -1);
+        chosenLanguage = intent.getIntExtra("language", -1);
 
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
@@ -97,7 +99,7 @@ public class NewSessionActivity extends AppCompatActivity {
             // Luodaan sessio vain silloin, kun session arvo ollaan saatu edellisestä aktiviteetista (jos arvoa ei olla saatu, arvo on defaulttina -1)
             if (sessionID != -1) {
                 int age = Integer.parseInt(ageStr);
-                Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, "العربية"); // LANGUAGEEN TULEE VALDON LUOMA MUUTTUJA SOON
+                Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, getChosenLanguage());
             }
 
             Intent home = new Intent(NewSessionActivity.this, HomeActivity.class);
@@ -213,5 +215,18 @@ public class NewSessionActivity extends AppCompatActivity {
     private void showAlert(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(NewSessionActivity.this);
         builder.setTitle(title).setMessage(message).setPositiveButton("OK", null).show();
+    }
+
+    private String getChosenLanguage() {
+        switch (chosenLanguage) {
+            case 0:
+                return "Suomi";
+            case 1:
+                return "Español";
+            case 2:
+                return "العربية";
+            default:
+                return "Suomi";
+        }
     }
 }
