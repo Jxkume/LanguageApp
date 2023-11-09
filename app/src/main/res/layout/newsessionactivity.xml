@@ -113,7 +113,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=":)"
+        android:text="@string/ready"
         android:textSize="25dp"
         android:fontFamily="@font/baloo2_extra"
         android:gravity="center"
