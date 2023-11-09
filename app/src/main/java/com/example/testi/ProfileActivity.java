@@ -94,7 +94,7 @@ public class ProfileActivity extends AppCompatActivity{
                                 // Jos avain ja sessionID löytyvät, asetetaan oikeat tiedot
                                 setProfilePicture(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 usernameTextView.setText("- " + sessionSnapshot.child("Username").getValue(String.class) + " -");
-                                levelText.setText("Taso: " + sessionSnapshot.child("Level").getValue(Long.class));
+                                levelText.setText(getString(R.string.level) + " " +   sessionSnapshot.child("Level").getValue(Long.class));
                                 currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / 100 xp"); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
                             }
                         }

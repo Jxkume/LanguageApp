@@ -1,10 +1,18 @@
 package com.example.testi;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Locale;
 
 public class SettingsActivity extends AppCompatActivity{
     private ProgressBar progressBar;
@@ -60,6 +70,7 @@ public class SettingsActivity extends AppCompatActivity{
             startActivity(profile);
         });
     }
+
 
     private void deleteSessionData() {
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference("Sessions");
@@ -157,5 +168,6 @@ public class SettingsActivity extends AppCompatActivity{
                 profilePicNavbarImageView.setImageResource(R.drawable.catprofilepicture);
         }
     }
+
 
 }

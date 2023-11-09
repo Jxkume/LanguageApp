@@ -11,9 +11,11 @@ public class Session {
 
     public int Age;
     public int XP;
+    public String language;
     public int Level;
     public String Username;
-    //tän pitää olla PhotoID, koska tällä nimellä se kenttä löytyy firebasesta
+
+    // Tän pitää olla PhotoID, koska tällä nimellä se kenttä löytyy firebasesta
     public int PhotoID;
 
     private String sessionUniqueKey;
@@ -43,13 +45,14 @@ public class Session {
     }
 
     // Tehdään Sessionin konstruktori JA alustetaan pelin ominaisuudet (Vähän niinku tehtäis Hash-Map)
-    public Session(int sessionID, int age, String username, int XP, int level, int photoID) { // Konstruktori saa parametrina keyn
+    public Session(int sessionID, int age, String username, int XP, int level, int photoID, String language) { // Konstruktori saa parametrina keyn
         this.sessionID = sessionID;
         this.Age = age;
         this.Username = username;
         this.XP = XP;
         this.Level = level;
         this.PhotoID = photoID;
+        this.language = language;
 
         // Täällä alustetaan pelien ominaisuudet
         ColourGame.Attempts = 0;
@@ -97,6 +100,9 @@ public class Session {
 
         // Asetetaan Level ominaisuuteen arvon
         newSessionRef.child("Level").setValue(Level);
+
+        // Asetetaan Language ominaisuuteen arvon
+        newSessionRef.child("Language").setValue(language);
 
         // Asetetaan ColourGame ominaisuuteen arvon
         newSessionRef.child("ColourGame").setValue(ColourGame);
