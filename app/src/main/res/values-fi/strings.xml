@@ -11,4 +11,6 @@
     <string name="sound">Ääni</string>
     <string name="right">Oikein!</string>
     <string name="wrong">Väärin</string>
+    <string name="next">SEURAAVA</string>
+    <string name="ready">VALMIS</string>
 </resources>

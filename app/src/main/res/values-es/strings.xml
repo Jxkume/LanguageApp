@@ -11,4 +11,6 @@
     <string name="sound">Sonido</string>
     <string name="right">Correcto!</string>
     <string name="wrong">Incorrecto</string>
+    <string name="next">SIGUIENTE</string>
+    <string name="ready">LISTO</string>
 </resources>

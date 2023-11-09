@@ -14,8 +14,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-
 public class SessionsActivity extends AppCompatActivity {
 
     private ImageView firstSessionButton, secondSessionButton, thirdSessionButton, fourthSessionButton, fifthSessionButton;
@@ -104,7 +102,7 @@ public class SessionsActivity extends AppCompatActivity {
 
         firstSessionButton.setOnClickListener(v -> {
             if ((int) firstSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
                 newSession.putExtra("buttonClicked", 1);
                 startActivity(newSession);
                 overridePendingTransition(0, 0);
@@ -118,7 +116,7 @@ public class SessionsActivity extends AppCompatActivity {
 
         secondSessionButton.setOnClickListener(v -> {
             if ((int) secondSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
                 newSession.putExtra("buttonClicked", 2);
                 startActivity(newSession);
                 overridePendingTransition(0, 0);
@@ -132,7 +130,7 @@ public class SessionsActivity extends AppCompatActivity {
 
         thirdSessionButton.setOnClickListener(v -> {
             if ((int) thirdSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
                 newSession.putExtra("buttonClicked", 3);
                 startActivity(newSession);
                 overridePendingTransition(0, 0);
@@ -146,7 +144,7 @@ public class SessionsActivity extends AppCompatActivity {
 
         fourthSessionButton.setOnClickListener(v -> {
             if ((int) fourthSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
                 newSession.putExtra("buttonClicked", 4);
                 startActivity(newSession);
                 overridePendingTransition(0, 0);
@@ -160,7 +158,7 @@ public class SessionsActivity extends AppCompatActivity {
 
         fifthSessionButton.setOnClickListener(v -> {
             if ((int) fifthSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, NewSessionActivity.class);
+                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
                 newSession.putExtra("buttonClicked", 5);
                 startActivity(newSession);
                 overridePendingTransition(0, 0);

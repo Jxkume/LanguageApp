@@ -28,7 +28,7 @@ public class NewSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.newsessionactivity);
 
-        // Haetaan edellisen aktiviteetin napin arvo (eli mitä nappia painettiin), jotta voidaan asettaa oikea sessionID
+        // Haetaan sessionID
         Intent intent = getIntent();
         int sessionID = intent.getIntExtra("buttonClicked", -1);
 

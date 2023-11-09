@@ -11,4 +11,6 @@
     <string name="sound">الصوت</string>
     <string name="right">على وجه صحيح!</string>
     <string name="wrong">خطأ</string>
+    <string name="next">المقبل</string>
+    <string name="ready">مستعد</string>
 </resources>
