@@ -13,13 +13,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
+    <Spinner
+        android:id="@+id/languageSpinner"
+        android:layout_width="123dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="149dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="144dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/soundLabelSettings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/navbar"
+        app:layout_constraintVertical_bias="0.708" />
+
     <TextView
         android:id="@+id/musicLabelSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo2_extra"
         android:gravity="center"
-        android:text="Musiikki"
+        android:text="@string/music"
         android:textSize="32dp"
         android:textColor="@color/font"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,7 +73,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo2_extra"
         android:gravity="center"
-        android:text="Ääni"
+        android:text="@string/sound"
         android:textSize="32dp"
         android:textColor="@color/font"
         app:layout_constraintBottom_toBottomOf="parent"

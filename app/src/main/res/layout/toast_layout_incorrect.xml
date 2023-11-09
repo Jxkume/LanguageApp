@@ -18,7 +18,7 @@
         android:id="@+id/toct_layout_correct_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Väärin"
+        android:text="@string/wrong"
         android:fontFamily="@font/baloo2_extra"
         android:textSize="45sp"/>
 

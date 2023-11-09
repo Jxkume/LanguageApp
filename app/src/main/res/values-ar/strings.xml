@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_profilepicture">اختر صورة الملف الشخصي:</string>
+    <string name="username">أدخل اسم المستخدم:</string>
+    <string name="age_hint">العمر</string>
+    <string name="age">أدخل عمرك:</string>
+    <string name="username_hint">اسم المستخدم</string>
+    <string name="name">الاسم</string>
+    <string name="level">المستوى</string>
+    <string name="music">الموسيقى</string>
+    <string name="sound">الصوت</string>
+    <string name="right">على وجه صحيح!</string>
+    <string name="wrong">خطأ</string>
+</resources>

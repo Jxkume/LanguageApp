@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Testi</string>
     <string name="choose_profilepicture">Valitse profiilikuva:</string>
     <string name="username">Anna käyttäjänimi:</string>
     <string name="age_hint">Ikä</string>
@@ -11,12 +11,4 @@
     <string name="sound">Ääni</string>
     <string name="right">Oikein!</string>
     <string name="wrong">Väärin</string>
-
-    <string-array name="language_options">
-        <item>English</item>
-        <item>العربية</item> <!-- Arabic -->
-        <item>Español</item>
-        <item>Suomi</item>
-    </string-array>
-
 </resources>
