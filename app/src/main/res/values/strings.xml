@@ -14,11 +14,4 @@
     <string name="next">SEURAAVA</string>
     <string name="ready">VALMIS</string>
 
-    <string-array name="language_options">
-        <item>English</item>
-        <item>العربية</item> <!-- Arabic -->
-        <item>Español</item>
-        <item>Suomi</item>
-    </string-array>
-
 </resources>
