@@ -29,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity{
     private Dialog popUp;
     private int profilePictureID;
     private int sessionID;
+    private int lvl;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -92,10 +93,11 @@ public class ProfileActivity extends AppCompatActivity{
                         if (sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikeat tiedot
+                                lvl = sessionSnapshot.child("Level").getValue(Integer.class);
                                 setProfilePicture(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 usernameTextView.setText("- " + sessionSnapshot.child("Username").getValue(String.class) + " -");
-                                levelText.setText(getString(R.string.level) + " " +   sessionSnapshot.child("Level").getValue(Long.class));
-                                currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / 100 xp"); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
+                                levelText.setText(getString(R.string.level) + " " + String.valueOf(lvl));
+                                currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / " + String.valueOf(getGoalXp()) + " xp"); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
                             }
                         }
                     }
@@ -247,6 +249,18 @@ public class ProfileActivity extends AppCompatActivity{
 
         // Pop-upin asettaminen näkyviin
         popUp.show();
+    }
+
+    private int getGoalXp() {
+        switch (lvl){
+            case 1: return 100;
+            case 2: return 200;
+            case 3: return 300;
+            case 4: return 400;
+            case 5: return 500;
+            default: return 0;
+
+        }
     }
 
 }

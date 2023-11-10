@@ -268,6 +268,13 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
                         if(sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 int xp = sessionSnapshot.child("XP").getValue(Integer.class);
+                                int lvl = sessionSnapshot.child("Level").getValue(Integer.class);
+
+                                //Log.d("LevelUp", "xp " + xp + " lvl " );
+                                if (checkLevelUp(xp, score, lvl)) {
+                                    sessionSnapshot.child("Level").getRef().setValue(lvl + 1);
+                                }
+
                                 sessionSnapshot.child("XP").getRef().setValue(score + xp);
                             }
                         }
@@ -281,5 +288,30 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
                 System.err.println("Error: " + error.getMessage());
             }
         });
+    }
+
+    private boolean checkLevelUp(int xp, int earnedPoints, int currentLevel) {
+        if (currentLevel == 1) {
+            if (xp < 100 && xp + earnedPoints >= 100) {
+                return true;
+            }
+        } else if (currentLevel == 2) {
+            if (xp < 200 && xp + earnedPoints >= 200) {
+                return true;
+            }
+        } else if (currentLevel == 3) {
+            if (xp < 300 && xp + earnedPoints >= 300) {
+                return true;
+            }
+        } else if(currentLevel == 4) {
+            if (xp < 400 && xp + earnedPoints >= 400) {
+                return true;
+            }
+        } else if(currentLevel == 5) {
+            if (xp < 500 && xp + earnedPoints >= 500) {
+                return true;
+            }
+        }
+        return false;
     }
 }

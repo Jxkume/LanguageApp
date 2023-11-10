@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-
+        checkLevelUp();
     }
 
     void loadInformationFromDatabase() {
@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva, xp ja taso navbariin
                                 setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
-                                progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class));
+                                progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class) % 100);
                                 levelNavbar.setText(String.valueOf(sessionSnapshot.child("Level").getValue(Integer.class)));
                                 String languageFromDatabase = sessionSnapshot.child("Language").getValue(String.class);
                                 setLocale(languageFromDatabase);
@@ -194,4 +194,9 @@ public class HomeActivity extends AppCompatActivity {
                 profilePicNavbarImageView.setImageResource(R.drawable.catprofilepicture);
         }
     }
+
+    void checkLevelUp() {
+
+    }
+
 }
