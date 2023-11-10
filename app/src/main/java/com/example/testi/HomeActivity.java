@@ -32,7 +32,7 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
         LanguageManager.getInstance().setSessionID(sessionID);
-        LanguageManager.getInstance().getLanguageFromDatabase(HomeActivity.this);
+        LanguageManager.getInstance().setLanguageFromDatabase(HomeActivity.this);
 
         try {
             Thread.sleep(100);

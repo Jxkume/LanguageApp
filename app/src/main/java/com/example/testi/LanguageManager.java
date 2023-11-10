@@ -18,6 +18,7 @@ public class LanguageManager {
     private static LanguageManager instance;
     private String selectedLanguage;
     private int sessionID;
+    private String languageFromDatabase;
 
     private LanguageManager() {
         // Private constructor to prevent instantiation
@@ -47,7 +48,7 @@ public class LanguageManager {
     }
 
     // Hakee tietokannasta kielen, jota käyttäjä käyttää
-    public void getLanguageFromDatabase(Context context) {
+    public void setLanguageFromDatabase(Context context) {
 
         // Haetaan tietokannasta Sessions-node
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
@@ -63,7 +64,7 @@ public class LanguageManager {
                         if (sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva, xp ja taso navbariin
-                                String languageFromDatabase = sessionSnapshot.child("Language").getValue(String.class);
+                                languageFromDatabase = sessionSnapshot.child("Language").getValue(String.class);
                                 // Asetetaan sovellukseen oikea kieli, joka saadaan tietokannasta
                                 Configuration configuration = context.getResources().getConfiguration();
                                 Locale newLocale = new Locale(languageFromDatabase);
@@ -85,4 +86,9 @@ public class LanguageManager {
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }
+
+    public String getLanguageFromDatabase() {
+        return languageFromDatabase;
+    }
+
 }
