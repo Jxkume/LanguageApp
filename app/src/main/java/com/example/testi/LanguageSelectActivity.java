@@ -42,6 +42,10 @@ public class LanguageSelectActivity extends AppCompatActivity {
         flagArBackground.setOnClickListener(v -> handleFlagClick(2));
 
         nextButton.setOnClickListener(v -> {
+
+            // Asetetaan valittu kieli sovellukseen
+            LanguageManager.getInstance().setSelectedLanguage(getApplicationContext(), getLanguageCode(selectedFlag));
+
             // Siirrytään käyttäjän luontiin
             Intent userCreation = new Intent(LanguageSelectActivity.this, NewSessionActivity.class);
             userCreation.putExtra("buttonClicked", sessionID);
@@ -105,8 +109,7 @@ public class LanguageSelectActivity extends AppCompatActivity {
         Configuration configuration = new Configuration();
         configuration.setLocale(updatedLocale);
 
-        Context updatedContext = createConfigurationContext(configuration);
-        return updatedContext;
+        return createConfigurationContext(configuration);
     }
 
     private String getLanguageCode(int flag) {

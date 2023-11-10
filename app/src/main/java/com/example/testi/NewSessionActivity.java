@@ -27,13 +27,17 @@ public class NewSessionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Haetaan valittu kieli LanguageManager-luokasta ja asetetaan se nykyisen näkymän kieleksi
+        String selectedLanguage = LanguageManager.getInstance().getSelectedLanguage();
+        LanguageManager.getInstance().setLocale(NewSessionActivity.this, selectedLanguage);
+
         setContentView(R.layout.newsessionactivity);
 
         // Haetaan sessionID
         Intent intent = getIntent();
         int sessionID = intent.getIntExtra("buttonClicked", -1);
         chosenLanguage = intent.getStringExtra("language");
-        Log.d("Language", chosenLanguage);
 
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
@@ -100,7 +104,7 @@ public class NewSessionActivity extends AppCompatActivity {
             // Luodaan sessio vain silloin, kun session arvo ollaan saatu edellisestä aktiviteetista (jos arvoa ei olla saatu, arvo on defaulttina -1)
             if (sessionID != -1) {
                 int age = Integer.parseInt(ageStr);
-                Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, getChosenLanguage());
+                Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, chosenLanguage);
             }
 
             Intent home = new Intent(NewSessionActivity.this, HomeActivity.class);
@@ -218,16 +222,4 @@ public class NewSessionActivity extends AppCompatActivity {
         builder.setTitle(title).setMessage(message).setPositiveButton("OK", null).show();
     }
 
-    private String getChosenLanguage() {
-        switch (chosenLanguage) {
-            case "fi":
-                return "Suomi";
-            case "es":
-                return "Español";
-            case "ar":
-                return "العربية";
-            default:
-                return "Suomi";
-        }
-    }
 }
