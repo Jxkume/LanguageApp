@@ -1,17 +1,10 @@
 package com.example.testi;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.testi.games.AnimalGameFirstActivity;
@@ -25,8 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Locale;
-
 public class HomeActivity extends AppCompatActivity {
 
     private ImageView profilePicNavbarImageView;
@@ -37,10 +28,19 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.homeactivity);
 
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
+        LanguageManager.getInstance().setSessionID(sessionID);
+        LanguageManager.getInstance().getLanguageFromDatabase(HomeActivity.this);
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        setContentView(R.layout.homeactivity);
 
         // Haetaan aktiviteetin alanapit
         ImageView profileIcon = findViewById(R.id.profileIcon);
@@ -82,11 +82,10 @@ public class HomeActivity extends AppCompatActivity {
             overridePendingTransition(0, 0);
         });
 
-
     }
 
     void loadInformationFromDatabase() {
-        Log.d("Language", "loadInformationFromDatabase() called");
+
         levelNavbar = findViewById(R.id.userLevel);
         progressBar = findViewById(R.id.progressBar);
 
@@ -95,7 +94,6 @@ public class HomeActivity extends AppCompatActivity {
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("Language", "onDataChange() called");
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
                         // Haetaan sessionin avain
@@ -108,9 +106,6 @@ public class HomeActivity extends AppCompatActivity {
                                 setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class));
                                 levelNavbar.setText(String.valueOf(sessionSnapshot.child("Level").getValue(Integer.class)));
-                                String languageFromDatabase = sessionSnapshot.child("Language").getValue(String.class);
-                                setLocale(languageFromDatabase);
-                                // PITÄÄ LISÄTÄ RELOAD METOD ETTÄ KÄYTTÄJÄN EI TARVITSE PAINAA TOISESTA AKTIVITEETISTA ETTÄ KIELI PÄIVITTYISI :D
                             }
                         }
                     }
@@ -122,44 +117,7 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("Session", "Sessionien latauksessa tuli virhe");
             }
         });
-
     }
-
-
-
-    private void setLocale(String language) {
-        Resources res = getResources();
-        Configuration config = res.getConfiguration();
-        Locale locale;
-
-        switch (language) {
-            case "العربية":
-                locale = new Locale("ar"); // Arabic
-                break;
-            case "Español":
-                locale = new Locale("es"); // Spanish
-                break;
-            case "Suomi":
-                locale = new Locale("fi"); // Finnish
-                break;
-            default:
-                locale = new Locale("en"); // Default to English
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            config.setLocale(locale);
-        } else {
-            config.locale = locale;
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getApplicationContext().createConfigurationContext(config);
-        } else {
-            res.updateConfiguration(config, res.getDisplayMetrics());
-        }
-
-    }
-
 
     // Haetaan käyttäjän profiilikuvan drawable-kansiosta sen id:n perusteella ja asetetaan sen yläpalkkiin
     private void setNavbarprofilePic(int picID) {
