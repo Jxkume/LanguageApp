@@ -21,7 +21,7 @@ public class NewSessionActivity extends AppCompatActivity {
     private EditText ageEditText;
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
-    private int chosenLanguage;
+    private String chosenLanguage;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -32,7 +32,8 @@ public class NewSessionActivity extends AppCompatActivity {
         // Haetaan sessionID
         Intent intent = getIntent();
         int sessionID = intent.getIntExtra("buttonClicked", -1);
-        chosenLanguage = intent.getIntExtra("language", -1);
+        chosenLanguage = intent.getStringExtra("language");
+        Log.d("Language", chosenLanguage);
 
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
@@ -219,11 +220,11 @@ public class NewSessionActivity extends AppCompatActivity {
 
     private String getChosenLanguage() {
         switch (chosenLanguage) {
-            case 0:
+            case "fi":
                 return "Suomi";
-            case 1:
+            case "es":
                 return "Español";
-            case 2:
+            case "ar":
                 return "العربية";
             default:
                 return "Suomi";

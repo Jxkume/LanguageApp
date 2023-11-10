@@ -45,7 +45,7 @@ public class LanguageSelectActivity extends AppCompatActivity {
             // Siirrytään käyttäjän luontiin
             Intent userCreation = new Intent(LanguageSelectActivity.this, NewSessionActivity.class);
             userCreation.putExtra("buttonClicked", sessionID);
-            userCreation.putExtra("language", selectedFlag);
+            userCreation.putExtra("language", getLanguageCode(selectedFlag));
             startActivity(userCreation);
         });
     }
