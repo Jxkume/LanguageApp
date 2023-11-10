@@ -267,14 +267,16 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if(sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Haetaan käyttäjän taso ja xp tietokannasta
                                 int xp = sessionSnapshot.child("XP").getValue(Integer.class);
                                 int lvl = sessionSnapshot.child("Level").getValue(Integer.class);
 
-                                //Log.d("LevelUp", "xp " + xp + " lvl " );
+                                //Kutsutaan checkLevelUp metodi, joka tarkistaa kasvaako käyttäjän taso pelin jälkeen
                                 if (checkLevelUp(xp, score, lvl)) {
+                                    //Jos metodi palauttaa true-arvon, päivitetään käyttäjän tasoa
                                     sessionSnapshot.child("Level").getRef().setValue(lvl + 1);
                                 }
-
+                                //Lopuksi päivitetään käyttäjän xp
                                 sessionSnapshot.child("XP").getRef().setValue(score + xp);
                             }
                         }

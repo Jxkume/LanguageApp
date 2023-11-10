@@ -81,8 +81,6 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(colourGame);
             overridePendingTransition(0, 0);
         });
-
-        checkLevelUp();
     }
 
     void loadInformationFromDatabase() {
@@ -193,10 +191,6 @@ public class HomeActivity extends AppCompatActivity {
             case 9:
                 profilePicNavbarImageView.setImageResource(R.drawable.catprofilepicture);
         }
-    }
-
-    void checkLevelUp() {
-
     }
 
 }

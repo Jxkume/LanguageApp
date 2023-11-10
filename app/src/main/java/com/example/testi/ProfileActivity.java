@@ -93,10 +93,12 @@ public class ProfileActivity extends AppCompatActivity{
                         if (sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikeat tiedot
+                                //Otetaan käyttäjän taso tietokannasta
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
                                 setProfilePicture(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 usernameTextView.setText("- " + sessionSnapshot.child("Username").getValue(String.class) + " -");
                                 levelText.setText(getString(R.string.level) + " " + String.valueOf(lvl));
+                                //laitetaan tekstikenttään käyttäjän xp sekä nykyisev tason tavoite, jonka saadaan kutsumalla getGoalXp-metodia
                                 currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / " + String.valueOf(getGoalXp()) + " xp"); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
                             }
                         }

@@ -265,7 +265,16 @@ public class ColourGameSecondActivity extends AppCompatActivity {
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if(sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Haetaan käyttäjän taso ja xp tietokannasta
                                 int xp = sessionSnapshot.child("XP").getValue(Integer.class);
+                                int lvl = sessionSnapshot.child("Level").getValue(Integer.class);
+
+                                //Kutsutaan checkLevelUp metodi, joka tarkistaa kasvaako käyttäjän taso pelin jälkeen
+                                if (checkLevelUp(xp, score, lvl)) {
+                                    //Jos metodi palauttaa true-arvon, päivitetään käyttäjän tasoa
+                                    sessionSnapshot.child("Level").getRef().setValue(lvl + 1);
+                                }
+                                //Lopuksi päivitetään käyttäjän xp
                                 sessionSnapshot.child("XP").getRef().setValue(score + xp);
                             }
                         }
@@ -279,5 +288,30 @@ public class ColourGameSecondActivity extends AppCompatActivity {
                 System.err.println("Error: " + error.getMessage());
             }
         });
+    }
+
+    private boolean checkLevelUp(int xp, int earnedPoints, int currentLevel) {
+        if (currentLevel == 1) {
+            if (xp < 100 && xp + earnedPoints >= 100) {
+                return true;
+            }
+        } else if (currentLevel == 2) {
+            if (xp < 200 && xp + earnedPoints >= 200) {
+                return true;
+            }
+        } else if (currentLevel == 3) {
+            if (xp < 300 && xp + earnedPoints >= 300) {
+                return true;
+            }
+        } else if(currentLevel == 4) {
+            if (xp < 400 && xp + earnedPoints >= 400) {
+                return true;
+            }
+        } else if(currentLevel == 5) {
+            if (xp < 500 && xp + earnedPoints >= 500) {
+                return true;
+            }
+        }
+        return false;
     }
 }
