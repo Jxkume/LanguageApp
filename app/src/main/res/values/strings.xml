@@ -13,5 +13,6 @@
     <string name="wrong">Väärin</string>
     <string name="next">SEURAAVA</string>
     <string name="ready">VALMIS</string>
-
+    <string name="delete_user">POISTA KÄYTTÄJÄ</string>
+    <string name="language">Kieli:</string>
 </resources>

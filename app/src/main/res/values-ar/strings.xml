@@ -13,4 +13,6 @@
     <string name="wrong">خطأ</string>
     <string name="next">المقبل</string>
     <string name="ready">مستعد</string>
+    <string name="delete_user">حذف المستخدم</string>
+    <string name="language">لغة:</string>
 </resources>
