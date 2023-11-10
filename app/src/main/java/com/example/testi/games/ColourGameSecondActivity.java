@@ -40,6 +40,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private int progressBarProgress;
     private Toast toast;
+    private int lvl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
         words = new ArrayList<>();
 
+        loadUserLevel();
         // Ladataan sanat tietokannasta ja alustetaan pelin
         loadWordsAndSetUpGame();
 
@@ -91,6 +93,34 @@ public class ColourGameSecondActivity extends AppCompatActivity {
         progressBar.setProgress(progressBarProgress);
     }
 
+    private void loadUserLevel() {
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot sessionSnapshot : snapshot.getChildren()) {
+                        String sessionKey = sessionSnapshot.getKey();
+                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        if(sessionKey != null) {
+                            if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Haetaan käyttäjän taso ja xp tietokannasta
+                                lvl = sessionSnapshot.child("Level").getValue(Integer.class);
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Printataan error jos sellainen tulee vastaan
+                System.err.println("Error: " + error.getMessage());
+            }
+        });
+    }
+
     private void loadWordsAndSetUpGame() {
         // Lisätään ValueEventListenerin että saadaan ladattua (tietokannasta) vain ja ainoastaan sanojen nimet (keys)!
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -98,8 +128,10 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Iteroidaan Colourgamen läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
-                    String word = wordSnapshot.getKey();
-                    words.add(word);
+                    if (wordSnapshot.child("Level").getValue(Integer.class) <= lvl) {
+                        String word = wordSnapshot.getKey();
+                        words.add(word);
+                    }
                 }
 
                 // Shufflataan sanat arraynListin sisällä että randomisoidaan kysymyksien järjestys
