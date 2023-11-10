@@ -120,7 +120,7 @@ public class SettingsActivity extends AppCompatActivity{
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva navbariin
                                 setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
-                                progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class));
+                                progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class) % 100);
                                 levelNavbar.setText(String.valueOf(sessionSnapshot.child("Level").getValue(Integer.class)));
                             }
                         }

@@ -94,6 +94,7 @@ public class HomeActivity extends AppCompatActivity {
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.d("Language", "onDataChange() called");
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
                         // Haetaan sessionin avain
@@ -104,7 +105,7 @@ public class HomeActivity extends AppCompatActivity {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva, xp ja taso navbariin
                                 setNavbarprofilePic(sessionSnapshot.child("PhotoID").getValue(Integer.class));
-                                progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class));
+                                progressBar.setProgress(sessionSnapshot.child("XP").getValue(Integer.class) % 100);
                                 levelNavbar.setText(String.valueOf(sessionSnapshot.child("Level").getValue(Integer.class)));
                             }
                         }
@@ -152,4 +153,5 @@ public class HomeActivity extends AppCompatActivity {
                 profilePicNavbarImageView.setImageResource(R.drawable.catprofilepicture);
         }
     }
+
 }
