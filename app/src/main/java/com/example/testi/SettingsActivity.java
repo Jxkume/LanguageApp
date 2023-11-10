@@ -1,18 +1,10 @@
 package com.example.testi;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,11 +16,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Locale;
-
 public class SettingsActivity extends AppCompatActivity{
     private ProgressBar progressBar;
     private TextView levelNavbar;
+    private ImageView currentFlag;
     private int sessionID;
 
     @Override
@@ -69,6 +60,29 @@ public class SettingsActivity extends AppCompatActivity{
             profile.putExtra("sessionID", sessionID);
             startActivity(profile);
         });
+
+        // Haetaan lippu
+        currentFlag = findViewById(R.id.flagImageView);
+
+        // Asetetaan arvot kuvien resurssien perusteella
+        int finnishFlag = R.drawable.flag_fi;
+        int spanishFlag = R.drawable.flag_es;
+        int arabicFlag = R.drawable.flag_ar;
+
+        // Haetaan käytetty kieli ja vaihdetaan lipun kuva sen perusteella
+        String language = LanguageManager.getInstance().getLanguageFromDatabase();
+        switch (language) {
+            case "fi":
+                currentFlag.setImageResource(finnishFlag);
+                break;
+            case "es":
+                currentFlag.setImageResource(spanishFlag);
+                break;
+            case "ar":
+                currentFlag.setImageResource(arabicFlag);
+                break;
+        }
+
     }
 
 
@@ -168,6 +182,5 @@ public class SettingsActivity extends AppCompatActivity{
                 profilePicNavbarImageView.setImageResource(R.drawable.catprofilepicture);
         }
     }
-
 
 }
