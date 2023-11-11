@@ -32,4 +32,5 @@
     <string name="not_valid_username_title">Nombre de usuario no válido</string>
     <string name="not_valid_username_message">Ingresa solo letras en el nombre de usuario</string>
     <string name="ok_button_alert">Ok</string>
+    <string name="xp">xp</string>
 </resources>

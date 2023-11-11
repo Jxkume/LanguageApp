@@ -98,8 +98,9 @@ public class ProfileActivity extends AppCompatActivity{
                                 setProfilePicture(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 usernameTextView.setText("- " + sessionSnapshot.child("Username").getValue(String.class) + " -");
                                 levelText.setText(getString(R.string.level) + " " + String.valueOf(lvl));
+                                String xp = getString(R.string.xp);
                                 //laitetaan tekstikenttään käyttäjän xp sekä nykyisev tason tavoite, jonka saadaan kutsumalla getGoalXp-metodia
-                                currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / " + String.valueOf(getGoalXp()) + " xp"); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
+                                currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / " + String.valueOf(getGoalXp()) + " " + xp); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
                             }
                         }
                     }

@@ -9,7 +9,7 @@
     <string name="level">المستوى</string>
     <string name="music">الموسيقى</string>
     <string name="sound">الصوت</string>
-    <string name="right">على وجه صحيح!</string>
+    <string name="right">صحيح!</string>
     <string name="wrong">خطأ</string>
     <string name="next">المقبل</string>
     <string name="ready">مستعد</string>
@@ -32,4 +32,5 @@
     <string name="not_valid_username_title">اسم مستخدم خاطئ</string>
     <string name="not_valid_username_message">الرجاء إدخال أحرف فقط في اسم المستخدم</string>
     <string name="ok_button_alert">حسناً</string>
+    <string name="xp">خبرة</string>
 </resources>
