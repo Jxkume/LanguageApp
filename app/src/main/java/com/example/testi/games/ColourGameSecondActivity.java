@@ -41,6 +41,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     private int progressBarProgress;
     private Toast toast;
     private int lvl;
+    private int roundsToPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
         words = new ArrayList<>();
 
+        //Otetaan käyttäjän taso tietokannasta
         loadUserLevel();
         // Ladataan sanat tietokannasta ja alustetaan pelin
         loadWordsAndSetUpGame();
@@ -105,8 +107,9 @@ public class ColourGameSecondActivity extends AppCompatActivity {
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if(sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
-                                // Haetaan käyttäjän taso ja xp tietokannasta
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
+                                //Lasketaan montako kierrosta tulee peliin käyttäjän tason perusteella
+                                roundsToPlay = 5 * lvl;
                             }
                         }
                     }
@@ -128,6 +131,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Iteroidaan Colourgamen läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
+                    //Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
                     if (wordSnapshot.child("Level").getValue(Integer.class) <= lvl) {
                         String word = wordSnapshot.getKey();
                         words.add(word);
@@ -150,7 +154,7 @@ public class ColourGameSecondActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion() {
-        if (currentQuestionIndex < 5) {
+        if (currentQuestionIndex < roundsToPlay) {
             // Otetaan oikean vastauksen nykyiseen kysymykseen
             correctAnswer = words.get(currentQuestionIndex);
 
@@ -247,8 +251,8 @@ public class ColourGameSecondActivity extends AppCompatActivity {
             currentQuestionIndex++;
             showNextQuestion();
 
-            // Lisätään edistymispalkkia
-            progressBarProgress += 10;
+            // Päivitetään edistymispalkkia
+            progressBarProgress += Math.ceil((1.0 / (roundsToPlay * 2) * 100));
             progressBar.setProgress(progressBarProgress);
         }
     }

@@ -42,6 +42,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
     private int progressBarProgress;
     private Toast toast;
     private int lvl;
+    private int roundsToPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +78,9 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
         words = new ArrayList<>();
 
-        // Ladataan sanat tietokannasta ja alustetaan pelin
+        //Otetaan käyttäjän taso tietokannasta
         loadUserLevel();
+        // Ladataan sanat tietokannasta ja alustetaan pelin
         loadWordsAndSetUpGame();
 
         // Laitetaan clickListerenejä option ImageViewille (Eli siis eläimen kuville)
@@ -106,8 +108,9 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if(sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
-                                // Haetaan käyttäjän taso ja xp tietokannasta
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
+                                //Lasketaan paljonko kierrosta tulee peliin käyttäjän tason perusteella
+                                roundsToPlay = 5 * lvl;
                             }
                         }
                     }
@@ -129,6 +132,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Iteroidaan AnimalGamen läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
+                    //Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
                     if (wordSnapshot.child("Level").getValue(Integer.class) <= lvl) {
                         String word = wordSnapshot.getKey();
                         words.add(word);
@@ -151,7 +155,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
     }
 
     private void showNextQuestion() {
-        if (currentQuestionIndex < 5) {
+        if (currentQuestionIndex < roundsToPlay) {
             // Otetaan oikean vastauksen nykyiseen kysymykseen
             correctAnswer = words.get(currentQuestionIndex);
 
@@ -249,8 +253,8 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             currentQuestionIndex++;
             showNextQuestion();
 
-            // Lisätään edistymispalkkia
-            progressBarProgress += 10;
+            // Päivitetään edistymispalkkia: lasketaan yhden kierrokseen osuus koko pelistä ja asetetaan se palkkiin
+            progressBarProgress += Math.ceil((1.0 / (roundsToPlay * 2) * 100));
             progressBar.setProgress(progressBarProgress);
         }
     }
