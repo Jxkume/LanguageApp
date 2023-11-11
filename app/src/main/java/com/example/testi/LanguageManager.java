@@ -21,9 +21,7 @@ public class LanguageManager {
     private int sessionID;
     private String language;
 
-    private LanguageManager() {
-        // Private constructor to prevent instantiation
-    }
+    private LanguageManager() {}
 
     public static LanguageManager getInstance() {
         if (instance == null) {
@@ -32,10 +30,12 @@ public class LanguageManager {
         return instance;
     }
 
+    // Valitun kielen hakeminen LanguageSelectActivityssä
     public String getSelectedLanguage() {
         return selectedLanguage != null ? selectedLanguage : "fi"; // Default to "fi" if not set
     }
 
+    // Valitun kielen asettaminen LanguageSelectActivityssä
     public void setSelectedLanguage(Context context, String languageCode) {
         selectedLanguage = languageCode;
         setLocale(context, languageCode);
@@ -49,7 +49,7 @@ public class LanguageManager {
         context.getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
     }
 
-    // Kielen asettaminen tietokantaan
+    // Kielen tallentaminen tietokantaan
     public void setLanguageToDatabase(String languageCode) {
         // Haetaan tietokannasta Sessions-node
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
@@ -75,13 +75,13 @@ public class LanguageManager {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("Session", "Kielen tallentamisessa tapahtui virhe.");
+                Log.d("Session", "Sovelluksen kielen tallentamisessa tapahtui virhe.");
             }
         });
 
     }
 
-    // Hakee tietokannasta kielen, jota käyttäjä käyttää
+    // Kielen hakeminen tietokannasta
     public void getLanguageFromDatabase(Context context) {
 
         // Haetaan tietokannasta Sessions-node
@@ -97,9 +97,8 @@ public class LanguageManager {
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if (sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
-                                // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva, xp ja taso navbariin
+                                // Jos avain ja sessionID löytyvät, haetaan kielen arvo ja asetetaan se sovellukseen
                                 language = sessionSnapshot.child("Language").getValue(String.class);
-                                // Asetetaan sovellukseen oikea kieli, joka saadaan tietokannasta
                                 setLocale(context, language);
                             }
                         }
@@ -109,15 +108,17 @@ public class LanguageManager {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.d("Session", "Sovelluksen kielen hakemisessa tapahtui virhe.");
             }
         });
     }
 
+    // Sessionin ID:n asettaminen, jotta sitä voidaan hyödyntää tietokantametodeissa
     public void setSessionID(int sessionID) {
         this.sessionID = sessionID;
     }
 
+    // Sovelluksen kielen getteri
     public String getLanguage() {
         return language;
     }

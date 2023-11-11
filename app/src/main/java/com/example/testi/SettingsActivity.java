@@ -42,14 +42,6 @@ public class SettingsActivity extends AppCompatActivity{
         ImageView profileIcon = findViewById(R.id.profileIcon);
         ImageView deleteUserButton = findViewById(R.id.deleteUserButton);
 
-        deleteUserButton.setOnClickListener(v -> {
-        deleteSessionData();
-        // Sit kun sessions näkymä on done pitää laittaa tähän if else jnejnejne.
-        Intent intent2 = new Intent(SettingsActivity.this, SplashActivity.class);
-        intent2.putExtra("sessionID", sessionID);
-        startActivity(intent2);
-    });
-
         //haetaan käyttäjän avatar tietokannasta
         loadInformationFromDatabase();
 
@@ -68,9 +60,6 @@ public class SettingsActivity extends AppCompatActivity{
             startActivity(profile);
         });
 
-        // Haetaan kaikki liput
-        ImageView currentFlag = findViewById(R.id.flagImageView);
-
         // Asetetaan arvot kuvien resurssien perusteella
         int finnishFlag = R.drawable.flag_fi;
         int spanishFlag = R.drawable.flag_es;
@@ -78,6 +67,7 @@ public class SettingsActivity extends AppCompatActivity{
 
         // Haetaan käytetty kieli ja vaihdetaan lipun kuva sen perusteella
         String language = LanguageManager.getInstance().getLanguage();
+        ImageView currentFlag = findViewById(R.id.flagImageView);
         switch (language) {
             case "fi":
                 currentFlag.setImageResource(finnishFlag);
@@ -90,9 +80,21 @@ public class SettingsActivity extends AppCompatActivity{
                 break;
         }
 
+        // Käyttäjän poistaminen onClick
+        deleteUserButton.setOnClickListener(v -> deleteUser());
+
+        // Kielen pop-up onClick
         currentFlag.setOnClickListener(v -> showLanguagePopup());
     }
 
+    // Käyttäjän poistaminen
+    private void deleteUser() {
+        deleteSessionData();
+        Intent intent2 = new Intent(SettingsActivity.this, SplashActivity.class);
+        startActivity(intent2);
+    }
+
+    // Käyttäjän poistaminen tietokannasta
     private void deleteSessionData() {
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference("Sessions");
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -121,6 +123,7 @@ public class SettingsActivity extends AppCompatActivity{
         });
     }
 
+    // Käyttäjän tietojen haku tietokannasta ja niiden asettaminen navbariin
     private void loadInformationFromDatabase() {
 
         levelNavbar = findViewById(R.id.userLevel);
@@ -156,7 +159,7 @@ public class SettingsActivity extends AppCompatActivity{
         });
     }
 
-    //haetaan käyttäjän profiilikuvan drawable-kansiosta sen id:n perusteella ja asetetaan sen yläpalkkiin
+    // Haetaan käyttäjän profiilikuva drawable-kansiosta sen id:n perusteella ja asetetaan sen yläpalkkiin
     private void setNavbarprofilePic(int picID) {
         ImageView profilePicNavbarImageView = findViewById(R.id.newProfilePictureNavbar);
 
@@ -196,9 +199,8 @@ public class SettingsActivity extends AppCompatActivity{
         // Luodaan Dialog-olio, joka saa parametrina nykyisen aktiviteetin. Dialog = pop-up-ikkuna
         popUp = new Dialog(SettingsActivity.this);
 
-        // Tarkistetaan, että pop-upin ikkuna on olemassa
+        // Määritetään dialogin attribuutit, joilla saadaan pop-upin haluttu sijainti näytölle
         if (popUp.getWindow() != null) {
-            // Määritetään dialogin attribuutit, joilla saadaan pop-upin haluttu sijainti näytölle
             configureDialogAttributes();
         } else {
             Log.d("Popup", "Virhe pop-upin piirtämisessä");
@@ -248,6 +250,7 @@ public class SettingsActivity extends AppCompatActivity{
         return screenHeight / 6;
     }
 
+    // Eri kielten lippujen lataus pop-upiin
     private void loadFlagsInPopUp() {
 
         // Asetetaan arvot kuvien resurssien perusteella
@@ -259,10 +262,6 @@ public class SettingsActivity extends AppCompatActivity{
         ImageView currentFlagInPopUp = popUp.findViewById(R.id.currentFlagInPopUp);
         ImageView changeLanguageOption1 = popUp.findViewById(R.id.changeLanguageOption1);
         ImageView changeLanguageOption2 = popUp.findViewById(R.id.changeLanguageOption2);
-
-        Log.d("ImageViews", "currentFlagInPopUp: " + currentFlagInPopUp);
-        Log.d("ImageViews", "changeLanguageOption1: " + changeLanguageOption1);
-        Log.d("ImageViews", "changeLanguageOption2: " + changeLanguageOption2);
 
         // Haetaan käytetty kieli ja vaihdetaan lipun kuva sen perusteella
         String language = LanguageManager.getInstance().getLanguage();
@@ -284,24 +283,26 @@ public class SettingsActivity extends AppCompatActivity{
                 break;
         }
 
-        changeLanguageOption1.setOnClickListener(v -> changeLanguageAndDismissPopUp(changeLanguageOption1));
+        // Kielen vaihto ensimmäiseen kielivaihtoehtoon
+        changeLanguageOption1.setOnClickListener(v -> changeLanguage(changeLanguageOption1));
 
-        // Click listener for the second language option
-        changeLanguageOption2.setOnClickListener(v -> changeLanguageAndDismissPopUp(changeLanguageOption2));
+        // Kielen vaihto toiseen kielivaihtoehtoon
+        changeLanguageOption2.setOnClickListener(v -> changeLanguage(changeLanguageOption2));
     }
 
-    // Method to change language and dismiss the pop-up based on the clicked flag
-    private void changeLanguageAndDismissPopUp(ImageView flagImageView) {
-        // Get the language code based on the resource associated with the clicked flag
+    // Sovelluksen kielen vaihto ja aktiviteetin uudelleenkäynnistys
+    private void changeLanguage(ImageView flagImageView) {
+
+        // Haetaan uusi kieli
         String newLanguage = getLanguageCodeForFlag(flagImageView);
 
-        // Change the language using your LanguageManager
+        // Vaihdetaan sovelluksen kieli
         LanguageManager.getInstance().setLocale(SettingsActivity.this, newLanguage);
 
-        // Päivitetään kieli myös tietokantaan
-        updateLanguageToDatabase(newLanguage);
+        // Päivitetään uusi kieli tietokantaan
+        LanguageManager.getInstance().setLanguageToDatabase(newLanguage);
 
-        // Dismiss the pop-up after changing the language
+        // Suljetaan pop-up
         popUp.dismiss();
 
         // Käynnistetään aktiviteetti uudelleen
@@ -310,10 +311,9 @@ public class SettingsActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-    // Method to retrieve language code based on the clicked flag's resource
+    // Kielen haku klikatun lipun perusteella
     @SuppressLint("UseCompatLoadingForDrawables")
     private String getLanguageCodeForFlag(ImageView flagImageView) {
-        // Determine the language code based on the clicked flag's resource
         if (Objects.equals(flagImageView.getDrawable().getConstantState(), getResources().getDrawable(R.drawable.flag_es).getConstantState())) {
             return "es";
         } else if (Objects.equals(flagImageView.getDrawable().getConstantState(), getResources().getDrawable(R.drawable.flag_ar).getConstantState())) {
@@ -321,10 +321,6 @@ public class SettingsActivity extends AppCompatActivity{
         } else {
             return "fi";
         }
-    }
-
-    private void updateLanguageToDatabase(String languageCode) {
-        LanguageManager.getInstance().setLanguageToDatabase(languageCode);
     }
 
 }
