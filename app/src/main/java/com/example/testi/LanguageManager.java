@@ -2,6 +2,7 @@ package com.example.testi;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -18,7 +19,7 @@ public class LanguageManager {
     private static LanguageManager instance;
     private String selectedLanguage;
     private int sessionID;
-    private String languageFromDatabase;
+    private String language;
 
     private LanguageManager() {
         // Private constructor to prevent instantiation
@@ -40,6 +41,7 @@ public class LanguageManager {
         setLocale(context, languageCode);
     }
 
+    // Kielen asettaminen sovellukseen
     public void setLocale(Context context, String languageCode) {
         Configuration configuration = context.getResources().getConfiguration();
         Locale newLocale = new Locale(languageCode);
@@ -47,8 +49,40 @@ public class LanguageManager {
         context.getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
     }
 
+    // Kielen asettaminen tietokantaan
+    public void setLanguageToDatabase(String languageCode) {
+        // Haetaan tietokannasta Sessions-node
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
+                        // Haetaan sessionin avain
+                        String sessionKey = sessionSnapshot.getKey();
+                        // Haetaan sessionID
+                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        if (sessionKey != null) {
+                            if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Jos avain ja sessionID löytyvät, asetetaan vaihdettu kieli
+                                sessionSnapshot.child("Language").getRef().setValue(languageCode);
+                                language = languageCode;
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d("Session", "Kielen tallentamisessa tapahtui virhe.");
+            }
+        });
+
+    }
+
     // Hakee tietokannasta kielen, jota käyttäjä käyttää
-    public void setLanguageFromDatabase(Context context) {
+    public void getLanguageFromDatabase(Context context) {
 
         // Haetaan tietokannasta Sessions-node
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
@@ -64,12 +98,9 @@ public class LanguageManager {
                         if (sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikea profiilikuva, xp ja taso navbariin
-                                languageFromDatabase = sessionSnapshot.child("Language").getValue(String.class);
+                                language = sessionSnapshot.child("Language").getValue(String.class);
                                 // Asetetaan sovellukseen oikea kieli, joka saadaan tietokannasta
-                                Configuration configuration = context.getResources().getConfiguration();
-                                Locale newLocale = new Locale(languageFromDatabase);
-                                configuration.setLocale(newLocale);
-                                context.getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+                                setLocale(context, language);
                             }
                         }
                     }
@@ -87,8 +118,8 @@ public class LanguageManager {
         this.sessionID = sessionID;
     }
 
-    public String getLanguageFromDatabase() {
-        return languageFromDatabase;
+    public String getLanguage() {
+        return language;
     }
 
 }
