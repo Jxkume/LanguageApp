@@ -33,4 +33,6 @@
     <string name="not_valid_username_message">Syötä käyttäjänimeen ainoastaan kirjaimia</string>
     <string name="ok_button_alert">Ok</string>
     <string name="xp">xp</string>
+    <string name="current_language">Nykyinen kieli:</string>
+    <string name="change_language">Vaihda kieli:</string>
 </resources>

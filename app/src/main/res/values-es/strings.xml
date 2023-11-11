@@ -33,4 +33,6 @@
     <string name="not_valid_username_message">Ingresa solo letras en el nombre de usuario</string>
     <string name="ok_button_alert">Ok</string>
     <string name="xp">xp</string>
+    <string name="current_language">Idioma actual:</string>
+    <string name="change_language">Cambiar idioma:</string>
 </resources>

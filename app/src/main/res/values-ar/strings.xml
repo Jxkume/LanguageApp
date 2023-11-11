@@ -33,4 +33,6 @@
     <string name="not_valid_username_message">الرجاء إدخال أحرف فقط في اسم المستخدم</string>
     <string name="ok_button_alert">حسناً</string>
     <string name="xp">خبرة</string>
+    <string name="current_language">اللغة الحالية:</string>
+    <string name="change_language">تغيير اللغة:</string>
 </resources>
