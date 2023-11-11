@@ -15,4 +15,21 @@
     <string name="ready">مستعد</string>
     <string name="delete_user">حذف المستخدم</string>
     <string name="language">لغة:</string>
+    <string name="fill_all_fields_message">املأ جميع المعلومات</string>
+    <string name="fill_all_fields_title">املأ كل الحقول</string>
+    <string name="fill_name_and_age_title">املأ كل الحقول</string>
+    <string name="fill_name_and_age_message">من فضلك، قم بملء حقول الاسم والعمر للمتابعة</string>
+    <string name="fill_name_and_profilepicture_title">املأ كل الحقول</string>
+    <string name="fill_name_and_profilepicture_message">من فضلك، اختر صورة الملف الشخصي واملأ حقل الاسم للمتابعة</string>
+    <string name="fill_age_and_profilepicture_title">املأ كل الحقول</string>
+    <string name="fill_age_and_profilepicture_message">من فضلك، اختر صورة الملف الشخصي واملأ حقل العمر للمتابعة</string>
+    <string name="fill_name_title">املأ حقل الاسم</string>
+    <string name="fill_name_message">املأ حقل الاسم للمتابعة</string>
+    <string name="fill_age_title">املأ حقل العمر</string>
+    <string name="fill_age_message">املأ حقل العمر للمتابعة</string>
+    <string name="fill_profilepicture_title">اختر صورة الملف الشخصي</string>
+    <string name="fill_profilepicture_message">اختر صورة الملف الشخصي للمتابعة</string>
+    <string name="not_valid_username_title">اسم مستخدم خاطئ</string>
+    <string name="not_valid_username_message">الرجاء إدخال أحرف فقط في اسم المستخدم</string>
+    <string name="ok_button_alert">حسناً</string>
 </resources>

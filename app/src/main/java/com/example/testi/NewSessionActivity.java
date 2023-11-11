@@ -55,49 +55,65 @@ public class NewSessionActivity extends AppCompatActivity {
 
             // Jos kaikki kentät on tyhjiä heitetään alert
             if (username.trim().isEmpty() && ageStr.trim().isEmpty() && !isProfilePictureSelected) {
-                showAlert("Täytä kaikki kentät", "Täytä kaikki tiedot");
+                String title = getString(R.string.fill_all_fields_title);
+                String message = getString(R.string.fill_all_fields_message);
+                showAlert(title,message);
                 return;
             }
 
             // Jos nimi ja ikä kentät ovat tyhjiä heitetään alert
             if (username.trim().isEmpty() && ageStr.trim().isEmpty()){
-                showAlert("Täytä kaikki kentät", "Ole hyvä ja täytä nimi- ja ikäkentät jatkaaksesi");
+                String title = getString(R.string.fill_name_and_age_title);
+                String message = getString(R.string.fill_name_and_age_message);
+                showAlert(title,message);
                 return;
             }
 
             // Jos nimi kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
             if (username.trim().isEmpty() && !isProfilePictureSelected){
-                showAlert("Täytä kaikki kentät", "Ole hyvä ja valitse profiilikuva sekä täytä nimikenttä jatkaaksesi");
+                String title = getString(R.string.fill_name_and_profilepicture_title);
+                String message = getString(R.string.fill_name_and_profilepicture_message);
+                showAlert(title,message);
                 return;
             }
 
             // Jos ikä kenttä on tyhjä ja profiilikuva ei ole valittu heitetään alert
             if (ageStr.trim().isEmpty() && !isProfilePictureSelected){
-                showAlert("Täytä kaikki kentät", "Ole hyvä ja valitse profiilikuva sekä täytä ikäkenttä jatkaaksesi");
+                String title = getString(R.string.fill_age_and_profilepicture_title);
+                String message = getString(R.string.fill_age_and_profilepicture_message);
+                showAlert(title,message);
                 return;
             }
 
             // Jos ainoastaan nimi kenttä on tyhjä heitetään alert
             if (username.trim().isEmpty()){
-                showAlert("Täytä nimikenttä", "Täytä nimikenttä jatkaaksesi");
+                String title = getString(R.string.fill_name_title);
+                String message = getString(R.string.fill_name_message);
+                showAlert(title,message);
                 return;
             }
 
             // Jos ainoastaan ikä kenttä on tyhjä heitetään alert
             if (ageStr.trim().isEmpty()) {
-                showAlert("Täytä ikäkenttä", "Täytä ikäkenttä jatkaaksesi");
+                String title = getString(R.string.fill_age_title);
+                String message = getString(R.string.fill_age_message);
+                showAlert(title,message);
                 return;
             }
 
             // Jos ainoastaa profiilikuva ei ole valittu heitetään alert
             if (!isProfilePictureSelected){
-                showAlert("Valitse profiilikuva", "Valitse profiilikuva jatkaaksesi");
+                String title = getString(R.string.fill_profilepicture_title);
+                String message = getString(R.string.fill_profilepicture_message);
+                showAlert(title,message);
                 return;
             }
 
             // Validoidaan käyttäjän kirjoittama käyttäjätunnuksen
             if (!validUsername(username)) {
-                showAlert("Virheellinen käyttäjätunnus","Syötä käyttäjänimeen ainoastaan kirjaimia.");
+                String title = getString(R.string.not_valid_username_title);
+                String message = getString(R.string.not_valid_username_message);
+                showAlert(title,message);
                 return;
             }
 
@@ -219,7 +235,8 @@ public class NewSessionActivity extends AppCompatActivity {
     // Luodaan alertti ja laitetaan siihen viesti
     private void showAlert(String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(NewSessionActivity.this);
-        builder.setTitle(title).setMessage(message).setPositiveButton("OK", null).show();
+        String buttonOk = getString(R.string.ok_button_alert);
+        builder.setTitle(title).setMessage(message).setNeutralButton(buttonOk, null).show();
     }
 
 }

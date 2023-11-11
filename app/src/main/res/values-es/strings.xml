@@ -15,4 +15,21 @@
     <string name="ready">LISTO</string>
     <string name="delete_user">ELIMINAR USUARIO</string>
     <string name="language">Idioma:</string>
+    <string name="fill_all_fields_message">Completa toda la información</string>
+    <string name="fill_all_fields_title">Complete todos los campos</string>
+    <string name="fill_name_and_age_title">Complete todos los campos</string>
+    <string name="fill_name_and_age_message">Por favor, completa los campos de nombre y edad para continuar</string>
+    <string name="fill_name_and_profilepicture_title">Complete todos los campos</string>
+    <string name="fill_name_and_profilepicture_message">Por favor, eliga una foto de perfil y completa el campo del nombre para continuar</string>
+    <string name="fill_age_and_profilepicture_title">Complete todos los campos</string>
+    <string name="fill_age_and_profilepicture_message">Por favor, eliga una foto de perfil y completa el campo de edad para continuar</string>
+    <string name="fill_name_title">Completa el campo del nombre</string>
+    <string name="fill_name_message">Completa el campo del nombre para continuar</string>
+    <string name="fill_age_title">Completa el campo de edad</string>
+    <string name="fill_age_message">Completa el campo de edad para continuar</string>
+    <string name="fill_profilepicture_title">Selecciona una foto de perfil</string>
+    <string name="fill_profilepicture_message">Eliga una foto de perfil para continuar</string>
+    <string name="not_valid_username_title">Nombre de usuario no válido</string>
+    <string name="not_valid_username_message">Ingresa solo letras en el nombre de usuario</string>
+    <string name="ok_button_alert">Ok</string>
 </resources>

@@ -15,4 +15,21 @@
     <string name="ready">VALMIS</string>
     <string name="delete_user">POISTA KÄYTTÄJÄ</string>
     <string name="language">Kieli:</string>
+    <string name="fill_all_fields_message">Täytä kaikki tiedot</string>
+    <string name="fill_all_fields_title">Täytä kaikki kentät</string>
+    <string name="fill_name_and_age_title">Täytä kaikki kentät</string>
+    <string name="fill_name_and_age_message">Ole hyvä ja täytä nimi- ja ikäkentät jatkaaksesi</string>
+    <string name="fill_name_and_profilepicture_title">Täytä kaikki kentät</string>
+    <string name="fill_name_and_profilepicture_message">Ole hyvä ja valitse profiilikuva sekä täytä nimikenttä jatkaaksesi</string>
+    <string name="fill_age_and_profilepicture_title">Täytä kaikki kentät</string>
+    <string name="fill_age_and_profilepicture_message">Ole hyvä ja valitse profiilikuva sekä täytä ikäkenttä jatkaaksesi</string>
+    <string name="fill_name_title">Täytä nimikenttä</string>
+    <string name="fill_name_message">Täytä nimikenttä jatkaaksesi</string>
+    <string name="fill_age_title">Täytä ikäkenttä</string>
+    <string name="fill_age_message">Täytä ikäkenttä jatkaaksesi</string>
+    <string name="fill_profilepicture_title">Valitse profiilikuva</string>
+    <string name="fill_profilepicture_message">Valitse profiilikuva jatkaaksesi</string>
+    <string name="not_valid_username_title">Virheellinen käyttäjätunnus</string>
+    <string name="not_valid_username_message">Syötä käyttäjänimeen ainoastaan kirjaimia</string>
+    <string name="ok_button_alert">OK</string>
 </resources>
