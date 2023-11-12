@@ -51,6 +51,7 @@ public class LanguageManager {
 
     // Kielen tallentaminen tietokantaan
     public void setLanguageToDatabase(String languageCode) {
+        language = languageCode;
         // Haetaan tietokannasta Sessions-node
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,7 +67,6 @@ public class LanguageManager {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan vaihdettu kieli
                                 sessionSnapshot.child("Language").getRef().setValue(languageCode);
-                                language = languageCode;
                             }
                         }
                     }
