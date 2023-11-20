@@ -118,10 +118,9 @@ public class NewSessionActivity extends AppCompatActivity {
             }
 
             // Luodaan sessio vain silloin, kun session arvo ollaan saatu edellisestä aktiviteetista (jos arvoa ei olla saatu, arvo on defaulttina -1)
-            if (sessionID != -1) {
-                int age = Integer.parseInt(ageStr);
-                Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, chosenLanguage);
-            }
+            int age = Integer.parseInt(ageStr);
+            Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, chosenLanguage);
+
 
             Intent home = new Intent(NewSessionActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
