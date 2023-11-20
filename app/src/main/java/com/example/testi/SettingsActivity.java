@@ -3,10 +3,12 @@ package com.example.testi;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity{
     private TextView levelNavbar;
     private Dialog popUp;
     private int sessionID;
+    private ImageView progressBarBackground;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class SettingsActivity extends AppCompatActivity{
         ImageView profileIcon = findViewById(R.id.profileIcon);
         ImageView deleteUserButton = findViewById(R.id.deleteUserButton);
 
-        //haetaan käyttäjän avatar tietokannasta
+        // Haetaan käyttäjän avatar tietokannasta
         loadInformationFromDatabase();
 
         // Lisätään nappeihin klikkaustoiminnallisuus
@@ -85,6 +88,14 @@ public class SettingsActivity extends AppCompatActivity{
 
         // Kielen pop-up onClick
         currentFlag.setOnClickListener(v -> showLanguagePopup());
+
+        progressBarBackground = findViewById(R.id.progressBarBackground);
+
+        // Tarkistetaan onko sovelluksen kieli LTR vai RTL
+        Configuration config = getResources().getConfiguration();
+        if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            progressBarBackground.setScaleX(-1);
+        }
     }
 
     // Käyttäjän poistaminen

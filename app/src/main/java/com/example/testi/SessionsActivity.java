@@ -1,6 +1,7 @@
 package com.example.testi;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ public class SessionsActivity extends AppCompatActivity {
 
     private ImageView firstSessionButton, secondSessionButton, thirdSessionButton, fourthSessionButton, fifthSessionButton;
     private TextView firstSessionTextView, secondSessionTextView, thirdSessionTextView, fourthSessionTextView, fifthSessionTextView;
+    private int sessionID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,77 +101,49 @@ public class SessionsActivity extends AppCompatActivity {
 
         // Tarkistetaan nappien tägit ja ohjataan käyttäjä oikeaan aktiviteettiin tägin perusteella
         // Lisäksi annetaan sessionID NewSession-aktiviteettiin, jossa sitä voidaan käyttää session luonnin yhteydessä
+        firstSessionButton.setOnClickListener(v -> handleSessionButtonClick(1));
+        secondSessionButton.setOnClickListener(v -> handleSessionButtonClick(2));
+        thirdSessionButton.setOnClickListener(v -> handleSessionButtonClick(3));
+        fourthSessionButton.setOnClickListener(v -> handleSessionButtonClick(4));
+        fifthSessionButton.setOnClickListener(v -> handleSessionButtonClick(5));
+    }
 
-        firstSessionButton.setOnClickListener(v -> {
-            if ((int) firstSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
-                newSession.putExtra("buttonClicked", 1);
-                startActivity(newSession);
-                overridePendingTransition(0, 0);
-            } else {
-                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
-                oldSession.putExtra("sessionID", 1);
+    private void handleSessionButtonClick(int sessionID) {
+
+        if ((int) getSessionButton(sessionID).getTag() == R.drawable.newsession_btn) {
+            Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
+            newSession.putExtra("buttonClicked", sessionID);
+            startActivity(newSession);
+            overridePendingTransition(0, 0);
+        } else {
+            LanguageManager.getInstance().setSessionID(sessionID);
+            LanguageManager.getInstance().getLanguageFromDatabase(SessionsActivity.this);
+
+            Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
+            oldSession.putExtra("sessionID", sessionID);
+
+            // Odotetaan sekunti ennen kuin mennään kotinäkymään
+            new Handler().postDelayed(() -> {
                 startActivity(oldSession);
-                overridePendingTransition(0, 0);
-            }
-        });
+            }, 1000);
+        }
+    }
 
-        secondSessionButton.setOnClickListener(v -> {
-            if ((int) secondSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
-                newSession.putExtra("buttonClicked", 2);
-                startActivity(newSession);
-                overridePendingTransition(0, 0);
-            } else {
-                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
-                oldSession.putExtra("sessionID", 2);
-                startActivity(oldSession);
-                overridePendingTransition(0, 0);
-            }
-        });
-
-        thirdSessionButton.setOnClickListener(v -> {
-            if ((int) thirdSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
-                newSession.putExtra("buttonClicked", 3);
-                startActivity(newSession);
-                overridePendingTransition(0, 0);
-            } else {
-                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
-                oldSession.putExtra("sessionID", 3);
-                startActivity(oldSession);
-                overridePendingTransition(0, 0);
-            }
-        });
-
-        fourthSessionButton.setOnClickListener(v -> {
-            if ((int) fourthSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
-                newSession.putExtra("buttonClicked", 4);
-                startActivity(newSession);
-                overridePendingTransition(0, 0);
-            } else {
-                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
-                oldSession.putExtra("sessionID", 4);
-                startActivity(oldSession);
-                overridePendingTransition(0, 0);
-            }
-        });
-
-        fifthSessionButton.setOnClickListener(v -> {
-            if ((int) fifthSessionButton.getTag() == R.drawable.newsession_btn) {
-                Intent newSession = new Intent(SessionsActivity.this, LanguageSelectActivity.class);
-                newSession.putExtra("buttonClicked", 5);
-                startActivity(newSession);
-                overridePendingTransition(0, 0);
-            } else {
-                Intent oldSession = new Intent(SessionsActivity.this, HomeActivity.class);
-                oldSession.putExtra("sessionID", 5);
-                startActivity(oldSession);
-                overridePendingTransition(0, 0);
-            }
-        });
-
+    private ImageView getSessionButton(int sessionID) {
+        switch (sessionID) {
+            case 1:
+                return firstSessionButton;
+            case 2:
+                return secondSessionButton;
+            case 3:
+                return thirdSessionButton;
+            case 4:
+                return fourthSessionButton;
+            case 5:
+                return fifthSessionButton;
+            default:
+                throw new IllegalArgumentException("Invalid session ID");
+        }
     }
 
 }

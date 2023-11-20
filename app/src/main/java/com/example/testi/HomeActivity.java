@@ -1,8 +1,10 @@
 package com.example.testi;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,9 +21,10 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class HomeActivity extends AppCompatActivity {
 
-    private ImageView profilePicNavbarImageView;
+    private ImageView profilePicNavbarImageView, progressBarBackground;
     private ProgressBar progressBar;
     private TextView levelNavbar;
     private int sessionID;
@@ -32,16 +35,10 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
-        LanguageManager.getInstance().setSessionID(sessionID);
-        LanguageManager.getInstance().getLanguageFromDatabase(HomeActivity.this);
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
         setContentView(R.layout.homeactivity);
+
+        progressBarBackground = findViewById(R.id.progressBarBackground);
 
         // Haetaan aktiviteetin alanapit
         ImageView profileIcon = findViewById(R.id.profileIcon);
@@ -90,6 +87,12 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(foodGame);
             overridePendingTransition(0, 0);
         });
+
+        // Tarkistetaan onko sovelluksen kieli LTR vai RTL
+        Configuration config = getResources().getConfiguration();
+        if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            progressBarBackground.setScaleX(-1);
+        }
     }
 
     void loadInformationFromDatabase() {
