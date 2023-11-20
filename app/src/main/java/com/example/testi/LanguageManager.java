@@ -119,8 +119,9 @@ public class LanguageManager {
     }
 
     // Sovelluksen kielen getteri
-    public String getLanguage() {
-        return language;
+    public String getLanguage(Context context) {
+        Configuration configuration = context.getResources().getConfiguration();
+        return configuration.locale.getLanguage();
     }
 
 }

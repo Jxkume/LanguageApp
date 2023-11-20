@@ -69,7 +69,7 @@ public class SettingsActivity extends AppCompatActivity{
         int arabicFlag = R.drawable.flag_ar;
 
         // Haetaan käytetty kieli ja vaihdetaan lipun kuva sen perusteella
-        String language = LanguageManager.getInstance().getLanguage();
+        String language = LanguageManager.getInstance().getLanguage(this);
         ImageView currentFlag = findViewById(R.id.flagImageView);
         switch (language) {
             case "fi":
@@ -275,7 +275,7 @@ public class SettingsActivity extends AppCompatActivity{
         ImageView changeLanguageOption2 = popUp.findViewById(R.id.changeLanguageOption2);
 
         // Haetaan käytetty kieli ja vaihdetaan lipun kuva sen perusteella
-        String language = LanguageManager.getInstance().getLanguage();
+        String language = LanguageManager.getInstance().getLanguage(this);
         switch (language) {
             case "fi":
                 currentFlagInPopUp.setImageResource(finnishFlag);
