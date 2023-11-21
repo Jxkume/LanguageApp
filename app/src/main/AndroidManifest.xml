@@ -13,6 +13,8 @@
         android:theme="@style/Theme.Testi"
         tools:targetApi="31">
 
+        <service android:name=".BackgroundMusicService" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true">
