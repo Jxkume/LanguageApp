@@ -3,9 +3,13 @@ package com.example.testi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -21,8 +25,17 @@ public class SplashActivity extends AppCompatActivity {
     private ImageView bubble5;
     private ImageView bubble6;
 
-
     private ImageView logo;
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -89,5 +102,18 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_DURATION);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, BackgroundMusicService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(serviceConnection);
     }
 }
