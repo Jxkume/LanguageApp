@@ -117,10 +117,11 @@ public class NewSessionActivity extends AppCompatActivity {
                 return;
             }
 
-            // Luodaan sessio vain silloin, kun session arvo ollaan saatu edellisestä aktiviteetista (jos arvoa ei olla saatu, arvo on defaulttina -1)
             int age = Integer.parseInt(ageStr);
-            Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, chosenLanguage);
 
+            // Luodaan sessio ja tallennetaan se tietokantaan
+            Session session = new Session(sessionID, age, username, 0, 1, profilePictureID, chosenLanguage);
+            FirebaseManager.getInstance().pushSessionToDatabase(session);
 
             Intent home = new Intent(NewSessionActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
