@@ -9,6 +9,7 @@ public class TestSessionManager {
 
     public static void createTestSession() {
         Session testSession = new Session(-1, 1, "testUser", 0, 1, 1, "fi");
+        FirebaseManager.getInstance().pushSessionToDatabase(testSession);
         testSessionKey = testSession.getSessionUniqueKey();
     }
 
