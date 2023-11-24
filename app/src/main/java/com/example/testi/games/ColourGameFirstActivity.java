@@ -74,6 +74,7 @@ public class ColourGameFirstActivity extends AppCompatActivity {
             home.putExtra("sessionID", sessionID);
             startActivity(home);
             overridePendingTransition(0, 0);
+            finish();
         });
 
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
@@ -219,6 +220,7 @@ public class ColourGameFirstActivity extends AppCompatActivity {
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+                finish();
             }, 500);
         }
     }

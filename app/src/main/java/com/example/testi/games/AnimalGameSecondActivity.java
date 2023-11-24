@@ -73,6 +73,7 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
             home.putExtra("sessionID", sessionID);
             startActivity(home);
             overridePendingTransition(0, 0);
+            finish();
         });
 
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
@@ -209,10 +210,10 @@ public class AnimalGameSecondActivity extends AppCompatActivity {
 
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(AnimalGameSecondActivity.this, HomeActivity.class);
-                finish();
                 intent.putExtra("sessionID", sessionID);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
+                finish();
             }, 2500);
         }
     }
