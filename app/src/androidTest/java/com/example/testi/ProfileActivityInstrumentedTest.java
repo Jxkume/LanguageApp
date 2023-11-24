@@ -2,6 +2,7 @@ package com.example.testi;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import android.util.Log;
 
@@ -66,10 +67,10 @@ public class ProfileActivityInstrumentedTest {
         Espresso.onView(ViewMatchers.withId(R.id.newProfilePictureNavbar))
                 .check(ViewAssertions.matches(EspressoTestMatchers.withDrawable(R.drawable.catprofilepicture)));
 
-        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions").child(TestSessionManager.getTestSessionKey());
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
         final int[] picIdFromDb = new int[1];
 
-        /*CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch latch = new CountDownLatch(1);
 
         latch.await(5, TimeUnit.SECONDS);
 
@@ -79,12 +80,17 @@ public class ProfileActivityInstrumentedTest {
                 if(snapshot.exists()){
                     for(DataSnapshot sessionSnapshot : snapshot.getChildren()) {
                         String sessionKey = sessionSnapshot.getKey();
-                        Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
+                        int sessionID = sessionSnapshot.child("SessionID").getValue(Integer.class);
                         if(sessionKey != null) {
-                            if (sessionKey.equals(TestSessionManager.getTestSessionKey())) {
+                            if (sessionID == -1) {
                                 Log.d("sessionkey", sessionKey);
                                 picIdFromDb[0] = sessionSnapshot.child("PhotoID").getValue(Integer.class);
+                                assertEquals(9, picIdFromDb[0]);
+                            } else {
+                                fail("Session ID not found for key " + sessionKey);
                             }
+                        } else {
+                            fail("Session not found");
                         }
                     }
                 }
@@ -96,6 +102,6 @@ public class ProfileActivityInstrumentedTest {
                 System.err.println("Error: " + error.getMessage());
             }
         });
-        assertEquals(9, picIdFromDb[0]);*/
+
     }
 }
