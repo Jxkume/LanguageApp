@@ -58,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
             Intent profile = new Intent(HomeActivity.this, ProfileActivity.class);
             profile.putExtra("sessionID", sessionID);
             startActivity(profile);
+            finish();
         });
 
         settingsIcon.setOnClickListener(v -> {
@@ -65,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
             Intent settings = new Intent(HomeActivity.this, SettingsActivity.class);
             settings.putExtra("sessionID", sessionID);
             startActivity(settings);
+            finish();
         });
 
         animalGameIcon.setOnClickListener(v -> {
@@ -72,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
             animalGame.putExtra("sessionID", sessionID);
             startActivity(animalGame);
             overridePendingTransition(0, 0);
+            finish();
         });
 
         colourGameIcon.setOnClickListener(v -> {
@@ -79,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
             colourGame.putExtra("sessionID", sessionID);
             startActivity(colourGame);
             overridePendingTransition(0, 0);
+            finish();
         });
 
         foodGameIcon.setOnClickListener(v -> {
@@ -86,6 +90,7 @@ public class HomeActivity extends AppCompatActivity {
             foodGame.putExtra("sessionID", sessionID);
             startActivity(foodGame);
             overridePendingTransition(0, 0);
+            finish();
         });
 
         // Tarkistetaan onko sovelluksen kieli LTR vai RTL

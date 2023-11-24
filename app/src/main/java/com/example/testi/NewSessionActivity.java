@@ -126,7 +126,6 @@ public class NewSessionActivity extends AppCompatActivity {
             Intent home = new Intent(NewSessionActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);
-
             finish();
         });
 

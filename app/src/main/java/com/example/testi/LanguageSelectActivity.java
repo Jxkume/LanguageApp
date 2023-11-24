@@ -51,6 +51,7 @@ public class LanguageSelectActivity extends AppCompatActivity {
             userCreation.putExtra("buttonClicked", sessionID);
             userCreation.putExtra("language", getLanguageCode(selectedFlag));
             startActivity(userCreation);
+            finish();
         });
     }
 

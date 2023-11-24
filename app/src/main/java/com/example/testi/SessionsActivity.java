@@ -127,6 +127,7 @@ public class SessionsActivity extends AppCompatActivity {
                 startActivity(oldSession);
             }, 1000);
         }
+        finish();
     }
 
     private ImageView getSessionButton(int sessionID) {
