@@ -115,6 +115,7 @@ public class SessionsActivity extends AppCompatActivity {
             newSession.putExtra("buttonClicked", sessionID);
             startActivity(newSession);
             overridePendingTransition(0, 0);
+            finish();
         } else {
             LanguageManager.getInstance().setSessionID(sessionID);
             LanguageManager.getInstance().getLanguageFromDatabase(SessionsActivity.this);
@@ -125,9 +126,9 @@ public class SessionsActivity extends AppCompatActivity {
             // Odotetaan sekunti ennen kuin mennään kotinäkymään
             new Handler().postDelayed(() -> {
                 startActivity(oldSession);
+                finish();
             }, 1000);
         }
-        finish();
     }
 
     private ImageView getSessionButton(int sessionID) {
