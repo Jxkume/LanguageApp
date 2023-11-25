@@ -1,5 +1,9 @@
 package com.example.testi;
 
+import static org.junit.Assert.fail;
+
+import android.util.Log;
+
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.assertion.ViewAssertions;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -21,7 +25,10 @@ import java.util.concurrent.TimeUnit;
 @RunWith(AndroidJUnit4.class)
 public class ProfileNameMatchSessionNameTest {
 
-    //private final DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+    private final DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+    private String userN = "";
+    private String lvl = "";
+    private String exp = "";
 
     @Rule
     public ActivityScenarioRule<ProfileActivity> activityRule = new ActivityScenarioRule<>(ProfileActivity.class);
@@ -52,5 +59,27 @@ public class ProfileNameMatchSessionNameTest {
                 .check(ViewAssertions.matches(ViewMatchers.withText("Taso 1")));
         Espresso.onView(ViewMatchers.withId(R.id.currentXpText))
                 .check(ViewAssertions.matches(ViewMatchers.withText("50 / 100 xp")));
+
+        CountDownLatch latch = new CountDownLatch(1);
+
+        sessionsRef.child(TestSessionManager.getTestSessionKey())
+                .child("Username")
+                .get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.exists()) {
+                        userN = dataSnapshot.getValue(String.class);
+                    }
+                    latch.countDown();
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("Session", "Virhe haussa.");
+                    latch.countDown();
+                });
+
+        latch.await(10, TimeUnit.SECONDS);
+
+        if (!userN.equals("testUser")) {
+            fail("Ei löytynyt käyttäjää.");
+        }
     }
 }
