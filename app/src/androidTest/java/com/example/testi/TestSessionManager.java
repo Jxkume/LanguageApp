@@ -8,7 +8,7 @@ public class TestSessionManager {
     private static String testSessionKey;
 
     public static void createTestSession() {
-        Session testSession = new Session(-1, 1, "testUser", 0, 1, 1, "fi");
+        Session testSession = new Session(-1, 7, "testUser", 50, 1, 5, "es");
         FirebaseManager.getInstance().pushSessionToDatabase(testSession);
         testSessionKey = testSession.getSessionUniqueKey();
     }
