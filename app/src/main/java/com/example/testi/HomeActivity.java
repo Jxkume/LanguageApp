@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView levelNavbar;
     private int sessionID;
 
+    //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -184,6 +185,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
     @Override
     protected void onStart() {
         super.onStart();

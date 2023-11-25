@@ -4,8 +4,12 @@ import android.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +26,17 @@ public class NewSessionActivity extends AppCompatActivity {
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
     private String chosenLanguage;
+
+    //Haetaan taustamusiikki aktiviteettiin
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -236,6 +251,20 @@ public class NewSessionActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(NewSessionActivity.this);
         String buttonOk = getString(R.string.ok_button_alert);
         builder.setTitle(title).setMessage(message).setNeutralButton(buttonOk, null).show();
+    }
+
+    // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, BackgroundMusicService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(serviceConnection);
     }
 
 }
