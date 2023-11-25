@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -39,6 +40,16 @@ public class SettingsActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
+        LanguageManager.getInstance().setSessionID(sessionID);
+        LanguageManager.getInstance().getLanguageFromDatabase(SettingsActivity.this);
+
+        progressBarBackground = findViewById(R.id.progressBarBackground);
+
+        // Tarkistetaan onko sovelluksen kieli LTR vai RTL
+        Configuration config = getResources().getConfiguration();
+        if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
+            progressBarBackground.setScaleX(-1);
+        }
 
         // Haetaan aktiviteetin alanapit
         ImageView homeIcon = findViewById(R.id.homeIcon);
@@ -54,6 +65,7 @@ public class SettingsActivity extends AppCompatActivity{
             Intent home = new Intent(SettingsActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);
+            finish();
         });
 
         profileIcon.setOnClickListener(v -> {
@@ -61,6 +73,7 @@ public class SettingsActivity extends AppCompatActivity{
             Intent profile = new Intent(SettingsActivity.this, ProfileActivity.class);
             profile.putExtra("sessionID", sessionID);
             startActivity(profile);
+            finish();
         });
 
         // Asetetaan arvot kuvien resurssien perusteella
@@ -88,14 +101,6 @@ public class SettingsActivity extends AppCompatActivity{
 
         // Kielen pop-up onClick
         currentFlag.setOnClickListener(v -> showLanguagePopup());
-
-        progressBarBackground = findViewById(R.id.progressBarBackground);
-
-        // Tarkistetaan onko sovelluksen kieli LTR vai RTL
-        Configuration config = getResources().getConfiguration();
-        if (config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
-            progressBarBackground.setScaleX(-1);
-        }
     }
 
     // Käyttäjän poistaminen
@@ -103,6 +108,7 @@ public class SettingsActivity extends AppCompatActivity{
         deleteSessionData();
         Intent intent2 = new Intent(SettingsActivity.this, SplashActivity.class);
         startActivity(intent2);
+        finish();
     }
 
     // Käyttäjän poistaminen tietokannasta
@@ -302,6 +308,7 @@ public class SettingsActivity extends AppCompatActivity{
     }
 
     // Sovelluksen kielen vaihto ja aktiviteetin uudelleenkäynnistys
+    @SuppressLint("UnsafeIntentLaunch")
     private void changeLanguage(ImageView flagImageView) {
 
         // Haetaan uusi kieli
@@ -316,10 +323,11 @@ public class SettingsActivity extends AppCompatActivity{
         // Suljetaan pop-up
         popUp.dismiss();
 
-        // Käynnistetään aktiviteetti uudelleen
-        @SuppressLint("UnsafeIntentLaunch") Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        // Odotetaan hetki ennen kuin käynnistetään aktiviteetti uudelleen
+        new Handler().postDelayed(() -> {
+            startActivity(getIntent());
+            finish();
+        }, 100);
     }
 
     // Kielen haku klikatun lipun perusteella
