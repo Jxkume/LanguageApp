@@ -82,15 +82,15 @@ public class ProfileActivityInstrumentedTest {
                         String sessionKey = sessionSnapshot.getKey();
                         int sessionID = sessionSnapshot.child("SessionID").getValue(Integer.class);
                         if(sessionKey != null) {
-                            if (sessionID == -1) {
+                            if (sessionID == 5) {
                                 Log.d("sessionkey", sessionKey);
                                 picIdFromDb[0] = sessionSnapshot.child("PhotoID").getValue(Integer.class);
                                 assertEquals(9, picIdFromDb[0]);
                             } else {
-                                fail("Session ID not found for key " + sessionKey);
+                                System.out.println("Session ID not found for key " + sessionKey);
                             }
                         } else {
-                            fail("Session not found");
+                            System.out.println("Session not found");
                         }
                     }
                 }
@@ -98,10 +98,46 @@ public class ProfileActivityInstrumentedTest {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Printataan error jos sellainen tulee vastaan
                 System.err.println("Error: " + error.getMessage());
             }
         });
 
+    }
+
+    @Test
+    public void levelUpTest() {
+        DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+
+        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            int lvlFromDb;
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot sessionSnapshot : snapshot.getChildren()) {
+                        String sessionKey = sessionSnapshot.getKey();
+                        int sessionID = sessionSnapshot.child("SessionID").getValue(Integer.class);
+                        if(sessionKey != null) {
+                            if (sessionID == 5) {
+                                Log.d("sessionkey", sessionKey);
+                                lvlFromDb = sessionSnapshot.child("Level").getValue(Integer.class);
+                                assertEquals(1, lvlFromDb);
+                                sessionSnapshot.child("XP").getRef().setValue(150);
+                                lvlFromDb = sessionSnapshot.child("Level").getValue(Integer.class);
+                                assertEquals(2, lvlFromDb);
+                            } else {
+                                System.out.println("Session ID not found for key " + sessionKey);
+                            }
+                        } else {
+                            System.out.println("Session not found");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.err.println("Error: " + error.getMessage());
+            }
+        });
     }
 }

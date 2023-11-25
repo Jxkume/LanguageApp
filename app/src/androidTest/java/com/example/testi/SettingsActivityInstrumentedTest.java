@@ -6,7 +6,7 @@ import static org.junit.Assert.fail;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
+
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.assertion.ViewAssertions;
@@ -14,11 +14,9 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.espresso.matcher.ViewMatchers;
 
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 
 import org.junit.After;
 import org.junit.Before;
@@ -50,11 +48,14 @@ public class SettingsActivityInstrumentedTest {
         activityRule.getScenario().recreate();
     }
 
+
+
     @After
     public void tearDown() {
         // Poistetaan testisessio testien jälkeen
         TestSessionManager.deleteTestSession();
     }
+
 
     @Test
     public void testShowSettings() {
@@ -111,7 +112,7 @@ public class SettingsActivityInstrumentedTest {
     }
 
     @Test
-    public void testSessionDelete() throws InterruptedException {
+    public void testSessionDelete() throws InterruptedException, ExecutionException {
 
         // Tarkistetaan että päästiin settings aktivitiin
         Espresso.onView(ViewMatchers.withId(R.id.deleteUserButton))
@@ -126,30 +127,17 @@ public class SettingsActivityInstrumentedTest {
         latch.await(1, TimeUnit.SECONDS);
 
         // Tarkistetaan, että session on poistettu tietokannasta
-        sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot sessionSnapshot : dataSnapshot.getChildren()) {
-                    int sessionID = sessionSnapshot.child("SessionID").getValue(Integer.class);
-                    if (sessionID == -1) {
-                        String username = sessionSnapshot.child("Username").getValue(String.class);
-                        if ("testUser".equals(username)) {
-                            // Jos löydettiin testUser, niin testi epäonnistuu
-                            fail("Session found for username: testUser");
-                        }
-                        break;
+        Tasks.await(sessionsRef.child(TestSessionManager.getTestSessionKey())
+                .get()
+                .addOnSuccessListener(dataSnapshot -> {
+                    if (dataSnapshot.exists()){
+                        fail("Tietokannasta ei poistunut testi sessio");
+                    } else {
+                        Log.d("Session", "Tietokannasta poistui sessio");
                     }
-                    // Jos testUser ei löydy, niin testi menee läpi
-                    Log.d("Test", "Session not found for username: testUser");
+                })
+                .addOnFailureListener(e -> Log.d("Session", "Usernamen hakemisessa tapahtui virhe.")));
 
-                    break;
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("Test", "Database operation canceled", databaseError.toException());
-            }
-        });
     }
 
 }
