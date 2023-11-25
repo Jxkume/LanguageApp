@@ -1,41 +1,56 @@
 package com.example.testi;
 
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.core.app.ActivityScenario;
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(AndroidJUnit4.class)
 public class ProfileNameMatchSessionNameTest {
 
-    // Testataan, etä käyttäjän luomassa profiilissa näkyy hänen antamansa tiedot (nimi ja ikä)
+    //private final DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
+
+    @Rule
+    public ActivityScenarioRule<ProfileActivity> activityRule = new ActivityScenarioRule<>(ProfileActivity.class);
+
+    @Before
+    public void setUp() throws InterruptedException {
+        CountDownLatch latch = new CountDownLatch(1);
+        TestSessionManager.createTestSession();
+        latch.await(2, TimeUnit.SECONDS);
+        activityRule.getScenario().recreate();
+        latch.await(2, TimeUnit.SECONDS);
+        activityRule.getScenario().recreate();
+    }
+
+    @After
+    public void tearDown() {
+        TestSessionManager.deleteTestSession();
+    }
+
+    // Testataan, että TestSessionManagerin kautta luodussa profiilissa näkyy
+    // annetut tiedot (nimi, level ja exp)
 
     @Test
-    public void testUserCreationAndProfileDisplay() {
-        // Avataan NewSessionActivity
-        ActivityScenario.launch(NewSessionActivity.class);
-
-        // Kirjataan nimimerkki ja ikä
-        onView(withId(R.id.usernameEditText)).perform(typeText("Testi"), closeSoftKeyboard());
-        onView(withId(R.id.ageEditText)).perform(typeText("8"), closeSoftKeyboard());
-
-        onView(withId(R.id.createSessionButton)).perform(click());
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        onView(withId(R.id.usernameTextView)).check(matches(withText("TestUser")));
-        onView(withId(R.id.ageTextView)).check(matches(withText("25")));
+    public void testUserCreationAndProfileDisplay() throws InterruptedException {
+        Espresso.onView(ViewMatchers.withId(R.id.usernameText))
+                        .check(ViewAssertions.matches(ViewMatchers.withText("- testUser -")));
+        Espresso.onView(ViewMatchers.withId(R.id.levelText))
+                .check(ViewAssertions.matches(ViewMatchers.withText("Taso 1")));
+        Espresso.onView(ViewMatchers.withId(R.id.currentXpText))
+                .check(ViewAssertions.matches(ViewMatchers.withText("50 / 100 xp")));
     }
 }
