@@ -64,7 +64,7 @@ public class NewSessionActivityInstrumentedTest {
                 .perform(ViewActions.click());
 
         CountDownLatch latch = new CountDownLatch(1);
-        latch.await(30, TimeUnit.SECONDS);
+        latch.await(10, TimeUnit.SECONDS);
 
 
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
