@@ -19,6 +19,12 @@ public class TestSessionManager {
         testSessionKey = testSession.getSessionUniqueKey();
     }
 
+    public static void createTestSessionGameTests() {
+        Session testSession = new Session(-1, 7, "testUser", 0, 1, 5, "fi");
+        FirebaseManager.getInstance().pushSessionToDatabase(testSession);
+        testSessionKey = testSession.getSessionUniqueKey();
+    }
+
     public static void deleteTestSession() {
         if (testSessionKey != null) {
             // Haetaan Session-node tietokannasta
