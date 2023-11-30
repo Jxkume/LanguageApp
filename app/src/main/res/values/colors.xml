@@ -6,5 +6,6 @@
     <color name="animalgame_background">#ECF3F6</color>
     <color name="colourgame_background">#F5EDEE</color>
     <color name="foodgame_background">#E9F4E7</color>
+    <color name="timegame_background">#F8F3DE</color>
     <color name="font">#1F0404</color>
 </resources>
