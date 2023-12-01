@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/foodGameIcon2"
+        android:id="@+id/timeGameIcon2"
         android:layout_width="115dp"
         android:layout_height="115dp"
         android:layout_marginTop="47dp"
@@ -16,7 +15,7 @@
         app:srcCompat="@drawable/timegameicon" />
 
     <ImageView
-        android:id="@+id/foodGameExitButton"
+        android:id="@+id/timeGameExitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -26,7 +25,7 @@
         app:srcCompat="@drawable/timegameexit" />
 
     <ImageView
-        android:id="@+id/foodGameProgressBarBackground"
+        android:id="@+id/timeGameProgressBarBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
@@ -36,15 +35,15 @@
         app:srcCompat="@drawable/timegameprogressbarbackground" />
 
     <ProgressBar
-        android:id="@+id/foodGameProgressBar"
+        android:id="@+id/timeGameProgressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:progressDrawable="@drawable/timegameprogressbar"
         android:layout_width="319dp"
         android:layout_height="15dp"
         android:progress="0"
-        app:layout_constraintBottom_toBottomOf="@+id/foodGameProgressBarBackground"
-        app:layout_constraintEnd_toEndOf="@+id/foodGameProgressBarBackground"
-        app:layout_constraintStart_toStartOf="@+id/foodGameProgressBarBackground"
-        app:layout_constraintTop_toTopOf="@+id/foodGameProgressBarBackground" />
+        app:layout_constraintBottom_toBottomOf="@+id/timeGameProgressBarBackground"
+        app:layout_constraintEnd_toEndOf="@+id/timeGameProgressBarBackground"
+        app:layout_constraintStart_toStartOf="@+id/timeGameProgressBarBackground"
+        app:layout_constraintTop_toTopOf="@+id/timeGameProgressBarBackground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

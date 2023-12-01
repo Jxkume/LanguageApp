@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.testi.games.AnimalGameFirstActivity;
 import com.example.testi.games.ColourGameFirstActivity;
 import com.example.testi.games.FoodGameFirstActivity;
+import com.example.testi.games.TimeGameFirstActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,6 +63,7 @@ public class HomeActivity extends AppCompatActivity {
         ImageView animalGameIcon = findViewById(R.id.animalGameIcon);
         ImageView colourGameIcon = findViewById(R.id.colorGameIcon);
         ImageView foodGameIcon = findViewById(R.id.foodGameIcon);
+        ImageView timeGameIcon = findViewById(R.id.timeGameIcon);
 
         // Haetaan käyttäjän avatar, taso ja xp tietokannasta
         loadInformationFromDatabase();
@@ -101,6 +103,14 @@ public class HomeActivity extends AppCompatActivity {
 
         foodGameIcon.setOnClickListener(v -> {
             Intent foodGame = new Intent(HomeActivity.this, FoodGameFirstActivity.class);
+            foodGame.putExtra("sessionID", sessionID);
+            startActivity(foodGame);
+            overridePendingTransition(0, 0);
+            finish();
+        });
+
+        timeGameIcon.setOnClickListener(v -> {
+            Intent foodGame = new Intent(HomeActivity.this, TimeGameFirstActivity.class);
             foodGame.putExtra("sessionID", sessionID);
             startActivity(foodGame);
             overridePendingTransition(0, 0);
