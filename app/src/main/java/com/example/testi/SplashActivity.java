@@ -27,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private ImageView logo;
 
+    //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -104,6 +105,7 @@ public class SplashActivity extends AppCompatActivity {
         }, SPLASH_DURATION);
     }
 
+    // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
     @Override
     protected void onStart() {
         super.onStart();

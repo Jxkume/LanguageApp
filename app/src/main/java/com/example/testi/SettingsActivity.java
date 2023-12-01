@@ -2,10 +2,14 @@ package com.example.testi;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +37,49 @@ public class SettingsActivity extends AppCompatActivity{
     private Dialog popUp;
     private int sessionID;
     private ImageView progressBarBackground;
+
+    private BackgroundMusicService musicService;
+    private boolean isBound = false;
+
+    //Haetaan taustamusiikki aktiviteettiin
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
+            initializeSeekBar();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+        }
+
+        // Musiikin äänenvoimakkuuden säädin
+        private void initializeSeekBar() {
+            SeekBar volumeSeekBar = findViewById(R.id.musicSettindsSlider);
+
+            // Musiikki on aluksi suurin mahdollinen eli 100
+            volumeSeekBar.setProgress(100);
+
+            volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (isBound) {
+                        float volume = progress / 1.0f;
+                        musicService.setVolume(volume);
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {}
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {}
+            });
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -342,5 +390,18 @@ public class SettingsActivity extends AppCompatActivity{
         }
     }
 
-}
+    // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, BackgroundMusicService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(serviceConnection);
+    }
+
+}

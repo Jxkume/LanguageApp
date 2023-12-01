@@ -25,6 +25,7 @@ public class SessionsActivity extends AppCompatActivity {
     private TextView firstSessionTextView, secondSessionTextView, thirdSessionTextView, fourthSessionTextView, fifthSessionTextView;
     private int sessionID;
 
+    //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -162,6 +163,7 @@ public class SessionsActivity extends AppCompatActivity {
         }
     }
 
+    // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
     @Override
     protected void onStart() {
         super.onStart();
