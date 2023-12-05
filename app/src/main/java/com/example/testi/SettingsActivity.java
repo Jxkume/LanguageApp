@@ -114,7 +114,7 @@ public class SettingsActivity extends AppCompatActivity{
         // Kielen pop-up onClick
         currentFlag.setOnClickListener(v -> showLanguagePopup());
 
-       // Musiikin ja äänien SeekBarit
+        // Musiikin ja äänien SeekBarit
         SeekBar musicSeekBar = findViewById(R.id.musicSettindsSlider);
         SeekBar soundSeekBar = findViewById(R.id.soundSettindsSlider);
 

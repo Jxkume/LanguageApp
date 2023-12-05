@@ -25,7 +25,7 @@ public class SessionsActivity extends AppCompatActivity {
     private TextView firstSessionTextView, secondSessionTextView, thirdSessionTextView, fourthSessionTextView, fifthSessionTextView;
     private int sessionID;
 
-    //Haetaan taustamusiikki aktiviteettiin
+    // Palveluyhteys taustamusiikin aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -171,6 +171,7 @@ public class SessionsActivity extends AppCompatActivity {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();

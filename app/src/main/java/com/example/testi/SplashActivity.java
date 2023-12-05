@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
@@ -17,33 +18,40 @@ import androidx.annotation.Nullable;
 
 public class SplashActivity extends AppCompatActivity {
 
+    // Määritellään näytön näyttämisen kuluvan ajan raja
     private static final int SPLASH_DURATION = 6000;
+
+    // Kuvakkeet (kuplat ja logo)
     private ImageView bubble1;
     private ImageView bubble2;
     private ImageView bubble3;
     private ImageView bubble4;
     private ImageView bubble5;
     private ImageView bubble6;
-
     private ImageView logo;
 
-    //Haetaan taustamusiikki aktiviteettiin
+    // Palveluyhteys taustamusiikin aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            Log.d("Yhteys", "Palveluyhteys muodostettu");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            Log.d("Yhteys", "Palveluyhteys katkaistu");
         }
     };
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        // Asetetaan näyttöaktiviteetin näkymä resurssista
         setContentView(R.layout.activity_splash);
 
+        // Etsitään jokaisen kuplan ja logon oikea ID
         bubble1 = findViewById(R.id.bubble1);
         bubble2 = findViewById(R.id.bubble2);
         bubble3 = findViewById(R.id.bubble3);
@@ -52,6 +60,7 @@ public class SplashActivity extends AppCompatActivity {
         bubble6 = findViewById(R.id.bubble6);
         logo = findViewById(R.id.logo);
 
+        // Luodaan kukin kuplalle ja logolle oman animaation
         Animation fadeInBubble1 = new AlphaAnimation(0, 1);
         fadeInBubble1.setStartOffset(1500);
         fadeInBubble1.setDuration(2000);
@@ -87,6 +96,7 @@ public class SplashActivity extends AppCompatActivity {
         fadeInLogo.setDuration(1000);
         fadeInLogo.setFillAfter(true);
 
+        // Asetetaan animaation kullekin kuplalle ja logolle
         bubble1.setAnimation(fadeInBubble1);
         bubble2.setAnimation(fadeInBubble2);
         bubble3.setAnimation(fadeInBubble3);
@@ -95,6 +105,8 @@ public class SplashActivity extends AppCompatActivity {
         bubble6.setAnimation(fadeInBubble6);
         logo.setAnimation(fadeInLogo);
 
+
+        // Asetetaan viiveen, että näyttö vaihtuu
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -113,6 +125,7 @@ public class SplashActivity extends AppCompatActivity {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();
