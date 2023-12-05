@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -40,6 +41,7 @@ public class SettingsActivity extends AppCompatActivity{
     private ImageView progressBarBackground;
     private BackgroundMusicService musicService;
     AudioManager audioMngr;
+    private int appVolume;
     private boolean isBound = false;
 
     @Override
@@ -49,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity{
 
         // AudioManagerilla saadaan äänenvoimakkuus
         audioMngr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        //audioMngr = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
@@ -114,10 +117,36 @@ public class SettingsActivity extends AppCompatActivity{
         // Kielen pop-up onClick
         currentFlag.setOnClickListener(v -> showLanguagePopup());
 
+       // Musiikin ja äänien SeekBarit
+        SeekBar soundSeekBar = (SeekBar) findViewById(R.id.soundSettindsSlider);
         // Musiikin ja äänien SeekBarit
         SeekBar musicSeekBar = findViewById(R.id.musicSettindsSlider);
-        SeekBar soundSeekBar = findViewById(R.id.soundSettindsSlider);
 
+        //Haetaan mediaplayerin äänenvoimakkuuden maksimiarvo
+        int maxVolume = BackgroundMusicService.getMaxVolume();
+        musicSeekBar.setMax(maxVolume);
+
+        //Haetaan äänenvoimakkuuden nykyinen arvo
+        appVolume = BackgroundMusicService.getCurrentVolume();
+        musicSeekBar.setProgress(appVolume);
+
+        musicSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                //Päivitetään MediaPlayerin äänenvoimakkuus
+                BackgroundMusicService.setVolume(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     // Käyttäjän poistaminen
@@ -364,11 +393,12 @@ public class SettingsActivity extends AppCompatActivity{
 
         // onServiceConnected() kutsutaan kun yhteys on luotu
         @Override
+
         public void onServiceConnected(ComponentName name, IBinder service) {
             // Haetaan LocalBinderin avulla BackgroundMusicServicen instanssi
             BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
             musicService = binder.getService();
-            isBound = true;
+            isBound = true;/*
 
             // Haetaan musiikin SeekBar
             SeekBar volumeSeekBar = findViewById(R.id.musicSettindsSlider);
@@ -400,7 +430,7 @@ public class SettingsActivity extends AppCompatActivity{
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
+            });*/
         }
 
         // onServiceDisconnected() kutsutaan kun yhteys katkaistaan

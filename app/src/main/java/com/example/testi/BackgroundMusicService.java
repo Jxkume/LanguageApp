@@ -13,10 +13,11 @@ import androidx.annotation.Nullable;
 public class BackgroundMusicService extends Service {
 
     // MediaPlayer kontrolloi taustamusiikin toistoa
-    private MediaPlayer player;
+    private static MediaPlayer player;
     // AudioManager kontrolloi äänenvoimakkuutta
     AudioManager audioManager;
     private boolean isPrepared = false;
+    private static int currentVolume = 100;
 
     // onCreate() alustaa MediaPlayerin ja asettaa sille kuuntelijat
     @Override
@@ -27,7 +28,7 @@ public class BackgroundMusicService extends Service {
         player = MediaPlayer.create(this, R.raw.playing_in_color);
         player.setLooping(true);
         // Äänenvoimmakkuus on oletuksena max
-        player.setVolume(100, 100);
+        player.setVolume(currentVolume / 100.0f, currentVolume / 100.0f);
 
         // Kuuntelija joka kutsutaan kun MediaPlayer on valmis
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
@@ -100,4 +101,21 @@ public class BackgroundMusicService extends Service {
         return null;
     }
 
+    //Mediaplayerin max äänenvoimakkuus (100%)
+    public static int getMaxVolume() {
+        return 100;
+    }
+
+    //Muutetaan playerin äänenvoimakkuutta asettamalla sille uusi arvo
+    public static void setVolume(int vol) {
+        vol = Math.max(0, Math.min(100, vol));
+        currentVolume = vol;
+
+        player.setVolume(currentVolume / 100.0f, currentVolume / 100.0f);
+    }
+
+    //Haetaan playerissa soivan musiikin äänenvoimakkuus
+    public static int getCurrentVolume() {
+        return currentVolume;
+    }
 }
