@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.Configuration;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -120,17 +121,19 @@ public class SettingsActivity extends AppCompatActivity{
         SeekBar soundSeekBar = (SeekBar) findViewById(R.id.soundSettindsSlider);
         SeekBar musicSeekBar = findViewById(R.id.musicSettindsSlider);
 
-        int maxVolume = audioMngr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        //Haetaan mediaplayerin äänenvoimakkuuden maksimiarvo
+        int maxVolume = BackgroundMusicService.getMaxVolume();
         musicSeekBar.setMax(maxVolume);
 
-        appVolume = audioMngr.getStreamVolume(AudioManager.STREAM_MUSIC);
+        //Haetaan äänenvoimakkuuden nykyinen arvo
+        appVolume = BackgroundMusicService.getCurrentVolume();
         musicSeekBar.setProgress(appVolume);
 
         musicSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                appVolume = i;
-                audioMngr.setStreamVolume(AudioManager.STREAM_MUSIC, appVolume, AudioManager.FLAG_SHOW_UI);
+                //Päivitetään MediaPlayerin äänenvoimakkuus
+                BackgroundMusicService.setVolume(i);
             }
 
             @Override
