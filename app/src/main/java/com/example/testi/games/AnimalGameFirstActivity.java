@@ -50,6 +50,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.animalgamefirstactivity);
 
@@ -80,8 +81,9 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
         words = new ArrayList<>();
 
-        //Otetaan käyttäjän taso tietokannasta
+        // Otetaan käyttäjän taso tietokannasta
         loadUserLevel();
+
         // Ladataan sanat tietokannasta ja alustetaan pelin
         loadWordsAndSetUpGame();
 
@@ -113,9 +115,11 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                         String sessionKey = sessionSnapshot.getKey();
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if(sessionKey != null) {
+                            // Tarkistetaan, että avain ei ole tyhjä ja ID on olemassa ja vastaa haluttua sessionID:tä
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Haetaan käyttäjän taso tietokannasta
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
-                                //Lasketaan montako kierrosta tulee peliin käyttäjän tason perusteella
+                                // Lasketaan montako kierrosta tulee peliin käyttäjän tason perusteella
                                 roundsToPlay = 5 * lvl;
                             }
                         }
@@ -138,7 +142,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Iteroidaan Colourgamen läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
-                    if(wordSnapshot.getKey() != null) {
+                    if (wordSnapshot.getKey() != null) {
                         //Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
                         if (wordSnapshot.child("Level").getValue(Integer.class) <= lvl) {
                             String word = wordSnapshot.getKey();

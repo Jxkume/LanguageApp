@@ -49,6 +49,7 @@ public class ProfileActivity extends AppCompatActivity{
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profileactivity);
 
@@ -83,7 +84,7 @@ public class ProfileActivity extends AppCompatActivity{
             finish();
         });
 
-        //Haetaan käyttäjän tiedot tietokannasta
+        // Haetaan käyttäjän tiedot tietokannasta
         loadUserInformationFromDatabase();
 
         // Profiilikuvan valitseminen
@@ -110,14 +111,14 @@ public class ProfileActivity extends AppCompatActivity{
                         if (sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 // Jos avain ja sessionID löytyvät, asetetaan oikeat tiedot
-                                //Otetaan käyttäjän taso tietokannasta
+                                // Otetaan käyttäjän taso tietokannasta
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
                                 setProfilePicture(sessionSnapshot.child("PhotoID").getValue(Integer.class));
                                 usernameTextView.setText("- " + sessionSnapshot.child("Username").getValue(String.class) + " -");
                                 levelText.setText(getString(R.string.level) + " " + String.valueOf(lvl));
                                 String xp = getString(R.string.xp);
-                                //laitetaan tekstikenttään käyttäjän xp sekä nykyisev tason tavoite, jonka saadaan kutsumalla getGoalXp-metodia
-                                currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / " + String.valueOf(getGoalXp()) + " " + xp); // Tähän tulee myöhemmin seuraavan tason vaatima xp-määrä muuttujana
+                                // Laitetaan tekstikenttään käyttäjän xp sekä nykyisev tason tavoite, jonka saadaan kutsumalla getGoalXp-metodia
+                                currentXPTextView.setText(sessionSnapshot.child("XP").getValue(Long.class) + " / " + String.valueOf(getGoalXp()) + " " + xp);
                             }
                         }
                     }
@@ -291,6 +292,7 @@ public class ProfileActivity extends AppCompatActivity{
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();

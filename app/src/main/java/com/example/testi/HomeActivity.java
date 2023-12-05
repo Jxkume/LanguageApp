@@ -34,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
     private TextView levelNavbar;
     private int sessionID;
 
-    //Haetaan taustamusiikki aktiviteettiin
+    // Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -87,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         animalGameIcon.setOnClickListener(v -> {
+            // Siirrytään eläinpeli-aktiviteettiin
             Intent animalGame = new Intent(HomeActivity.this, AnimalGameFirstActivity.class);
             animalGame.putExtra("sessionID", sessionID);
             startActivity(animalGame);
@@ -95,6 +96,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         colourGameIcon.setOnClickListener(v -> {
+            // Siirrytään väripeli-aktiviteettiin
             Intent colourGame = new Intent(HomeActivity.this, ColourGameFirstActivity.class);
             colourGame.putExtra("sessionID", sessionID);
             startActivity(colourGame);
@@ -103,6 +105,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         foodGameIcon.setOnClickListener(v -> {
+            // Siirrytään ruokapeli-aktiviteettiin
             Intent foodGame = new Intent(HomeActivity.this, FoodGameFirstActivity.class);
             foodGame.putExtra("sessionID", sessionID);
             startActivity(foodGame);
@@ -111,6 +114,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         timeGameIcon.setOnClickListener(v -> {
+            // Siirrytään aikapeli-aktiviteettiin
             Intent foodGame = new Intent(HomeActivity.this, TimeGameFirstActivity.class);
             foodGame.putExtra("sessionID", sessionID);
             startActivity(foodGame);
@@ -203,6 +207,7 @@ public class HomeActivity extends AppCompatActivity {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();

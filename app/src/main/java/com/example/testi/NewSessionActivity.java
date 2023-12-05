@@ -57,7 +57,6 @@ public class NewSessionActivity extends AppCompatActivity {
         // Alustetaan elementit, joihin käyttäjän valitsema profiilikuva tulee
         newProfilePicture = findViewById(R.id.newProfilePicture1);
         newProfilePictureInPopUp = findViewById(R.id.newProfilePicture2);
-
         usernameEditText = findViewById(R.id.usernameEditText);
         ageEditText = findViewById(R.id.ageEditText);
         ImageView imageViewValmis = findViewById(R.id.newSessionReadyButton);
@@ -261,6 +260,7 @@ public class NewSessionActivity extends AppCompatActivity {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();

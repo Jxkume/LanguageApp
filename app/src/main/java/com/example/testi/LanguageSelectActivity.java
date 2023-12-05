@@ -111,23 +111,35 @@ public class LanguageSelectActivity extends AppCompatActivity {
     }
 
     private void updateLanguageToButton() {
+        // Luodaan päivitetty konteksti, jossa kieli on asetettu valitun lipun perusteella
         Context updatedContext = createUpdatedContext();
+
+        // Haetaan käännös resursseista päivitetyn kontekstin avulla
         String buttonText = updatedContext.getString(R.string.next);
+
+        // Asetetaan painikkeen teksti päivitetyn tekstin perusteella
         nextButtonTextView.setText(buttonText);
     }
 
     private Context createUpdatedContext() {
+
+        // Haetaan valitun lipun perusteella kielen koodi
         String languageCode = getLanguageCode(selectedFlag);
+
+        // Luodaan päivitetty kieliobjekti
         Locale updatedLocale = new Locale(languageCode);
         Locale.setDefault(updatedLocale);
 
+        // Luodaan konfiguraatio, jossa kieli on asetettu
         Configuration configuration = new Configuration();
         configuration.setLocale(updatedLocale);
 
+        // Luodaan päivitetty konteksti konfiguraation perusteella
         return createConfigurationContext(configuration);
     }
 
     private String getLanguageCode(int flag) {
+        // Palauta kielen inttinä valitun lipun perusteella
         switch (flag) {
             case 0:
                 return "fi";
@@ -148,6 +160,7 @@ public class LanguageSelectActivity extends AppCompatActivity {
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();
