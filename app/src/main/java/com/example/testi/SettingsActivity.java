@@ -40,6 +40,7 @@ public class SettingsActivity extends AppCompatActivity{
     private ImageView progressBarBackground;
     private BackgroundMusicService musicService;
     AudioManager audioMngr;
+    private int appVolume;
     private boolean isBound = false;
 
     @Override
@@ -49,6 +50,7 @@ public class SettingsActivity extends AppCompatActivity{
 
         // AudioManagerilla saadaan äänenvoimakkuus
         audioMngr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        //audioMngr = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
@@ -115,9 +117,32 @@ public class SettingsActivity extends AppCompatActivity{
         currentFlag.setOnClickListener(v -> showLanguagePopup());
 
        // Musiikin ja äänien SeekBarit
+        SeekBar soundSeekBar = (SeekBar) findViewById(R.id.soundSettindsSlider);
         SeekBar musicSeekBar = findViewById(R.id.musicSettindsSlider);
-        SeekBar soundSeekBar = findViewById(R.id.soundSettindsSlider);
 
+        int maxVolume = audioMngr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        musicSeekBar.setMax(maxVolume);
+
+        appVolume = audioMngr.getStreamVolume(AudioManager.STREAM_MUSIC);
+        musicSeekBar.setProgress(appVolume);
+
+        musicSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                appVolume = i;
+                audioMngr.setStreamVolume(AudioManager.STREAM_MUSIC, appVolume, AudioManager.FLAG_SHOW_UI);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     // Käyttäjän poistaminen
@@ -364,11 +389,12 @@ public class SettingsActivity extends AppCompatActivity{
 
         // onServiceConnected() kutsutaan kun yhteys on luotu
         @Override
+
         public void onServiceConnected(ComponentName name, IBinder service) {
             // Haetaan LocalBinderin avulla BackgroundMusicServicen instanssi
             BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
             musicService = binder.getService();
-            isBound = true;
+            isBound = true;/*
 
             // Haetaan musiikin SeekBar
             SeekBar volumeSeekBar = findViewById(R.id.musicSettindsSlider);
@@ -400,7 +426,7 @@ public class SettingsActivity extends AppCompatActivity{
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
+            });*/
         }
 
         // onServiceDisconnected() kutsutaan kun yhteys katkaistaan
