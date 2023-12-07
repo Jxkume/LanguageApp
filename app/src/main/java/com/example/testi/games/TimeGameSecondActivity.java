@@ -79,7 +79,7 @@ public class TimeGameSecondActivity extends AppCompatActivity{
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
         words = new ArrayList<>();
 
-        //Otetaan käyttäjän taso tietokannasta
+        // Otetaan käyttäjän taso tietokannasta
         loadUserLevel();
         // Ladataan sanat tietokannasta ja alustetaan pelin
         loadWordsAndSetUpGame();
@@ -107,9 +107,11 @@ public class TimeGameSecondActivity extends AppCompatActivity{
                         String sessionKey = sessionSnapshot.getKey();
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if(sessionKey != null) {
+                            // Tarkistetaan, että avain ei ole tyhjä ja ID on olemassa ja vastaa haluttua sessionID:tä
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Haetaan käyttäjän taso tietokannasta
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
-                                //Lasketaan paljonko kierrosta tulee peliin käyttäjän tason perusteella
+                                // Lasketaan paljonko kierrosta tulee peliin käyttäjän tason perusteella
                                 roundsToPlay = 5 * lvl;
                             }
                         }
@@ -132,7 +134,7 @@ public class TimeGameSecondActivity extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 // Iteroidaan tietokannan läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
-                    //Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
+                    // Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
                     if (wordSnapshot.child("Level").getValue(Integer.class) == lvl) {
                         String word = wordSnapshot.getKey();
                         words.add(word);
@@ -159,7 +161,7 @@ public class TimeGameSecondActivity extends AppCompatActivity{
             // Otetaan oikean vastauksen nykyiseen kysymykseen
             correctAnswer = words.get(currentQuestionIndex);
 
-            //Poistetaan välilyönnit ja erikoismerkit
+            // Poistetaan välilyönnit ja erikoismerkit
             String corrAnswerWithNoSpacesAndSpecCharacters = correctAnswer.replace("'", "");
             corrAnswerWithNoSpacesAndSpecCharacters = corrAnswerWithNoSpacesAndSpecCharacters.replace(" ", "");
             Log.d("Debug", corrAnswerWithNoSpacesAndSpecCharacters);
@@ -261,14 +263,18 @@ public class TimeGameSecondActivity extends AppCompatActivity{
         if (toast != null) {
             toast.cancel();
         }
+
+        // Käytetään LayoutInflateria luomaan näkymä Toastiin
         LayoutInflater inflater = getLayoutInflater();
         View corr_toast = inflater.inflate(R.layout.toast_layout_correct, (ViewGroup) findViewById(R.id.toast_layout_correct));
 
+        // Luodaan uuden toast ja asetetaan sille ominaisuudet
         toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(corr_toast);
 
+        // Näytetään toastin
         toast.show();
     }
 
@@ -277,13 +283,19 @@ public class TimeGameSecondActivity extends AppCompatActivity{
         if (toast != null) {
             toast.cancel();
         }
+
+        // Käytetään LayoutInflateria luomaan näkymä Toastiin
         LayoutInflater inflater = getLayoutInflater();
         View incorr_toast = inflater.inflate(R.layout.toast_layout_incorrect, (ViewGroup) findViewById(R.id.toast_layout_incorrect));
 
+
+        // Luodaan uuden toast ja asetetaan sille ominaisuudet
         toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(incorr_toast);
+
+        // Näytetään toastin
         toast.show();
     }
 
@@ -303,12 +315,12 @@ public class TimeGameSecondActivity extends AppCompatActivity{
                                 int xp = sessionSnapshot.child("XP").getValue(Integer.class);
                                 int lvl = sessionSnapshot.child("Level").getValue(Integer.class);
 
-                                //Kutsutaan checkLevelUp metodia, joka tarkistaa kasvaako käyttäjän taso pelin jälkeen
+                                // Kutsutaan checkLevelUp metodia, joka tarkistaa kasvaako käyttäjän taso pelin jälkeen
                                 if (checkLevelUp(xp, score, lvl)) {
-                                    //Jos metodi palauttaa true-arvon, päivitetään käyttäjän tasoa
+                                    // Jos metodi palauttaa true-arvon, päivitetään käyttäjän tasoa
                                     sessionSnapshot.child("Level").getRef().setValue(lvl + 1);
                                 }
-                                //Lopuksi päivitetään käyttäjän xp
+                                // Lopuksi päivitetään käyttäjän xp
                                 sessionSnapshot.child("XP").getRef().setValue(score + xp);
                             }
                         }
@@ -325,27 +337,8 @@ public class TimeGameSecondActivity extends AppCompatActivity{
     }
 
     private boolean checkLevelUp(int xp, int earnedPoints, int currentLevel) {
-        if (currentLevel == 1) {
-            if (xp < 100 && xp + earnedPoints >= 100) {
-                return true;
-            }
-        } else if (currentLevel == 2) {
-            if (xp < 200 && xp + earnedPoints >= 200) {
-                return true;
-            }
-        } else if (currentLevel == 3) {
-            if (xp < 300 && xp + earnedPoints >= 300) {
-                return true;
-            }
-        } else if(currentLevel == 4) {
-            if (xp < 400 && xp + earnedPoints >= 400) {
-                return true;
-            }
-        } else if(currentLevel == 5) {
-            if (xp < 500 && xp + earnedPoints >= 500) {
-                return true;
-            }
-        }
-        return false;
+        // Tarkistetaan, onko pelaaja saavuttanut tarvittavat pisteet noustakseen seuraavalle tasolle.
+        int requiredXp = currentLevel * 100;
+        return xp < requiredXp && xp + earnedPoints >= requiredXp;
     }
 }

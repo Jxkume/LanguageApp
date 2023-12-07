@@ -143,7 +143,7 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 // Iteroidaan Colourgamen läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
                     if (wordSnapshot.getKey() != null) {
-                        //Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
+                        // Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
                         if (wordSnapshot.child("Level").getValue(Integer.class) <= lvl) {
                             String word = wordSnapshot.getKey();
                             words.add(word);
@@ -218,7 +218,6 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
             new Handler().postDelayed(() -> {
                 questionImageView.setImageResource(0);
                 questionTextView.setText("");
-                //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
@@ -261,7 +260,6 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
                 showCorrectToast();
             } else {
                 showIncorrectToast();
-                //Toast.makeText(this, "Väärin! Valitsemasi kuvalla on " + optionImageViews[selectedOptionIndex].getContentDescription().toString(), Toast.LENGTH_SHORT).show();
             }
 
             // Mennään seuraavaan kysymykseen/roudiin
@@ -279,14 +277,18 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         if (toast != null) {
             toast.cancel();
         }
+
+        // Käytetään LayoutInflateria luomaan näkymä Toastiin
         LayoutInflater inflater = getLayoutInflater();
         View corr_toast = inflater.inflate(R.layout.toast_layout_correct, (ViewGroup) findViewById(R.id.toast_layout_correct));
 
+        // Luodaan uuden toast ja asetetaan sille ominaisuudet
         toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(corr_toast);
 
+        // Näytetään toastin
         toast.show();
     }
 
@@ -295,14 +297,18 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         if (toast != null) {
             toast.cancel();
         }
+
+        // Käytetään LayoutInflateria luomaan näkymä Toastiin
         LayoutInflater inflater = getLayoutInflater();
         View incorr_toast = inflater.inflate(R.layout.toast_layout_incorrect, (ViewGroup) findViewById(R.id.toast_layout_incorrect));
 
+        // Luodaan uuden toast ja asetetaan sille ominaisuudet
         toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(incorr_toast);
 
+        // Näytetään toastin
         toast.show();
     }
 }
