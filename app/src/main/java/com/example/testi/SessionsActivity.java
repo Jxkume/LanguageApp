@@ -24,6 +24,7 @@ public class SessionsActivity extends AppCompatActivity {
     private ImageView firstSessionButton, secondSessionButton, thirdSessionButton, fourthSessionButton, fifthSessionButton;
     private TextView firstSessionTextView, secondSessionTextView, thirdSessionTextView, fourthSessionTextView, fifthSessionTextView;
     private int sessionID;
+    BackgroundMusicService musicService;
 
     // Palveluyhteys taustamusiikin aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -169,6 +170,9 @@ public class SessionsActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (musicService != null) {
+            musicService.playBackgroundMusic();
+        }
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä

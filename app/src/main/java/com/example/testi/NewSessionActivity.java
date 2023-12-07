@@ -26,6 +26,7 @@ public class NewSessionActivity extends AppCompatActivity {
     private boolean isProfilePictureSelected = false;
     private int profilePictureID;
     private String chosenLanguage;
+    BackgroundMusicService musicService;
 
     //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -258,6 +259,9 @@ public class NewSessionActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (musicService != null) {
+            musicService.playBackgroundMusic();
+        }
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä

@@ -12,9 +12,14 @@ import androidx.annotation.Nullable;
 
 public class BackgroundMusicService extends Service {
 
-    // MediaPlayer kontrolloi taustamusiikin toistoa
+    // Tämä MediaPlayer kontrolloi taustamusiikin toistoa
     private static MediaPlayer player;
-
+    // Tämä MediaPlayer kontrolloi taustamusiikkia peleissä
+    private static MediaPlayer playerGame;
+    // Tämä kontrolloi ääniefektiä kun valitaan oikein
+    private static MediaPlayer effectPlayerR;
+    // Tämä kontrolloi ääniefektiä kun valitaan väärin
+    private static MediaPlayer effectPlayerW;
     // AudioManager kontrolloi äänenvoimakkuutta
     AudioManager audioManager;
     private boolean isPrepared = false;
@@ -29,29 +34,68 @@ public class BackgroundMusicService extends Service {
         // AudioManagerilla saadaan äänenvoimakkuus
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         player = MediaPlayer.create(this, R.raw.playing_in_color);
+        playerGame = MediaPlayer.create(this, R.raw.morning_funny_beat);
+        effectPlayerR = MediaPlayer.create(this, R.raw.correct_button);
+        effectPlayerW = MediaPlayer.create(this, R.raw.wrong_answer);
+
         player.setLooping(true);
+        playerGame.setLooping(true);
+        effectPlayerR.setLooping(false);
+        effectPlayerW.setLooping(false);
 
         // Äänenvoimmakkuus on oletuksena max
-        player.setVolume(currentVolume / 100.0f, currentVolume / 100.0f);
+        setVolume(currentVolume);
+        prepareMediaPlayerListeners();
+    }
 
-        // Kuuntelija joka kutsutaan kun MediaPlayer on valmis
-        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                isPrepared = true;
-                mp.start();
-            }
+    // prepareMediaPlayerListeners() asettaa MediaPlayerille kuuntelijat
+    private void prepareMediaPlayerListeners() {
+        player.setOnPreparedListener(mp -> {
+            isPrepared = true;
+            mp.start();
         });
 
-        // Kuuntelija, joka kutsutaan jos MediaPlayer ei ole valmis
-        player.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                Log.e("MediaPlayer Error", "What: " + what + " Extra: " + extra);
-                stopAndReleaseMediaPlayer();
-                return true;
-            }
+        player.setOnErrorListener((mp, what, extra) -> {
+            Log.e("MediaPlayer Error", "What: " + what + " Extra: " + extra);
+            stopAndReleaseMediaPlayer();
+            return true;
         });
+    }
+
+    // Tausta musiikin toistaminen
+    public void playBackgroundMusic() {
+        if (playerGame != null && playerGame.isPlaying()) {
+            playerGame.stop();
+            playerGame.prepareAsync();
+        }
+        if (player != null && !player.isPlaying()) {
+            player.start();
+        }
+    }
+
+    // Pelimusiikin toistaminen
+    public void playGameMusic() {
+        if (player != null && player.isPlaying()) {
+            player.stop();
+            player.prepareAsync();
+        }
+        if (playerGame != null && !playerGame.isPlaying()) {
+            playerGame.start();
+        }
+    }
+
+    // Ääniefekti oikealle vastaukselle
+    public void playCorrectSound() {
+        if (effectPlayerR != null) {
+            effectPlayerR.start();
+        }
+    }
+
+    // Ääniefekti väärälle vastaukselle
+    public void playWrongSound() {
+        if (effectPlayerW != null) {
+            effectPlayerW.start();
+        }
     }
 
     // onStartCommand() kutsutaan kun palvelu käynnistetään
@@ -81,9 +125,6 @@ public class BackgroundMusicService extends Service {
         stopAndReleaseMediaPlayer();
     }
 
-    // IBinderin avulla voidaan palauttaa palvelun instanssi
-    private final IBinder binder = (IBinder) new LocalBinder();
-
     // Palautetaan palvelun instanssi
     public class LocalBinder extends Binder {
         BackgroundMusicService getService() {
@@ -91,18 +132,11 @@ public class BackgroundMusicService extends Service {
         }
     }
 
-    // setVolume() asettaa äänenvoimakkuuden
-    public void setVolume(float volume) {
-        if (player != null) {
-            player.setVolume(volume, volume);
-        }
-    }
-
     // onBind() palauttaa IBinderin
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return new LocalBinder();
     }
 
     // Mediaplayerin max äänenvoimakkuus (100%)
@@ -114,8 +148,20 @@ public class BackgroundMusicService extends Service {
     public static void setVolume(int vol) {
         vol = Math.max(0, Math.min(100, vol));
         currentVolume = vol;
+        float volume = currentVolume / 100.0f;
 
-        player.setVolume(currentVolume / 100.0f, currentVolume / 100.0f);
+        if (player != null) {
+            player.setVolume(volume, volume);
+        }
+        if (playerGame != null) {
+            playerGame.setVolume(volume, volume);
+        }
+        if (effectPlayerR != null) {
+            effectPlayerR.setVolume(volume, volume);
+        }
+        if (effectPlayerW != null) {
+            effectPlayerW.setVolume(volume, volume);
+        }
     }
 
     // Haetaan playerissa soivan musiikin äänenvoimakkuus

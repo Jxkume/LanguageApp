@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView levelNavbar;
     private int sessionID;
+    BackgroundMusicService musicService;
 
     // Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -205,6 +206,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        /*if (musicService != null) {
+            musicService.playMusic();
+        }*/
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä

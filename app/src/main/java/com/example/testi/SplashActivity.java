@@ -29,6 +29,7 @@ public class SplashActivity extends AppCompatActivity {
     private ImageView bubble5;
     private ImageView bubble6;
     private ImageView logo;
+    BackgroundMusicService musicService;
 
     // Palveluyhteys taustamusiikin aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -123,6 +124,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (musicService != null) {
+            musicService.playBackgroundMusic();
+        }
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä

@@ -19,6 +19,7 @@ public class LanguageSelectActivity extends AppCompatActivity {
     private ImageView nextButton;
     private TextView nextButtonTextView;
     private int selectedFlag = -1;
+    BackgroundMusicService musicService;
 
     //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -158,6 +159,9 @@ public class LanguageSelectActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (musicService != null) {
+            musicService.playBackgroundMusic();
+        }
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä

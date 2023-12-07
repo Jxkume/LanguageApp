@@ -34,6 +34,7 @@ public class ProfileActivity extends AppCompatActivity{
     private int profilePictureID;
     private int sessionID;
     private int lvl;
+    BackgroundMusicService musicService;
 
     //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -290,6 +291,9 @@ public class ProfileActivity extends AppCompatActivity{
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (musicService != null) {
+            musicService.playBackgroundMusic();
+        }
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä

@@ -1,7 +1,11 @@
 package com.example.testi.games;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.testi.BackgroundMusicService;
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
 import com.google.firebase.database.DataSnapshot;
@@ -43,6 +48,18 @@ public class TimeGameSecondActivity extends AppCompatActivity{
     private Toast toast;
     private int lvl;
     private int roundsToPlay;
+    private BackgroundMusicService musicService;
+
+    //Haetaan taustamusiikki aktiviteettiin
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -347,5 +364,23 @@ public class TimeGameSecondActivity extends AppCompatActivity{
             }
         }
         return false;
+    }
+
+    // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, BackgroundMusicService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (musicService != null) {
+            musicService.playGameMusic();
+        }
+    }
+
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(serviceConnection);
     }
 }

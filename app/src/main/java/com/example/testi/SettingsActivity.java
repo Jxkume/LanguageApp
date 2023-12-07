@@ -51,7 +51,6 @@ public class SettingsActivity extends AppCompatActivity{
 
         // AudioManagerilla saadaan äänenvoimakkuus
         audioMngr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        //audioMngr = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
@@ -393,44 +392,11 @@ public class SettingsActivity extends AppCompatActivity{
 
         // onServiceConnected() kutsutaan kun yhteys on luotu
         @Override
-
         public void onServiceConnected(ComponentName name, IBinder service) {
             // Haetaan LocalBinderin avulla BackgroundMusicServicen instanssi
             BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
             musicService = binder.getService();
-            isBound = true;/*
-
-            // Haetaan musiikin SeekBar
-            SeekBar volumeSeekBar = findViewById(R.id.musicSettindsSlider);
-
-            // Haetaan järjestelmän max ja nykyinen volume
-            int maxVol = audioMngr.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-            volumeSeekBar.setMax(maxVol);  // Äänet täysillä
-
-            int currentVol = audioMngr.getStreamVolume(AudioManager.STREAM_MUSIC);
-            volumeSeekBar.setProgress(currentVol); // Äänet nykyisellä voimakkuudella
-
-            // Listener, joka kutsutaan kun SeekBarin arvoa muutetaan
-            volumeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-                // Kun arvoa muutetaan, asetetaan musiikin volume
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if (isBound) {
-                        float volume = progress / (float) maxVol;
-                        musicService.setVolume(volume);
-                    }
-                    // Asetetaan järjestelmän volume
-                    audioMngr.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-                }
-
-                // onStarTrackingTouch() ja onStopTrackingTouch() eivät tee mitään
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });*/
+            isBound = true;
         }
 
         // onServiceDisconnected() kutsutaan kun yhteys katkaistaan
