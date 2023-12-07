@@ -1,3 +1,14 @@
+/**
+ * Profiilinäkymä (ProfileActivity) on aktiviteettiluokka, joka vastaa käyttäjän profiilisivusta.
+ * Luokka sisältää toiminnallisuudet käyttäjätietojen näyttämiseen, profiilikuvan vaihtamiseen
+ * ja navigointiin muiden osien välillä sovelluksessa.
+ *
+ * Tämä aktiviteetti vuorovaikuttaa Firebase Realtime Database -palvelun kanssa käyttäjätietojen hakemiseksi ja päivittämiseksi.
+ *
+ * Luokka laajentaa AppCompatActivity-luokkaa ja sisältää UI-elementit, palveluyhteyden taustamusiikkipalveluun,
+ * sekä tarvittavat metodit käyttäjätietojen lataamiseen ja profiilikuvan vaihtamiseen.
+ */
+
 package com.example.testi;
 
 import android.annotation.SuppressLint;
@@ -24,18 +35,59 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity{
 
+    /**
+     * Käyttäjän käyttäjätunnus (näytetään käyttöliittymässä).
+     */
     private TextView usernameTextView;
+
+    /**
+     * Käyttäjän nykyinen kokemuspistemäärä (näytetään käyttöliittymässä).
+     */
     private TextView currentXPTextView;
+
+    /**
+     * Käyttäjän tason näyttö (näytetään käyttöliittymässä).
+     */
     private TextView levelText;
+
+    /**
+     * Kuvake uutta profiilikuvaa varten (näytetään käyttöliittymässä).
+     */
     private ImageView newProfilePicture;
+
+    /**
+     * Kuvake uutta profiilikuvaa varten pop-up-ikkunassa (näytetään käyttöliittymässä).
+     */
     private ImageView newProfilePictureInPopUp;
+
+    /**
+     * Valittu profiilikuvan indeksi.
+     */
     private int selectedProfilePicture;
+
+    /**
+     * Dialogi-ikkuna profiilikuvan valintapopupille.
+     */
     private Dialog popUp;
+
+    /**
+     * Käyttäjän profiilikuvan ID tietokannassa.
+     */
     private int profilePictureID;
+
+    /**
+     * Käyttäjän istunnon ID.
+     */
     private int sessionID;
+
+    /**
+     * Käyttäjän tason arvo.
+     */
     private int lvl;
 
-    //Haetaan taustamusiikki aktiviteettiin
+    /**
+     * Taustamusiikkipalveluun liittyvä palveluyhteys.
+     */
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -46,6 +98,13 @@ public class ProfileActivity extends AppCompatActivity{
         }
     };
 
+
+    /**
+     * Kutsutaan, kun aktiviteetti luodaan. Vastuussa käyttöliittymäkomponenttien alustamisesta,
+     * klikkikuuntelijoiden asettamisesta ja käyttäjätietojen lataamisesta Firebase-tietokannasta.
+     *
+     * @param savedInstanceState Bundle-objekti, joka sisältää aiemmin tallennetun tilan.
+     */
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +154,10 @@ public class ProfileActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * Lataa käyttäjän tiedot Firebase Realtime Databasesta ja päivittää käyttöliittymän sen mukaisesti.
+     * Tätä metodia kutsutaan aktiviteetin luonnin yhteydessä näyttämään käyttäjän profiilitiedot.
+     */
     private void loadUserInformationFromDatabase() {
         // Haetaan tietokannasta Sessions-node
         DatabaseReference sessionsRef = FirebaseDatabase.getInstance().getReference().child("Sessions");
@@ -133,7 +196,11 @@ public class ProfileActivity extends AppCompatActivity{
 
     }
 
-    //asetetaan profiilikuvaa tietokannassa olevan ID:n perusteella
+    /**
+     * Asettaa profiilikuvan annetun kuvan ID:n perusteella.
+     *
+     * @param picID Valittu profiilikuvan ID.
+     */
     public void setProfilePicture(int picID) {
         ImageView profilePicImageView = findViewById(R.id.newProfilePicture1);
 
@@ -167,7 +234,12 @@ public class ProfileActivity extends AppCompatActivity{
         }
     }
 
-    // Pop-upin sisällä tapahtuva profiilikuvan onClick-metodi
+
+    /**
+     * Käsittelee klikkaustapahtuman, kun profiilikuvan vaihtoehto valitaan pop-up-ikkunassa.
+     *
+     * @param view Klikatun profiilikuvan vaihtoehdon näkymä.
+     */
     public void onProfilePictureOptionClick(View view) {
 
         // Haetaan klikatun kuvan id
@@ -244,7 +316,10 @@ public class ProfileActivity extends AppCompatActivity{
         popUp.dismiss();
     }
 
-    // Pop-up näkyville
+    /**
+     * Näyttää pop-up-ikkunan uuden profiilikuvan valitsemista varten.
+     * Pop-up mahdollistaa käyttäjän valita eri profiilikuvavaihtoehdoista.
+     */
     private void showProfilePicturePopup() {
 
         // Luodaan Dialog-olio, joka saa parametrina nykyisen aktiviteetin. Dialog = pop-up-ikkuna
@@ -272,6 +347,11 @@ public class ProfileActivity extends AppCompatActivity{
         popUp.show();
     }
 
+    /**
+     * Palauttaa nykyisen tason vaatiman kokemuspistemäärän.
+     *
+     * @return Nykyisen tason vaatima kokemuspistemäärä.
+     */
     private int getGoalXp() {
         switch (lvl){
             case 1: return 100;
@@ -284,7 +364,10 @@ public class ProfileActivity extends AppCompatActivity{
         }
     }
 
-    // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
+    /**
+     * Kutsutaan, kun aktiviteetti tulee näkyväksi käyttäjälle.
+     * Sitoo aktiviteetin taustamusiikkipalveluun musiikin toistamiseksi.
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -292,7 +375,10 @@ public class ProfileActivity extends AppCompatActivity{
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
-    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
+    /**
+     * Kutsutaan, kun aktiviteetti ei ole enää näkyvissä käyttäjälle.
+     * Irrottaa aktiviteetin taustamusiikkipalvelusta vapauttaakseen yhteyden.
+     */
     @Override
     protected void onStop() {
         super.onStop();
