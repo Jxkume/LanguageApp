@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class FoodGameFirstActivity extends AppCompatActivity {
+public class FoodGameFirstActivity extends WordGame {
     private DatabaseReference databaseReference;
     private List<String> words;
     private ImageView questionImageView;
@@ -57,6 +57,7 @@ public class FoodGameFirstActivity extends AppCompatActivity {
 
         // Etsitään ja tallennetaan Words/Animalgame path databaseReference muuttujaan
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/Foodgame");
+        //GameLogic logic = new GameLogic("Foodgame", sessionID, this);
 
         // Alustetaan UI elementit
         exitButton = findViewById(R.id.foodGameExitButton);
@@ -291,5 +292,10 @@ public class FoodGameFirstActivity extends AppCompatActivity {
         toast.setView(incorr_toast);
 
         toast.show();
+    }
+
+    @Override
+    public void setQuestionText(String correctAnswerText) {
+        questionTextView.setText(correctAnswerText);
     }
 }

@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class AnimalGameFirstActivity extends AppCompatActivity {
+public class AnimalGameFirstActivity extends WordGame {
 
     private DatabaseReference databaseReference;
     private List<String> words;
@@ -304,6 +304,11 @@ public class AnimalGameFirstActivity extends AppCompatActivity {
         toast.setView(incorr_toast);
 
         toast.show();
+    }
+
+    @Override
+    public void setQuestionText(String correctAnswer) {
+
     }
 }
 
