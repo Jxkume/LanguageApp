@@ -1,23 +1,11 @@
 package com.example.testi.games;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.testi.HomeActivity;
-import com.example.testi.R;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,6 +26,7 @@ public class GameLogic {
     private ImageView[] optionImageViews;
     private TextView questionTextView;
     private int score = 0;
+    private String correctAnswer;
     private int currentQuestionIndex = 0;
     private int sessionID;
     private ProgressBar progressBar;
@@ -109,22 +98,56 @@ public class GameLogic {
 
     private void showNextQuestion(){
         if(currentQuestionIndex < roundsToPlay) {
-            String correctAnswer = words.get(currentQuestionIndex);
-            int questionImageResource = gameActivity.getResources().getIdentifier(correctAnswer.toLowerCase() + gameName.toLowerCase(),
+            correctAnswer = words.get(currentQuestionIndex);
+            int answerImageResource = gameActivity.getResources().getIdentifier(correctAnswer.toLowerCase() + gameName.toLowerCase(),
                     "drawable", gameActivity.getPackageName());
             gameActivity.setQuestionText(correctAnswer);
-            int[] incorrectAnswers = getRandomIncorrectAnswers(3);
+            List<Integer> incorrectAnswers = getRandomIncorrectAnswers(3);
             int correctAnswerPosition = new Random().nextInt(4);
             boolean[] assignedOptions = new boolean[4];
             for (int i = 0; i < 4; i++) {
                 assignedOptions[i] = false;
             }
+
+            assignedOptions[correctAnswerPosition] = true;
+            gameActivity.setCorrectAnswerImage(correctAnswerPosition, answerImageResource, correctAnswer.toLowerCase());
+
+            for(int i = 0; i < 4; i++) {
+                if(!assignedOptions[i]) {
+                    int incorrectIndex = incorrectAnswers.remove(0);
+                    String incorrectAnswer = words.get(incorrectIndex);
+                    int incorrectImageResource = gameActivity.getResources().getIdentifier(incorrectAnswer.toLowerCase() + gameName.toLowerCase(),
+                            "drawable", gameActivity.getPackageName());
+                    gameActivity.setIncorrectAnswerImage(i, incorrectImageResource, incorrectAnswer.toLowerCase());
+                }
+            }
+        } else {
+            gameActivity.goToTheNextActivity();
         }
     }
 
-    private int[] getRandomIncorrectAnswers(int count) {
-        int[] answers = new int[count];
+    private List<Integer> getRandomIncorrectAnswers(int count) {
+        List<Integer> indexes = new ArrayList<>();
+        int correctAnswerIndex = words.indexOf(correctAnswer);
 
-        return answers;
+        while(indexes.size() < count){
+            int randomIndex = new Random().nextInt(words.size());
+
+            if(randomIndex != correctAnswerIndex && !indexes.contains(randomIndex)) {
+                indexes.add(randomIndex);
+            }
+        }
+
+        return indexes;
+    }
+
+    //NOT SURE ABOUT THIS METHOD, I WAS ALMOST ASLEEP WHEN WRITING IT!!!
+    private boolean checkAnswer(String selected) {
+        //Maybe I'll need to put if (currentQuestionIndex < words.size()) here
+        if(selected.equalsIgnoreCase(correctAnswer)){
+            score ++;
+            return true;
+        }
+        return false;
     }
 }

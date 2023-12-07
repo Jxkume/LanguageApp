@@ -218,7 +218,6 @@ public class AnimalGameFirstActivity extends WordGame {
             new Handler().postDelayed(() -> {
                 questionImageView.setImageResource(0);
                 questionTextView.setText("");
-                //Toast.makeText(this, "Hyvin meni! Olet ansainnut " + score + " pistettä", Toast.LENGTH_SHORT).show();
 
                 // Mennään seuraavaan aktiviteettiin
                 Intent intent = new Intent(AnimalGameFirstActivity.this, AnimalGameSecondActivity.class);
@@ -308,6 +307,21 @@ public class AnimalGameFirstActivity extends WordGame {
 
     @Override
     public void setQuestionText(String correctAnswer) {
+
+    }
+
+    @Override
+    public void setCorrectAnswerImage(int imgViewIndex, int imgResource, String contentDescription) {
+
+    }
+
+    @Override
+    public void setIncorrectAnswerImage(int imgViewIndex, int imgResource, String contentDescription) {
+
+    }
+
+    @Override
+    public void goToTheNextActivity() {
 
     }
 }

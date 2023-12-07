@@ -298,4 +298,37 @@ public class FoodGameFirstActivity extends WordGame {
     public void setQuestionText(String correctAnswerText) {
         questionTextView.setText(correctAnswerText);
     }
+
+    @Override
+    public void setCorrectAnswerImage(int imgViewIndex, int imgResource, String contentDescription) {
+        optionImageViews[imgViewIndex].setContentDescription(contentDescription);
+        optionImageViews[imgViewIndex].setImageResource(imgResource);
+    }
+
+    @Override
+    public void setIncorrectAnswerImage(int imgViewIndex, int imgResource, String contentDescription) {
+
+    }
+
+    @Override
+    public void goToTheNextActivity() {
+        for (int i = 0; i < 4; i++) {
+            optionImageViews[i].setClickable(false);
+        }
+
+        new Handler().postDelayed(() -> {
+            questionImageView.setImageResource(0);
+            questionTextView.setText("");
+
+            // Mennään seuraavaan aktiviteettiin
+            Intent intent = new Intent(FoodGameFirstActivity.this, FoodGameSecondActivity.class);
+            intent.putExtra("score", score);
+            intent.putExtra("sessionID", sessionID);
+            startActivity(intent);
+            overridePendingTransition(0, 0);
+            finish();
+        }, 500);
+
+
+    }
 }
