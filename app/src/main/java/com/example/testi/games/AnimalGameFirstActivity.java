@@ -110,6 +110,7 @@ public class AnimalGameFirstActivity extends WordGame {
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("Debug", "WTF");
                 if(snapshot.exists()){
                     for(DataSnapshot sessionSnapshot : snapshot.getChildren()) {
                         String sessionKey = sessionSnapshot.getKey();
@@ -273,7 +274,7 @@ public class AnimalGameFirstActivity extends WordGame {
         }
     }
 
-    private void showCorrectToast() {
+    public void showCorrectToast() {
         // Toast peruutetaan, jos se on jo olemassa (vältetään toastien kasautuminen jonoon)
         if (toast != null) {
             toast.cancel();
@@ -289,7 +290,7 @@ public class AnimalGameFirstActivity extends WordGame {
         toast.show();
     }
 
-    private void showIncorrectToast() {
+    public void showIncorrectToast() {
         // Toast peruutetaan, jos se on jo olemassa (vältetään toastien kasautuminen jonoon)
         if (toast != null) {
             toast.cancel();
@@ -321,7 +322,12 @@ public class AnimalGameFirstActivity extends WordGame {
     }
 
     @Override
-    public void goToTheNextActivity() {
+    public void goToTheNextActivity(int score) {
+
+    }
+
+    @Override
+    public void setProgressBarProgress(int progress) {
 
     }
 }

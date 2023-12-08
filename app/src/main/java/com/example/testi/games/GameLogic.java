@@ -1,9 +1,6 @@
 package com.example.testi.games;
 
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -22,28 +19,24 @@ public class GameLogic {
     private String gameName;
     private DatabaseReference databaseReference;
     private List<String> words;
-    private ImageView questionImageView;
-    private ImageView[] optionImageViews;
-    private TextView questionTextView;
     private int score = 0;
     private String correctAnswer;
     private int currentQuestionIndex = 0;
     private int sessionID;
-    private ProgressBar progressBar;
     private int progressBarProgress;
-    private Toast toast;
     private int lvl;
     private int roundsToPlay;
     private WordGame gameActivity;
 
     public GameLogic(String game, int sessionID, WordGame activity) {
+        loadUserLevel();
         gameName = game;
         this.sessionID = sessionID;
         databaseReference = FirebaseDatabase.getInstance().getReference("Words/" + game);
         gameActivity = activity;
         words = new ArrayList<>();
-        loadUserLevel();
-        loadWordsAndSetUpGame();
+        Log.d("Debug", "Rounds to play: " + roundsToPlay);
+        Log.d("Debug", "Level in the constructor: " + lvl);
     }
 
     private void loadUserLevel() {
@@ -52,6 +45,7 @@ public class GameLogic {
         sessionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("Debug", "WTF");
                 if(snapshot.exists()){
                     for(DataSnapshot sessionSnapshot : snapshot.getChildren()) {
                         String sessionKey = sessionSnapshot.getKey();
@@ -59,8 +53,10 @@ public class GameLogic {
                         if(sessionKey != null) {
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
-                                //Lasketaan montako kierrosta tulee peliin käyttäjän tason perusteella
                                 roundsToPlay = 5 * lvl;
+                                loadWordsAndSetUpGame();
+                                Log.d("Debug", "Level in the method: " + lvl);
+                                Log.d("Debug", "Rounds in the method: " + roundsToPlay);
                             }
                         }
                     }
@@ -69,7 +65,7 @@ public class GameLogic {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                System.err.println("Error: " + error.getMessage());
+                Log.d("Debug", "Error fetching data: " + error.getMessage());
             }
         });
     }
@@ -78,6 +74,7 @@ public class GameLogic {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("Debug", "WTF2");
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     if(dataSnapshot.getKey() != null) {
                         if (dataSnapshot.child("Level").getValue(Integer.class) <= lvl) {
@@ -87,6 +84,7 @@ public class GameLogic {
                     }
                 }
                 Collections.shuffle(words);
+                showNextQuestion();
             }
 
             @Override
@@ -122,7 +120,7 @@ public class GameLogic {
                 }
             }
         } else {
-            gameActivity.goToTheNextActivity();
+            gameActivity.goToTheNextActivity(score);
         }
     }
 
@@ -142,12 +140,19 @@ public class GameLogic {
     }
 
     //NOT SURE ABOUT THIS METHOD, I WAS ALMOST ASLEEP WHEN WRITING IT!!!
-    private boolean checkAnswer(String selected) {
-        //Maybe I'll need to put if (currentQuestionIndex < words.size()) here
-        if(selected.equalsIgnoreCase(correctAnswer)){
+    public void checkAnswer(String selected) {
+        if (selected.equalsIgnoreCase(correctAnswer)){
             score ++;
-            return true;
+            gameActivity.showCorrectToast();
+        } else {
+            gameActivity.showIncorrectToast();
         }
-        return false;
+
+        currentQuestionIndex ++;
+        showNextQuestion();
+
+        progressBarProgress += Math.ceil((1.0 / (roundsToPlay * 2) * 100));
+        Log.d("Debug", "Progress " + progressBarProgress);
+        gameActivity.setProgressBarProgress(progressBarProgress);
     }
 }
