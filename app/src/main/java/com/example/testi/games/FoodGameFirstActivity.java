@@ -96,7 +96,7 @@ public class FoodGameFirstActivity extends AppCompatActivity {
         // Alustetaan words arrayList johon tulee meidän tietokannasta tulevia sanoja
         words = new ArrayList<>();
 
-        //Otetaan käyttäjän taso tietokannasta
+        // Otetaan käyttäjän taso tietokannasta
         loadUserLevel();
         // Ladataan sanat tietokannasta ja alustetaan pelin
         loadWordsAndSetUpGame();
@@ -104,7 +104,6 @@ public class FoodGameFirstActivity extends AppCompatActivity {
         // Laitetaan clickListerenejä option ImageViewille
         for (int i = 0; i < 4; i++) {
             final int optionIndex = i;
-            //TÄTÄ ON VAIHDETTU
             optionImageViews[i].setOnClickListener(v -> checkAnswer(optionIndex));
         }
 
@@ -125,9 +124,11 @@ public class FoodGameFirstActivity extends AppCompatActivity {
                         String sessionKey = sessionSnapshot.getKey();
                         Long sessionIDLong = sessionSnapshot.child("SessionID").getValue(Long.class);
                         if(sessionKey != null) {
+                            // Tarkistetaan, että avain ei ole tyhjä ja ID on olemassa ja vastaa haluttua sessionID:tä
                             if (sessionIDLong != null && sessionIDLong == sessionID) {
+                                // Haetaan käyttäjän taso tietokannasta
                                 lvl = sessionSnapshot.child("Level").getValue(Integer.class);
-                                //Lasketaan montako kierrosta tulee peliin käyttäjän tason perusteella
+                                // Lasketaan montako kierrosta tulee peliin käyttäjän tason perusteella
                                 roundsToPlay = 5 * lvl;
                             }
                         }
@@ -137,6 +138,7 @@ public class FoodGameFirstActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                // Printataan error jos sellainen tulee vastaan
                 System.err.println("Error: " + error.getMessage());
             }
         });
@@ -150,7 +152,7 @@ public class FoodGameFirstActivity extends AppCompatActivity {
                 // Iteroidaan tietokannan läpi ja lisätään sanat words ArrayListiin
                 for (DataSnapshot wordSnapshot : dataSnapshot.getChildren()) {
                     if(wordSnapshot.getKey() != null) {
-                        //Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
+                        // Haetaan tietokannasta vain ne sanat, joiden taso on <= käyttäjän taso
                         if (wordSnapshot.child("Level").getValue(Integer.class) <= lvl) {
                             String word = wordSnapshot.getKey();
                             words.add(word);
@@ -283,14 +285,18 @@ public class FoodGameFirstActivity extends AppCompatActivity {
         if (toast != null) {
             toast.cancel();
         }
+
+        // Käytetään LayoutInflateria luomaan näkymä Toastiin
         LayoutInflater inflater = getLayoutInflater();
         View corr_toast = inflater.inflate(R.layout.toast_layout_correct, (ViewGroup) findViewById(R.id.toast_layout_correct));
 
+        // Luodaan uuden toast ja asetetaan sille ominaisuudet
         toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(corr_toast);
 
+        // Näytetään toastin
         toast.show();
     }
 
@@ -299,14 +305,18 @@ public class FoodGameFirstActivity extends AppCompatActivity {
         if (toast != null) {
             toast.cancel();
         }
+
+        // Käytetään LayoutInflateria luomaan näkymä Toastiin
         LayoutInflater inflater = getLayoutInflater();
         View incorr_toast = inflater.inflate(R.layout.toast_layout_incorrect, (ViewGroup) findViewById(R.id.toast_layout_incorrect));
 
+        // Luodaan uuden toast ja asetetaan sille ominaisuudet
         toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(incorr_toast);
 
+        // Näytetään toastin
         toast.show();
     }
 
