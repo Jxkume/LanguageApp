@@ -97,7 +97,9 @@ public class GameLogic {
     private void showNextQuestion(){
         if(currentQuestionIndex < roundsToPlay) {
             correctAnswer = words.get(currentQuestionIndex);
-            int answerImageResource = gameActivity.getResources().getIdentifier(correctAnswer.toLowerCase() + gameName.toLowerCase(),
+            String corrAnswerWithNoSpacesAndSpecCharacters = correctAnswer.replace("'", "");
+            corrAnswerWithNoSpacesAndSpecCharacters = corrAnswerWithNoSpacesAndSpecCharacters.replace(" ", "");
+            int answerImageResource = gameActivity.getResources().getIdentifier(corrAnswerWithNoSpacesAndSpecCharacters.toLowerCase() + gameName.toLowerCase(),
                     "drawable", gameActivity.getPackageName());
             gameActivity.setQuestionText(correctAnswer);
             List<Integer> incorrectAnswers = getRandomIncorrectAnswers(3);
@@ -114,7 +116,9 @@ public class GameLogic {
                 if(!assignedOptions[i]) {
                     int incorrectIndex = incorrectAnswers.remove(0);
                     String incorrectAnswer = words.get(incorrectIndex);
-                    int incorrectImageResource = gameActivity.getResources().getIdentifier(incorrectAnswer.toLowerCase() + gameName.toLowerCase(),
+                    String incorrAnswerWithNoSpacesAndSpecCharacters = incorrectAnswer.replace("'", " ");
+                    incorrAnswerWithNoSpacesAndSpecCharacters = incorrAnswerWithNoSpacesAndSpecCharacters.replace(" ", "");
+                    int incorrectImageResource = gameActivity.getResources().getIdentifier(incorrAnswerWithNoSpacesAndSpecCharacters.toLowerCase() + gameName.toLowerCase(),
                             "drawable", gameActivity.getPackageName());
                     gameActivity.setIncorrectAnswerImage(i, incorrectImageResource, incorrectAnswer.toLowerCase());
                 }

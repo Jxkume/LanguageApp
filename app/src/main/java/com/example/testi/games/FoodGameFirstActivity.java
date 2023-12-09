@@ -24,7 +24,7 @@ public class FoodGameFirstActivity extends WordGame {
     private int sessionID;
     private ProgressBar progressBar;
     private Toast toast;
-    GameLogic logic;
+    private GameLogic logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +76,11 @@ public class FoodGameFirstActivity extends WordGame {
     }
 
     private void checkAnswer(int selectedOptionIndex) {
-            // Haetaan valitun vaihtoehdon sisällön kuvaus
-            String selectedAnswer = optionImageViews[selectedOptionIndex].getContentDescription() != null
-                    ? optionImageViews[selectedOptionIndex].getContentDescription().toString()
-                    : "";
-            logic.checkAnswer(selectedAnswer);
+        // Haetaan valitun vaihtoehdon sisällön kuvaus
+        String selectedAnswer = optionImageViews[selectedOptionIndex].getContentDescription() != null
+                ? optionImageViews[selectedOptionIndex].getContentDescription().toString()
+                : "";
+        logic.checkAnswer(selectedAnswer);
     }
 
     public void showCorrectToast() {
