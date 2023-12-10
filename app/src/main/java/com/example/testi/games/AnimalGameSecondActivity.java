@@ -1,5 +1,10 @@
 package com.example.testi.games;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.os.IBinder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.os.Handler;
+import com.example.testi.BackgroundMusicService;
 
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
@@ -24,6 +30,52 @@ public class AnimalGameSecondActivity extends WordGameSecondActivity {
     private ProgressBar progressBar;
     private Toast toast;
     private GameLogicSecondOption logic;
+    private BackgroundMusicService musicService;
+    private boolean isBound = false;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
+            updateVolumeSettings();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicService = null;
+            isBound = false;
+        }
+    };
+
+    private void updateVolumeSettings() {
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        int savedSfxVol = sharedPref.getInt("sfxVolume", 100);
+        if (musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.setSoundEffectsVolume(savedSfxVol);
+            musicService.playGameMusic();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, BackgroundMusicService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        updateVolumeSettings();
+    }
+
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +125,7 @@ public class AnimalGameSecondActivity extends WordGameSecondActivity {
 
     private void initializeGameLogic(){
         logic = new GameLogicSecondOption("Animalgame", sessionID, this, score);
+        updateVolumeSettings();
     }
 
     private void checkAnswer(int selectedOptionIndex) {
@@ -130,6 +183,7 @@ public class AnimalGameSecondActivity extends WordGameSecondActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(corr_toast);
 
+        musicService.playCorrectSound();
         toast.show();
     }
 
@@ -146,6 +200,7 @@ public class AnimalGameSecondActivity extends WordGameSecondActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(incorr_toast);
 
+        musicService.playWrongSound();
         toast.show();
     }
 

@@ -1,5 +1,10 @@
 package com.example.testi.games;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.os.IBinder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
+import com.example.testi.BackgroundMusicService;
 
 public class ColourGameFirstActivity extends WordGameFirstActivity {
     private ImageView questionImageView;
@@ -24,6 +30,23 @@ public class ColourGameFirstActivity extends WordGameFirstActivity {
     private ProgressBar progressBar;
     private Toast toast;
     private GameLogicFirstOption logic;
+    private boolean isBound = false;
+    private BackgroundMusicService musicService;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
+            updateVolumeSettings();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicService = null;
+            isBound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +86,39 @@ public class ColourGameFirstActivity extends WordGameFirstActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, BackgroundMusicService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        updateVolumeSettings();
+    }
+
+    // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+    }
+
+    private void updateVolumeSettings() {
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        int savedSfxVol = sharedPref.getInt("sfxVolume", 100);
+        if (musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.setSoundEffectsVolume(savedSfxVol);
+            musicService.playGameMusic();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         initializeGameLogic();
+        updateVolumeSettings();
     }
 
     private void initializeGameLogic(){
@@ -92,6 +145,7 @@ public class ColourGameFirstActivity extends WordGameFirstActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(corr_toast);
 
+        musicService.playCorrectSound();
         toast.show();
     }
 
@@ -108,6 +162,7 @@ public class ColourGameFirstActivity extends WordGameFirstActivity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(incorr_toast);
 
+        musicService.playWrongSound();
         toast.show();
     }
 
