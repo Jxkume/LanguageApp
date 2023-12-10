@@ -61,21 +61,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
-        android:layout_marginBottom="119dp"
+        android:layout_marginTop="20dp"
         android:soundEffectsEnabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foodGameSecondTextBackground1"
         app:srcCompat="@drawable/foodgametext" />
 
     <ImageView
         android:id="@+id/foodGameSecondTextBackground4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="119dp"
         android:soundEffectsEnabled="false"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/foodGameSecondTextBackground2"
         app:srcCompat="@drawable/foodgametext" />
 
     <TextView

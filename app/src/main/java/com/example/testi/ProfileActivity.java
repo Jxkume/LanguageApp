@@ -8,7 +8,6 @@
  * Luokka laajentaa AppCompatActivity-luokkaa ja sisältää UI-elementit, palveluyhteyden taustamusiikkipalveluun,
  * sekä tarvittavat metodit käyttäjätietojen lataamiseen ja profiilikuvan vaihtamiseen.
  */
-
 package com.example.testi;
 
 import android.annotation.SuppressLint;
@@ -34,6 +33,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Profiilinäkymä (ProfileActivity) vastaa käyttäjän profiilinäkymästä sovelluksessa.
+ */
 public class ProfileActivity extends AppCompatActivity{
 
     /**
@@ -62,12 +64,12 @@ public class ProfileActivity extends AppCompatActivity{
     private ImageView newProfilePictureInPopUp;
 
     /**
-     * Valittu profiilikuvan indeksi.
+     * Valitun profiilikuvan indeksi.
      */
     private int selectedProfilePicture;
 
     /**
-     * Dialogi-ikkuna profiilikuvan valintapopupille.
+     * Dialogi-ikkuna profiilikuvan valintapop-up-ikkunalle.
      */
     private Dialog popUp;
 
@@ -91,6 +93,9 @@ public class ProfileActivity extends AppCompatActivity{
      */
     BackgroundMusicService musicService;
 
+    /**
+     * Kertoo, onko aktiviteetti liitetty taustamusiikkipalveluun vai ei.
+     */
     private boolean isBound = false;
 
     /**
@@ -421,6 +426,10 @@ public class ProfileActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * Kutsutaan, kun aktiviteetti on jälleen näkyvissä käyttäjälle.
+     * Päivittää musiikin äänenvoimakkuusasetukset ja jatkaa musiikin toistamista.
+     */
     @Override
     protected void onResume() {
         super.onResume();
