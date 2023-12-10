@@ -79,6 +79,9 @@ public class HomeActivity extends AppCompatActivity {
 
         // Lisätään nappeihin klikkaustoiminnallisuus
         profileIcon.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             // Siirrytään profiiliaktiviteettiin
             Intent profile = new Intent(HomeActivity.this, ProfileActivity.class);
             profile.putExtra("sessionID", sessionID);
@@ -87,6 +90,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         settingsIcon.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             // Siirrytään asetukset-aktiviteettiin
             Intent settings = new Intent(HomeActivity.this, SettingsActivity.class);
             settings.putExtra("sessionID", sessionID);
@@ -95,6 +101,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         animalGameIcon.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             // Siirrytään eläinpeli-aktiviteettiin
             Intent animalGame = new Intent(HomeActivity.this, AnimalGameFirstActivity.class);
             animalGame.putExtra("sessionID", sessionID);
@@ -104,6 +113,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         colourGameIcon.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             // Siirrytään väripeli-aktiviteettiin
             Intent colourGame = new Intent(HomeActivity.this, ColourGameFirstActivity.class);
             colourGame.putExtra("sessionID", sessionID);
@@ -113,6 +125,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         foodGameIcon.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             // Siirrytään ruokapeli-aktiviteettiin
             Intent foodGame = new Intent(HomeActivity.this, FoodGameFirstActivity.class);
             foodGame.putExtra("sessionID", sessionID);
@@ -122,6 +137,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         timeGameIcon.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             // Siirrytään aikapeli-aktiviteettiin
             Intent foodGame = new Intent(HomeActivity.this, TimeGameFirstActivity.class);
             foodGame.putExtra("sessionID", sessionID);

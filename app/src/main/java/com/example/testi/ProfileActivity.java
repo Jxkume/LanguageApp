@@ -146,6 +146,9 @@ public class ProfileActivity extends AppCompatActivity{
         // Lisätään nappeihin klikkaustoiminnallisuus
         homeIcon.setOnClickListener(v -> {
             // Siirrytään kotiaktiviteettiin
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             Intent home = new Intent(ProfileActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);
@@ -154,6 +157,9 @@ public class ProfileActivity extends AppCompatActivity{
 
         settingsIcon.setOnClickListener(v -> {
             // Siirrytään asetukset-aktiviteettiin
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             Intent settings = new Intent(ProfileActivity.this, SettingsActivity.class);
             settings.putExtra("sessionID", sessionID);
             startActivity(settings);
@@ -167,6 +173,9 @@ public class ProfileActivity extends AppCompatActivity{
         ImageView profilePictureBackground = findViewById(R.id.profilePictureBackground);
         profilePictureBackground.setOnClickListener(v -> {
             // Kutsutaan metodia, jolla saadaan profiilikuvien pop-up näkyville
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             showProfilePicturePopup();
         });
     }
@@ -258,6 +267,10 @@ public class ProfileActivity extends AppCompatActivity{
      * @param view Klikatun profiilikuvan vaihtoehdon näkymä.
      */
     public void onProfilePictureOptionClick(View view) {
+
+        if (isBound && musicService != null) {
+            musicService.playUIbtnSound();
+        }
 
         // Haetaan klikatun kuvan id
         int profilePictureId = view.getId();

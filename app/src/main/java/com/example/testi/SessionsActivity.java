@@ -32,10 +32,14 @@ public class SessionsActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            musicService = null;
         }
     };
 
@@ -119,11 +123,36 @@ public class SessionsActivity extends AppCompatActivity {
 
         // Tarkistetaan nappien tägit ja ohjataan käyttäjä oikeaan aktiviteettiin tägin perusteella
         // Lisäksi annetaan sessionID NewSession-aktiviteettiin, jossa sitä voidaan käyttää session luonnin yhteydessä
-        firstSessionButton.setOnClickListener(v -> handleSessionButtonClick(1));
-        secondSessionButton.setOnClickListener(v -> handleSessionButtonClick(2));
-        thirdSessionButton.setOnClickListener(v -> handleSessionButtonClick(3));
-        fourthSessionButton.setOnClickListener(v -> handleSessionButtonClick(4));
-        fifthSessionButton.setOnClickListener(v -> handleSessionButtonClick(5));
+        firstSessionButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleSessionButtonClick(1);
+        });
+        secondSessionButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleSessionButtonClick(2);
+        });
+        thirdSessionButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleSessionButtonClick(3);
+        });
+        fourthSessionButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleSessionButtonClick(4);
+        });
+        fifthSessionButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleSessionButtonClick(5);
+        });
     }
 
     private void handleSessionButtonClick(int sessionID) {

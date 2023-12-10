@@ -57,8 +57,6 @@ public class FoodGameFirstActivity extends WordGameFirstActivity {
         Intent intent = getIntent();
         sessionID = intent.getIntExtra("sessionID", -1);
 
-
-
         // Alustetaan UI elementit
         exitButton = findViewById(R.id.foodGameExitButton);
         questionImageView = findViewById(R.id.foodGameFirstTextBackground);
@@ -70,6 +68,10 @@ public class FoodGameFirstActivity extends WordGameFirstActivity {
         optionImageViews[3] = findViewById(R.id.foodGameFirstOption4);
 
         exitButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+
             Intent home = new Intent(FoodGameFirstActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);

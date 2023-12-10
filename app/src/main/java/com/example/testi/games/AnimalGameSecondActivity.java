@@ -99,6 +99,10 @@ public class AnimalGameSecondActivity extends WordGameSecondActivity {
         optionTextViews[3] = findViewById(R.id.animalGameSecondText4);
 
         exitButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+
             Intent home = new Intent(AnimalGameSecondActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);

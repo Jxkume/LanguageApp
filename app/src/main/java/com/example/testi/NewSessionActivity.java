@@ -34,10 +34,14 @@ public class NewSessionActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            musicService = null;
         }
     };
 
@@ -66,6 +70,11 @@ public class NewSessionActivity extends AppCompatActivity {
 
         // Kun painetaan Valmis nappulasta, tiedot tallentuvat tietokantaan ja siirrytään päänäkymälle
         imageViewValmis.setOnClickListener(v -> {
+
+            // UI-napin ääniefekti
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
 
             String username = usernameEditText.getText().toString();
             String ageStr = ageEditText.getText().toString();
@@ -150,12 +159,21 @@ public class NewSessionActivity extends AppCompatActivity {
         ImageView profilePictureBackground = findViewById(R.id.newProfilePictureBackground1);
         profilePictureBackground.setOnClickListener(v -> {
             // Kutsutaan metodia, jolla saadaan profiilikuvien pop-up näkyville
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+
             showProfilePicturePopup();
         });
     }
 
     // Pop-upin sisällä tapahtuva profiilikuvan onClick-metodi
     public void onProfilePictureOptionClick(View view) {
+
+        // UI-napin ääniefekti
+        if (isBound && musicService != null) {
+            musicService.playUIbtnSound();
+        }
 
         // Haetaan klikatun kuvan id
         int profilePictureId = view.getId();

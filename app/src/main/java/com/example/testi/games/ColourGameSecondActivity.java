@@ -69,6 +69,10 @@ public class ColourGameSecondActivity extends WordGameSecondActivity {
         optionTextViews[3] = findViewById(R.id.colourGameSecondText4);
 
         exitButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+
             Intent home = new Intent(ColourGameSecondActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);

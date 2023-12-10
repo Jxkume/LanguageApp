@@ -70,6 +70,10 @@ public class TimeGameSecondActivity extends WordGameSecondActivity{
         optionTextViews[3] = findViewById(R.id.timeGameSecondText4);
 
         exitButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+
             Intent home = new Intent(TimeGameSecondActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);

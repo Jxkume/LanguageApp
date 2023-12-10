@@ -27,10 +27,14 @@ public class LanguageSelectActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            musicService = null;
         }
     };
 
@@ -54,11 +58,32 @@ public class LanguageSelectActivity extends AppCompatActivity {
         nextButton.setVisibility(View.GONE);
         nextButtonTextView.setVisibility(View.GONE);
 
-        flagFiBackground.setOnClickListener(v -> handleFlagClick(0));
-        flagEsBackground.setOnClickListener(v -> handleFlagClick(1));
-        flagArBackground.setOnClickListener(v -> handleFlagClick(2));
+        flagFiBackground.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleFlagClick(0);
+        });
+
+        flagEsBackground.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleFlagClick(1);
+        });
+
+        flagArBackground.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            handleFlagClick(2);
+        });
 
         nextButton.setOnClickListener(v -> {
+
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
 
             // Asetetaan valittu kieli sovellukseen
             LanguageManager.getInstance().setSelectedLanguage(getApplicationContext(), getLanguageCode(selectedFlag));

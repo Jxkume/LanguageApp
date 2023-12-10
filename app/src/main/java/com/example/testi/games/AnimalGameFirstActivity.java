@@ -70,6 +70,10 @@ public class AnimalGameFirstActivity extends WordGameFirstActivity {
         optionImageViews[3] = findViewById(R.id.animalGameFirstOption4);
 
         exitButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+
             Intent home = new Intent(AnimalGameFirstActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);

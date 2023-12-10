@@ -102,6 +102,9 @@ public class SettingsActivity extends AppCompatActivity{
         // Lisätään nappeihin klikkaustoiminnallisuus
         homeIcon.setOnClickListener(v -> {
             // Siirrytään profiiliaktiviteettiin
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             Intent home = new Intent(SettingsActivity.this, HomeActivity.class);
             home.putExtra("sessionID", sessionID);
             startActivity(home);
@@ -110,6 +113,9 @@ public class SettingsActivity extends AppCompatActivity{
 
         profileIcon.setOnClickListener(v -> {
             // Siirrytään profiiliaktiviteettiin
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
             Intent profile = new Intent(SettingsActivity.this, ProfileActivity.class);
             profile.putExtra("sessionID", sessionID);
             startActivity(profile);
@@ -137,10 +143,20 @@ public class SettingsActivity extends AppCompatActivity{
         }
 
         // Käyttäjän poistaminen onClick
-        deleteUserButton.setOnClickListener(v -> deleteUser());
+        deleteUserButton.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            deleteUser();
+        });
 
         // Kielen pop-up onClick
-        currentFlag.setOnClickListener(v -> showLanguagePopup());
+        currentFlag.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            showLanguagePopup();
+        });
 
        // Musiikin ja äänien SeekBarit
         SeekBar soundSeekBar = (SeekBar) findViewById(R.id.soundSettindsSlider);
@@ -168,6 +184,7 @@ public class SettingsActivity extends AppCompatActivity{
         soundSeekBar.setProgress(sfxVol);
 
         soundSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 //Päivitetään ääniefektien äänenvoimakkuus
@@ -176,7 +193,9 @@ public class SettingsActivity extends AppCompatActivity{
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                if (isBound && musicService != null) {
+                    musicService.playUIbtnSound();
+                }
             }
 
             // Tallennetaan ääniefektien äänenvoimakkuus SharedPreferencesiin
@@ -202,7 +221,9 @@ public class SettingsActivity extends AppCompatActivity{
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                if (isBound && musicService != null) {
+                    musicService.playUIbtnSound();
+                }
             }
 
             // Tallennetaan taustamusiikin äänenvoimakkuus SharedPreferencesiin
@@ -430,10 +451,20 @@ public class SettingsActivity extends AppCompatActivity{
         }
 
         // Kielen vaihto ensimmäiseen kielivaihtoehtoon
-        changeLanguageOption1.setOnClickListener(v -> changeLanguage(changeLanguageOption1));
+        changeLanguageOption1.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            changeLanguage(changeLanguageOption1);
+        });
 
         // Kielen vaihto toiseen kielivaihtoehtoon
-        changeLanguageOption2.setOnClickListener(v -> changeLanguage(changeLanguageOption2));
+        changeLanguageOption2.setOnClickListener(v -> {
+            if (isBound && musicService != null) {
+                musicService.playUIbtnSound();
+            }
+            changeLanguage(changeLanguageOption2);
+        });
     }
 
     // Sovelluksen kielen vaihto ja aktiviteetin uudelleenkäynnistys

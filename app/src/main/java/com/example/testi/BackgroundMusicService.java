@@ -22,6 +22,7 @@ public class BackgroundMusicService extends Service {
     private static MediaPlayer effectPlayerR;
     // Tämä kontrolloi ääniefektiä kun valitaan väärin
     private static MediaPlayer effectPlayerW;
+    private static MediaPlayer UIbtn;
     // AudioManager kontrolloi äänenvoimakkuutta
     AudioManager audioManager;
     private boolean isPrepared = false;
@@ -40,12 +41,15 @@ public class BackgroundMusicService extends Service {
         playerGame = MediaPlayer.create(this, R.raw.morning_funny_beat);
         effectPlayerR = MediaPlayer.create(this, R.raw.correct_button);
         effectPlayerW = MediaPlayer.create(this, R.raw.wrong_answer);
+        UIbtn = MediaPlayer.create(this, R.raw.selection_sound);
+
 
         // Musiikit loopataan, ääniefektejä ei
         player.setLooping(true);
         playerGame.setLooping(true);
         effectPlayerR.setLooping(false);
         effectPlayerW.setLooping(false);
+        UIbtn.setLooping(false);
 
         // Äänenvoimmakkuus on oletuksena max
         setSoundEffectsVolume(sfxVol);
@@ -125,6 +129,13 @@ public class BackgroundMusicService extends Service {
         }
     }
 
+    // Ääniefekti UI-napille
+    public void playUIbtnSound() {
+        if (UIbtn != null) {
+            UIbtn.start();
+        }
+    }
+
     // onStartCommand() kutsutaan kun palvelu käynnistetään
     // START_STICKY tarkoittaa, että palvelu käynnistetään uudelleen jos se tuhotaan
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -179,6 +190,9 @@ public class BackgroundMusicService extends Service {
         }
         if (effectPlayerW != null) {
             effectPlayerW.setVolume(volume, volume);
+        }
+        if (UIbtn != null) {
+            UIbtn.setVolume(volume, volume);
         }
     }
 
