@@ -7,8 +7,8 @@
     <string name="username_hint">Nombre de usuario</string>
     <string name="name">Nombre</string>
     <string name="level">Nivel:</string>
-    <string name="music">Música</string>
-    <string name="sound">Sonido</string>
+    <string name="music">Música:</string>
+    <string name="sound">Efectos de sonido:</string>
     <string name="right">Correcto!</string>
     <string name="wrong">Incorrecto</string>
     <string name="next">SIGUIENTE</string>

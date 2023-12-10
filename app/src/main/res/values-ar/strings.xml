@@ -7,8 +7,8 @@
     <string name="username_hint">اسم المستخدم</string>
     <string name="name">الاسم</string>
     <string name="level">المستوى</string>
-    <string name="music">الموسيقى</string>
-    <string name="sound">الصوت</string>
+    <string name="music">الموسيقى:</string>
+    <string name="sound">مؤثرات صوتية:</string>
     <string name="right">صحيح!</string>
     <string name="wrong">خطأ</string>
     <string name="next">المقبل</string>

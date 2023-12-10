@@ -7,8 +7,8 @@
     <string name="username_hint">Käyttäjänimi</string>
     <string name="name">Nimi</string>
     <string name="level">Taso</string>
-    <string name="music">Musiikki</string>
-    <string name="sound">Ääni</string>
+    <string name="music">Musiikki:</string>
+    <string name="sound">Ääniefektit:</string>
     <string name="right">Oikein!</string>
     <string name="wrong">Väärin</string>
     <string name="next">SEURAAVA</string>
