@@ -5,14 +5,16 @@
     android:layout_height="match_parent"
     android:background="#FAF3EC"
     android:padding="8dp"
-    android:id="@+id/toast_layout_incorrect">
+    android:id="@+id/toast_layout_incorrect"
+    android:soundEffectsEnabled="false">
 
     <ImageView
         android:id="@+id/toct_layout_correct_img"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:src="@drawable/incorrect_icon_popup"
-        android:layout_marginEnd="8dp"/>
+        android:layout_marginEnd="8dp"
+        android:soundEffectsEnabled="false"/>
 
     <TextView
         android:id="@+id/toct_layout_correct_text"
@@ -20,6 +22,7 @@
         android:layout_height="wrap_content"
         android:text="@string/wrong"
         android:fontFamily="@font/baloo2_extra"
-        android:textSize="45sp"/>
+        android:textSize="45sp"
+        android:soundEffectsEnabled="false"/>
 
 </LinearLayout>

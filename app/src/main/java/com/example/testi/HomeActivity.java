@@ -48,7 +48,6 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            musicService = null;
             isBound = false;
         }
     };
@@ -237,7 +236,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        updateVolumeSettings();
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        int savedSfxVol = sharedPref.getInt("sfxVolume", 100);
+        if (isBound && musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.setSoundEffectsVolume(savedSfxVol);
+            musicService.playBackgroundMusic();
+        }
     }
 
     private void updateVolumeSettings() {

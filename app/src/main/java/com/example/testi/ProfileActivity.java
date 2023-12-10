@@ -112,6 +112,7 @@ public class ProfileActivity extends AppCompatActivity{
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
         }
     };
 
