@@ -14,16 +14,15 @@ import android.widget.Toast;
 
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
-public class TimeGameFirstActivity extends WordGame{
+public class TimeGameFirstActivity extends WordGameFirstActivity {
     private ImageView questionImageView;
     private ImageView[] optionImageViews;
     private TextView questionTextView;
     private ImageView exitButton;
     private int sessionID;
     private ProgressBar progressBar;
-    private int progressBarProgress;
     private Toast toast;
-    private GameLogic logic;
+    private GameLogicFirstOption logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +58,7 @@ public class TimeGameFirstActivity extends WordGame{
 
         // Pelin edistymispalkki
         progressBar = findViewById(R.id.timeGameProgressBar);
-        progressBarProgress = 0;
-        progressBar.setProgress(progressBarProgress);
+        progressBar.setProgress(0);
     }
 
     @Override
@@ -70,7 +68,7 @@ public class TimeGameFirstActivity extends WordGame{
     }
 
     private void initializeGameLogic(){
-        logic = new GameLogic("Timegame", sessionID, this);
+        logic = new GameLogicFirstOption("Timegame", sessionID, this);
     }
 
     private void checkAnswer(int selectedOptionIndex) {

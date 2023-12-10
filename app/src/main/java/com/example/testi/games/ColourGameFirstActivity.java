@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.example.testi.HomeActivity;
 import com.example.testi.R;
 
-public class ColourGameFirstActivity extends WordGame {
+public class ColourGameFirstActivity extends WordGameFirstActivity {
     private ImageView questionImageView;
     private ImageView[] optionImageViews;
     private TextView questionTextView;
@@ -23,7 +23,7 @@ public class ColourGameFirstActivity extends WordGame {
     private int sessionID;
     private ProgressBar progressBar;
     private Toast toast;
-    private GameLogic logic;
+    private GameLogicFirstOption logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class ColourGameFirstActivity extends WordGame {
     }
 
     private void initializeGameLogic(){
-        logic = new GameLogic("Colourgame", sessionID, this);
+        logic = new GameLogicFirstOption("Colourgame", sessionID, this);
     }
 
     private void checkAnswer(int selectedOptionIndex) {

@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class GameLogic {
+public class GameLogicFirstOption {
     private String gameName;
     private DatabaseReference databaseReference;
     private List<String> words;
@@ -23,12 +23,12 @@ public class GameLogic {
     private String correctAnswer;
     private int currentQuestionIndex = 0;
     private int sessionID;
-    private int progressBarProgress;
+    private int progressBarProgress = 0;
     private int lvl;
     private int roundsToPlay;
-    private WordGame gameActivity;
+    private WordGameFirstActivity gameActivity;
 
-    public GameLogic(String game, int sessionID, WordGame activity) {
+    public GameLogicFirstOption(String game, int sessionID, WordGameFirstActivity activity) {
         loadUserLevel();
         gameName = game;
         this.sessionID = sessionID;
