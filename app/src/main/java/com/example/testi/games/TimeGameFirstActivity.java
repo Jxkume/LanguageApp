@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -51,15 +52,22 @@ public class TimeGameFirstActivity extends AppCompatActivity{
     private int lvl;
     private int roundsToPlay;
     private BackgroundMusicService musicService;
+    private boolean isBound = false;
 
     //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
+            updateVolumeSettings();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            musicService = null;
+            isBound = false;
         }
     };
 
@@ -271,8 +279,10 @@ public class TimeGameFirstActivity extends AppCompatActivity{
             if (selectedAnswer.equalsIgnoreCase(correctAnswer)) {
                 score++;
                 showCorrectToast();
+                musicService.playCorrectSound();
             } else {
                 showIncorrectToast();
+                musicService.playWrongSound();
             }
 
             // Mennään seuraavaan kysymykseen/roudiin
@@ -331,15 +341,33 @@ public class TimeGameFirstActivity extends AppCompatActivity{
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        if (musicService != null) {
-            musicService.playGameMusic();
-        }
+        updateVolumeSettings();
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(serviceConnection);
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateVolumeSettings();
+    }
+
+    private void updateVolumeSettings() {
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        int savedSfxVol = sharedPref.getInt("sfxVolume", 100);
+        if (musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.setSoundEffectsVolume(savedSfxVol);
+            musicService.playGameMusic();
+        }
     }
 }

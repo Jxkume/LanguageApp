@@ -1,7 +1,9 @@
 package com.example.testi;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
@@ -23,7 +25,8 @@ public class BackgroundMusicService extends Service {
     // AudioManager kontrolloi äänenvoimakkuutta
     AudioManager audioManager;
     private boolean isPrepared = false;
-    private static int currentVolume = 100;
+    private static int bgmVol = 100;
+    private static int sfxVol = 100;
 
     // onCreate() alustaa MediaPlayerin ja asettaa sille kuuntelijat
     @Override
@@ -38,14 +41,26 @@ public class BackgroundMusicService extends Service {
         effectPlayerR = MediaPlayer.create(this, R.raw.correct_button);
         effectPlayerW = MediaPlayer.create(this, R.raw.wrong_answer);
 
+        // Musiikit loopataan, ääniefektejä ei
         player.setLooping(true);
         playerGame.setLooping(true);
         effectPlayerR.setLooping(false);
         effectPlayerW.setLooping(false);
 
         // Äänenvoimmakkuus on oletuksena max
-        setVolume(currentVolume);
+        setSoundEffectsVolume(sfxVol);
+        setMusicVolume(bgmVol);
         prepareMediaPlayerListeners();
+
+        // Haetaan äänenvoimakkuus SharedPreferencesista
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int defaultVolume = 100;
+        bgmVol = sharedPref.getInt("bgmVolume", defaultVolume);
+        sfxVol = sharedPref.getInt("sfxVolume", defaultVolume);
+
+        // Asetetaan tallennettu äänenvoimakkuus kun BGMService luodaan
+        setMusicVolume(bgmVol);
+        setSoundEffectsVolume(sfxVol);
     }
 
     // prepareMediaPlayerListeners() asettaa MediaPlayerille kuuntelijat
@@ -62,13 +77,19 @@ public class BackgroundMusicService extends Service {
         });
     }
 
-    // Tausta musiikin toistaminen
+    // Taustamusiikin toistaminen
     public void playBackgroundMusic() {
         if (playerGame != null && playerGame.isPlaying()) {
             playerGame.stop();
-            playerGame.prepareAsync();
+            playerGame.release();
+            playerGame = null;
+        }
+        if (player == null) {
+            player = MediaPlayer.create(this, R.raw.playing_in_color);
+            player.setLooping(true);
         }
         if (player != null && !player.isPlaying()) {
+            updateMusicVolume();
             player.start();
         }
     }
@@ -77,9 +98,15 @@ public class BackgroundMusicService extends Service {
     public void playGameMusic() {
         if (player != null && player.isPlaying()) {
             player.stop();
-            player.prepareAsync();
+            player.release();
+            player = null;
+        }
+        if (playerGame == null) {
+            playerGame = MediaPlayer.create(this, R.raw.morning_funny_beat);
+            playerGame.setLooping(true);
         }
         if (playerGame != null && !playerGame.isPlaying()) {
+            updateMusicVolume();
             playerGame.start();
         }
     }
@@ -127,7 +154,7 @@ public class BackgroundMusicService extends Service {
 
     // Palautetaan palvelun instanssi
     public class LocalBinder extends Binder {
-        BackgroundMusicService getService() {
+        public BackgroundMusicService getService() {
             return BackgroundMusicService.this;
         }
     }
@@ -144,18 +171,9 @@ public class BackgroundMusicService extends Service {
         return 100;
     }
 
-    // Muutetaan playerin äänenvoimakkuutta asettamalla sille uusi arvo
-    public static void setVolume(int vol) {
-        vol = Math.max(0, Math.min(100, vol));
-        currentVolume = vol;
-        float volume = currentVolume / 100.0f;
-
-        if (player != null) {
-            player.setVolume(volume, volume);
-        }
-        if (playerGame != null) {
-            playerGame.setVolume(volume, volume);
-        }
+    // Ääniefektien äänenvoimakkuuden asetus
+    public void setSoundEffectsVolume(int vol) {
+        float volume = vol / 100.0f;
         if (effectPlayerR != null) {
             effectPlayerR.setVolume(volume, volume);
         }
@@ -164,8 +182,48 @@ public class BackgroundMusicService extends Service {
         }
     }
 
+    // Taustamusiikin äänenvoimakkuuden asetus
+    public void setMusicVolume(int vol) {
+        float volume = vol / 100.0f;
+        if (player != null) {
+            player.setVolume(volume, volume);
+        }
+        if (playerGame != null) {
+            playerGame.setVolume(volume, volume);
+        }
+    }
+
+    private void updateMusicVolume() {
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        float volume = savedBgmVol / 100.0f;
+
+        if (player != null) {
+            player.setVolume(volume, volume);
+        }
+        if (playerGame != null) {
+            playerGame.setVolume(volume, volume);
+        }
+    }
+
+    public void pauseBackgroundMusic() {
+        if (player != null && player.isPlaying()) {
+            player.pause();
+        }
+    }
+
+    public void pauseGameMusic() {
+        if (playerGame != null && playerGame.isPlaying()) {
+            playerGame.pause();
+        }
+    }
+
     // Haetaan playerissa soivan musiikin äänenvoimakkuus
-    public static int getCurrentVolume() {
-        return currentVolume;
+    public static int getBGMvolume() {
+        return bgmVol;
+    }
+
+    public static int getSFXvolume() {
+        return sfxVol;
     }
 }

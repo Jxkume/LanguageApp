@@ -3,6 +3,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
@@ -25,6 +26,7 @@ public class SessionsActivity extends AppCompatActivity {
     private TextView firstSessionTextView, secondSessionTextView, thirdSessionTextView, fourthSessionTextView, fifthSessionTextView;
     private int sessionID;
     BackgroundMusicService musicService;
+    boolean isBound = false;
 
     // Palveluyhteys taustamusiikin aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -182,4 +184,14 @@ public class SessionsActivity extends AppCompatActivity {
         unbindService(serviceConnection);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        if (isBound && musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.playBackgroundMusic();
+        }
+    }
 }

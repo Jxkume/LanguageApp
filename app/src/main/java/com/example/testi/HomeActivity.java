@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -26,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-
 public class HomeActivity extends AppCompatActivity {
 
     private ImageView profilePicNavbarImageView, progressBarBackground;
@@ -34,15 +34,22 @@ public class HomeActivity extends AppCompatActivity {
     private TextView levelNavbar;
     private int sessionID;
     BackgroundMusicService musicService;
+    private boolean isBound = false;
 
     // Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
+            updateVolumeSettings();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            musicService = null;
+            isBound = false;
         }
     };
 
@@ -206,16 +213,39 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        /*if (musicService != null) {
-            musicService.playMusic();
-        }*/
+        updateVolumeSettings();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateVolumeSettings();
+    }
+
+    private void updateVolumeSettings() {
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        if (isBound && musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.playBackgroundMusic();
+        }
     }
 
     // Musiikkipalvelun yhteys vapautetaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(serviceConnection);
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (isBound && musicService != null) {
+            musicService.pauseBackgroundMusic();
+        }
+    }
 }

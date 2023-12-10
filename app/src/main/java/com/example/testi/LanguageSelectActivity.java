@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -20,6 +21,7 @@ public class LanguageSelectActivity extends AppCompatActivity {
     private TextView nextButtonTextView;
     private int selectedFlag = -1;
     BackgroundMusicService musicService;
+    boolean isBound = false;
 
     //Haetaan taustamusiikki aktiviteettiin
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -171,6 +173,16 @@ public class LanguageSelectActivity extends AppCompatActivity {
         unbindService(serviceConnection);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        if (isBound && musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.playBackgroundMusic();
+        }
+    }
 }
 
 

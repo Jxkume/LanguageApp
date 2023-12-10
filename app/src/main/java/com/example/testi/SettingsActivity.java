@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -41,8 +42,33 @@ public class SettingsActivity extends AppCompatActivity{
     private ImageView progressBarBackground;
     private BackgroundMusicService musicService;
     AudioManager audioMngr;
-    private int appVolume;
+    private int bgmVol, sfxVol;
     private boolean isBound = false;
+
+    //Haetaan taustamusiikki aktiviteettiin
+    ServiceConnection serviceConnection = new ServiceConnection() {
+
+        // onServiceConnected() kutsutaan kun yhteys on luotu
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            // Haetaan LocalBinderin avulla BackgroundMusicServicen instanssi
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
+
+            // Päivitä äänenvoimakkuusasetukset
+            SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+            int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.playBackgroundMusic();
+        }
+
+        // onServiceDisconnected() kutsutaan kun yhteys katkaistaan
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,16 +150,28 @@ public class SettingsActivity extends AppCompatActivity{
         //Haetaan mediaplayerin äänenvoimakkuuden maksimiarvo
         int maxVolume = BackgroundMusicService.getMaxVolume();
         musicSeekBar.setMax(maxVolume);
+        soundSeekBar.setMax(maxVolume);
 
         //Haetaan äänenvoimakkuuden nykyinen arvo
-        appVolume = BackgroundMusicService.getCurrentVolume();
-        musicSeekBar.setProgress(appVolume);
+        bgmVol = BackgroundMusicService.getBGMvolume();
+        sfxVol = BackgroundMusicService.getSFXvolume();
+        musicSeekBar.setProgress(bgmVol);
+        soundSeekBar.setProgress(sfxVol);
 
-        musicSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        // Hae äänenvoimakkuus SharedPreferencesista
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int defaultVolume = 100;
+        bgmVol = sharedPref.getInt("bgmVolume", defaultVolume);
+        sfxVol = sharedPref.getInt("sfxVolume", defaultVolume);
+
+        musicSeekBar.setProgress(bgmVol);
+        soundSeekBar.setProgress(sfxVol);
+
+        soundSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                //Päivitetään MediaPlayerin äänenvoimakkuus
-                BackgroundMusicService.setVolume(i);
+                //Päivitetään ääniefektien äänenvoimakkuus
+                musicService.setSoundEffectsVolume(i);
             }
 
             @Override
@@ -141,9 +179,43 @@ public class SettingsActivity extends AppCompatActivity{
 
             }
 
+            // Tallennetaan ääniefektien äänenvoimakkuus SharedPreferencesiin
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("sfxVolume", seekBar.getProgress());
+                editor.apply();
+                if (isBound) {
+                    musicService.setSoundEffectsVolume(seekBar.getProgress());
+                    Log.d("Sound", "Ääniefektien voimakkuus muutettu");
+                }
+            }
+        });
 
+        musicSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                //Päivitetään taustamusiikin äänenvoimakkuus
+                musicService.setMusicVolume(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            // Tallennetaan taustamusiikin äänenvoimakkuus SharedPreferencesiin
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("bgmVolume", seekBar.getProgress());
+                editor.apply();
+                if (isBound) {
+                    musicService.setMusicVolume(seekBar.getProgress());
+                    Log.d("Sound", "Taustamusiikin voimakkuus muutettu");
+                }
             }
         });
     }
@@ -183,6 +255,18 @@ public class SettingsActivity extends AppCompatActivity{
                 Log.d("Session", "Sessionien latauksessa tuli virhe");
             }
         });
+    }
+
+    private void loadSettings() {
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int defaultVolume = 100;
+        bgmVol = sharedPref.getInt("bgmVolume", defaultVolume);
+        sfxVol = sharedPref.getInt("sfxVolume", defaultVolume);
+
+        SeekBar musicSeekBar = findViewById(R.id.musicSettindsSlider);
+        SeekBar soundSeekBar = findViewById(R.id.soundSettindsSlider);
+        musicSeekBar.setProgress(bgmVol);
+        soundSeekBar.setProgress(sfxVol);
     }
 
     // Käyttäjän tietojen haku tietokannasta ja niiden asettaminen navbariin
@@ -387,25 +471,6 @@ public class SettingsActivity extends AppCompatActivity{
         }
     }
 
-    //Haetaan taustamusiikki aktiviteettiin
-    ServiceConnection serviceConnection = new ServiceConnection() {
-
-        // onServiceConnected() kutsutaan kun yhteys on luotu
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            // Haetaan LocalBinderin avulla BackgroundMusicServicen instanssi
-            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
-            musicService = binder.getService();
-            isBound = true;
-        }
-
-        // onServiceDisconnected() kutsutaan kun yhteys katkaistaan
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isBound = false;
-        }
-    };
-
     // Musiikki käynnistyy kun onCreate on ladannut aktiviteetin komponentit
     // onStart() kutsutaan kun aktiviteetti tulee näkyviin
     @Override
@@ -413,13 +478,31 @@ public class SettingsActivity extends AppCompatActivity{
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
     }
 
     // onStop() kutsutaan kun aktiviteetti ei ole enää näkyvissä
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(serviceConnection);
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
     }
 
+    // onResume kutsutaan, jos käyttäjä avaa SettingsActivityn uudelleen saman session aikana
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        int savedSfxVol = sharedPref.getInt("sfxVolume", 100);
+        if (isBound && musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.setSoundEffectsVolume(savedSfxVol);
+            musicService.playBackgroundMusic();
+        }
+    }
 }

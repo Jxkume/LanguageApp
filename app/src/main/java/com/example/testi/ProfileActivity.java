@@ -17,6 +17,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -84,7 +85,13 @@ public class ProfileActivity extends AppCompatActivity{
      * Käyttäjän tason arvo.
      */
     private int lvl;
+
+    /**
+     * Musiikin haku aktiviteettiin.
+     */
     BackgroundMusicService musicService;
+
+    private boolean isBound = false;
 
     /**
      * Taustamusiikkipalveluun liittyvä palveluyhteys.
@@ -92,6 +99,15 @@ public class ProfileActivity extends AppCompatActivity{
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
+            BackgroundMusicService.LocalBinder binder = (BackgroundMusicService.LocalBinder) service;
+            musicService = binder.getService();
+            isBound = true;
+
+            // Päivitä äänenvoimakkuusasetukset
+            SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+            int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.playBackgroundMusic();
         }
 
         @Override
@@ -374,9 +390,8 @@ public class ProfileActivity extends AppCompatActivity{
         super.onStart();
         Intent intent = new Intent(this, BackgroundMusicService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
-        if (musicService != null) {
-            musicService.playBackgroundMusic();
-        }
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
     }
 
     /**
@@ -386,7 +401,20 @@ public class ProfileActivity extends AppCompatActivity{
     @Override
     protected void onStop() {
         super.onStop();
-        unbindService(serviceConnection);
+        if (isBound) {
+            unbindService(serviceConnection);
+            isBound = false;
+        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPref = getSharedPreferences("GameSettings", Context.MODE_PRIVATE);
+        int savedBgmVol = sharedPref.getInt("bgmVolume", 100);
+        if (isBound && musicService != null) {
+            musicService.setMusicVolume(savedBgmVol);
+            musicService.playBackgroundMusic();
+        }
+    }
 }
