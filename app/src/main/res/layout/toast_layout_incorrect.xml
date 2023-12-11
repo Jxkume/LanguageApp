@@ -3,8 +3,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF3EC"
-    android:padding="8dp"
+    android:background="@drawable/incorrect_toast_corners"
+    android:padding="15dp"
     android:id="@+id/toast_layout_incorrect"
     android:soundEffectsEnabled="false">
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="@string/wrong"
         android:fontFamily="@font/baloo2_extra"
-        android:textSize="45sp"
+        android:textSize="35sp"
         android:soundEffectsEnabled="false"/>
 
 </LinearLayout>
